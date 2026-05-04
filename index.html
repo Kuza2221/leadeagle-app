@@ -216,6 +216,8 @@ body::before {
 .promo-foot a { color: var(--green); text-decoration: none; }
 
 /* ─── RESPONSIVE ─────────────────────────────────────────── */
+@keyframes svgsweep1 { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes svgsweep2 { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 @media (max-width: 768px) {
   .app { grid-template-columns: 1fr; }
   .left { border-right: none; border-bottom: 1px solid var(--b1); }
@@ -336,10 +338,8 @@ body::before {
           <line x1="130" y1="4" x2="130" y2="256" stroke="rgba(74,222,128,.16)" stroke-width="1"/>
           <line x1="4"   y1="130" x2="256" y2="130" stroke="rgba(74,222,128,.16)" stroke-width="1"/>
           <!-- sweep — clipped to circle -->
-          <g clip-path="url(#rc)">
-            <line x1="130" y1="130" x2="258" y2="130" stroke="url(#sg)" stroke-width="2">
-              <animateTransform attributeName="transform" type="rotate" from="0 130 130" to="360 130 130" dur="3s" repeatCount="indefinite"/>
-            </line>
+          <g clip-path="url(#rc)" style="transform-origin:130px 130px;animation:svgsweep1 3s linear infinite">
+            <line x1="130" y1="130" x2="258" y2="130" stroke="url(#sg)" stroke-width="2"/>
           </g>
           <!-- center dot -->
           <circle cx="130" cy="130" r="5" fill="#4ade80">
@@ -372,10 +372,8 @@ body::before {
           <circle cx="130" cy="130" r="122" fill="none" stroke="rgba(74,222,128,.22)" stroke-width="1"/>
           <line x1="130" y1="4"   x2="130" y2="256" stroke="rgba(74,222,128,.16)" stroke-width="1"/>
           <line x1="4"   y1="130" x2="256" y2="130" stroke="rgba(74,222,128,.16)" stroke-width="1"/>
-          <g clip-path="url(#rc2)">
-            <line x1="130" y1="130" x2="258" y2="130" stroke="url(#sg2)" stroke-width="2.5">
-              <animateTransform attributeName="transform" type="rotate" from="0 130 130" to="360 130 130" dur="2s" repeatCount="indefinite"/>
-            </line>
+          <g clip-path="url(#rc2)" style="transform-origin:130px 130px;animation:svgsweep2 2s linear infinite">
+            <line x1="130" y1="130" x2="258" y2="130" stroke="url(#sg2)" stroke-width="2.5"/>
           </g>
           <!-- trailing glow -->
           <path id="sweep-trail" d="" fill="none">
