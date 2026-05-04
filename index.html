@@ -42,7 +42,7 @@ body::before {
   background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.05) 3px,rgba(0,0,0,.05) 4px);
   pointer-events:none;z-index:9999;
 }
- 
+
 /* TOPBAR */
 .topbar {
   height: 48px;
@@ -70,21 +70,21 @@ body::before {
   background:var(--green); animation:blink 2s infinite;
 }
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
- 
+
 .api-badge {
   font-family: var(--mono); font-size: 10px;
   letter-spacing: .06em; color: var(--dim);
   background: var(--surface); border: 1px solid var(--border);
   padding: 4px 10px;
 }
- 
+
 /* LAYOUT */
 .app {
   display: grid;
   grid-template-columns: 380px 1fr;
   min-height: calc(100vh - 48px);
 }
- 
+
 /* LEFT PANEL */
 .left-panel {
   background: var(--bg2);
@@ -92,7 +92,7 @@ body::before {
   display: flex; flex-direction: column;
   overflow-y: auto;
 }
- 
+
 .panel-header {
   padding: 18px 20px 14px;
   border-bottom: 1px solid var(--border);
@@ -108,9 +108,9 @@ body::before {
   font-family: var(--body); font-size: 13px;
   color: var(--muted); line-height: 1.5;
 }
- 
+
 .form-body { padding: 18px 20px; flex: 1; }
- 
+
 .field { margin-bottom: 16px; }
 .field-label {
   font-family: var(--mono); font-size: 10px;
@@ -142,12 +142,12 @@ body::before {
   padding-right: 32px;
 }
 .field select option { background: var(--surface2); }
- 
+
 .divider {
   border: none; border-top: 1px solid var(--border);
   margin: 18px 0;
 }
- 
+
 /* API KEY FIELD */
 .api-section {
   padding: 14px 20px;
@@ -187,7 +187,7 @@ body::before {
   font-family: var(--mono); font-size: 10px;
   color: var(--dim); margin-top: 6px; line-height: 1.5;
 }
- 
+
 /* LAUNCH BUTTON */
 .launch-section { padding: 16px 20px; border-top: 1px solid var(--border); }
 .launch-btn {
@@ -204,13 +204,13 @@ body::before {
 .launch-btn:hover:not(:disabled) { background: var(--green2); }
 .launch-btn:disabled { background: var(--green3); color: var(--dim); cursor: not-allowed; }
 .launch-btn .btn-icon { margin-right: 8px; }
- 
+
 /* RIGHT PANEL */
 .right-panel {
   display: flex; flex-direction: column;
   overflow-y: auto;
 }
- 
+
 /* EMPTY STATE */
 .empty-state {
   flex: 1; display: flex; flex-direction: column;
@@ -257,7 +257,7 @@ body::before {
   font-family: var(--body); font-size: 14px;
   color: var(--muted); max-width: 340px; line-height: 1.65;
 }
- 
+
 /* LOADING STATE */
 .loading-state {
   display: none; flex: 1; flex-direction: column;
@@ -290,13 +290,13 @@ body::before {
 .loading-step::before { content:'○'; font-size:10px; flex-shrink:0; }
 .loading-step.done::before { content:'●'; color: var(--green); }
 .loading-step.active::before { content:'►'; color: var(--green); animation:blink .6s infinite; }
- 
+
 /* RESULTS */
 .results {
   display: none; padding: 24px;
 }
 .results.active { display: block; }
- 
+
 .result-topbar {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 20px; padding-bottom: 14px;
@@ -316,7 +316,7 @@ body::before {
   border: 1px solid var(--border2); transition: all .15s;
 }
 .action-btn:hover { border-color: var(--green3); color: var(--text); }
- 
+
 /* TABS */
 .tabs {
   display: flex; gap: 1px;
@@ -336,7 +336,7 @@ body::before {
 .tab:hover:not(.active) { color: var(--text); }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
- 
+
 /* RESULT BLOCKS */
 .r-block {
   background: var(--surface);
@@ -377,7 +377,7 @@ body::before {
   color: var(--muted); letter-spacing: .04em;
 }
 .r-val { color: var(--text); line-height: 1.5; }
- 
+
 /* MESSAGE BLOCK */
 .msg-block {
   background: var(--bg);
@@ -410,7 +410,7 @@ body::before {
   white-space: pre-wrap; letter-spacing: .02em;
 }
 .msg-highlight { color: var(--green); }
- 
+
 /* PAIN TAG */
 .pain-tag {
   display: inline-block;
@@ -420,7 +420,7 @@ body::before {
   border: 1px solid var(--green3);
   padding: 4px 10px; margin: 3px 3px 0 0;
 }
- 
+
 /* ERROR */
 .error-bar {
   display: none;
@@ -433,8 +433,8 @@ body::before {
   color: #f87171; letter-spacing: .03em; line-height: 1.5;
 }
 .error-bar.active { display: block; }
- 
- 
+
+
 /* HISTORY PANEL */
 .history-section {
   padding: 14px 20px;
@@ -477,8 +477,8 @@ body::before {
   transition: color .15s; flex-shrink: 0;
 }
 .hi-del:hover { color: #e84a2f; }
- 
- 
+
+
 /* PROMO SCREEN */
 .promo-screen {
   position: fixed; inset: 0; z-index: 1000;
@@ -573,7 +573,7 @@ body::before {
 }
 .uses-badge.low { color: #fbbf24; border-color: #92400e; background: rgba(251,191,36,.08); }
 .uses-badge.empty { color: #f87171; border-color: rgba(232,74,47,.3); background: rgba(232,74,47,.08); }
- 
+
 @media(max-width:768px){
   .app{grid-template-columns:1fr}
   .left-panel{border-right:none;border-bottom:1px solid var(--border)}
@@ -581,7 +581,7 @@ body::before {
 </style>
 </head>
 <body>
- 
+
 <div class="promo-screen" id="promo-screen">
   <div class="promo-box">
     <div class="promo-top">
@@ -602,7 +602,7 @@ body::before {
     </div>
   </div>
 </div>
- 
+
 <div class="topbar">
   <a href="#" class="logo">Lead<span>Eagle</span></a>
   <div class="topbar-right">
@@ -610,33 +610,33 @@ body::before {
     <div class="uses-badge" id="topbar-uses">— USES LEFT</div>
   </div>
 </div>
- 
+
 <div class="app">
- 
+
   <!-- LEFT: INPUT PANEL -->
   <div class="left-panel">
     <div class="panel-header">
       <div class="panel-title">Intel Intake</div>
       <div class="panel-sub">Describe your product — get a full outbound strategy in 60 seconds.</div>
     </div>
- 
+
     <div class="form-body">
- 
+
       <div class="field">
         <label class="field-label">Product / Service *</label>
         <textarea id="f-product" rows="4" placeholder="What do you sell? Who is it for? What problem does it solve? (2-3 sentences)"></textarea>
       </div>
- 
+
       <div class="field">
         <label class="field-label">Target Market *</label>
         <input id="f-market" type="text" placeholder="e.g. B2B SaaS companies in the US">
       </div>
- 
+
       <div class="field">
         <label class="field-label">Best Current Clients</label>
         <input id="f-clients" type="text" placeholder="e.g. Series A SaaS, 20-80 employees, with SDR team">
       </div>
- 
+
       <div class="field">
         <label class="field-label">Campaign Goal</label>
         <select id="f-goal">
@@ -647,7 +647,7 @@ body::before {
           <option value="upsell existing clients">Upsell existing clients</option>
         </select>
       </div>
- 
+
       <div class="field">
         <label class="field-label">Geography</label>
         <select id="f-geo">
@@ -658,14 +658,14 @@ body::before {
           <option value="APAC">APAC</option>
         </select>
       </div>
- 
+
       <div class="field">
         <label class="field-label">Additional Context</label>
         <textarea id="f-notes" rows="3" placeholder="Competitors, price point, differentiators, things NOT to target..."></textarea>
       </div>
- 
+
     </div>
- 
+
     <!-- USES COUNTER -->
     <div class="api-section" id="uses-section">
       <label class="api-label">// Session status</label>
@@ -674,27 +674,27 @@ body::before {
         <button onclick="logout()" style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--dim)'">Logout</button>
       </div>
     </div>
- 
+
     <!-- ERROR -->
     <div class="error-bar" id="error-bar"></div>
- 
+
     <!-- LAUNCH -->
     <div class="launch-section">
       <button class="launch-btn" id="launch-btn" onclick="launch()">
         <span class="btn-icon">▶</span> ANALYZE & GENERATE STRATEGY
       </button>
     </div>
- 
+
     <!-- HISTORY -->
     <div class="history-section" id="history-section">
       <label class="history-label">// Campaign history</label>
       <div id="history-list"><div class="history-empty">No saved campaigns yet.</div></div>
     </div>
   </div>
- 
+
   <!-- RIGHT: OUTPUT PANEL -->
   <div class="right-panel" id="right-panel">
- 
+
     <!-- EMPTY STATE -->
     <div class="empty-state" id="empty-state">
       <div class="empty-radar">
@@ -709,7 +709,7 @@ body::before {
       <div class="empty-title">Awaiting target data</div>
       <div class="empty-sub">Fill in your product details on the left and hit Analyze. LeadEagle will generate your full outbound strategy — ICP, roles, pains, messaging angles, and ready-to-send sequences.</div>
     </div>
- 
+
     <!-- LOADING STATE -->
     <div class="loading-state" id="loading-state">
       <div class="loading-ring"></div>
@@ -722,7 +722,7 @@ body::before {
         <div class="loading-step" id="ls-6">Compiling campaign package</div>
       </div>
     </div>
- 
+
     <!-- RESULTS -->
     <div class="results" id="results">
       <div class="result-topbar">
@@ -733,32 +733,32 @@ body::before {
           <button class="action-btn" onclick="resetApp()">New campaign</button>
         </div>
       </div>
- 
+
       <div class="tabs">
         <button class="tab active" onclick="switchTab('icp')">ICP & Roles</button>
         <button class="tab" onclick="switchTab('pain')">Pain Angles</button>
         <button class="tab" onclick="switchTab('msg')">Messages</button>
         <button class="tab" onclick="switchTab('obj')">Objections</button>
       </div>
- 
+
       <div class="tab-content active" id="tab-icp"></div>
       <div class="tab-content" id="tab-pain"></div>
       <div class="tab-content" id="tab-msg"></div>
       <div class="tab-content" id="tab-obj"></div>
     </div>
- 
+
   </div>
 </div>
- 
+
 <script>
 var SUPABASE_URL = 'https://ahdwnfbrvzxbmfgxnywt.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoZHduZmJydnp4Ym1mZ3hueXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDY3NzcsImV4cCI6MjA5MzQ4Mjc3N30.HxM67sLe9Ul_GkBvFIYYJKpBA_iSUxiiaHjMyGFoG9U';
-var API_KEY = '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';
+// API key is stored securely on the server
 var currentData = null;
 var currentInput = null;
 var HISTORY_KEY = 'le_history';
 var SESSION_KEY = 'le_session';
- 
+
 /* ── SUPABASE HELPERS ── */
 async function sbGet(table, filter) {
   var url = SUPABASE_URL + '/rest/v1/' + table + '?' + filter;
@@ -771,7 +771,7 @@ async function sbGet(table, filter) {
   });
   return await res.json();
 }
- 
+
 async function sbUpdate(table, filter, data) {
   var url = SUPABASE_URL + '/rest/v1/' + table + '?' + filter;
   var res = await fetch(url, {
@@ -786,7 +786,7 @@ async function sbUpdate(table, filter, data) {
   });
   return await res.json();
 }
- 
+
 async function sbInsert(table, data) {
   var url = SUPABASE_URL + '/rest/v1/' + table;
   var res = await fetch(url, {
@@ -801,7 +801,7 @@ async function sbInsert(table, data) {
   });
   return await res.json();
 }
- 
+
 /* ── PROMO AUTH ── */
 function getSession() {
   try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { return null; }
@@ -809,17 +809,17 @@ function getSession() {
 function saveSession(code, uses) {
   localStorage.setItem(SESSION_KEY, JSON.stringify({ code: code, uses: uses }));
 }
- 
+
 async function verifyPromo() {
   var input = document.getElementById('promo-input');
   var code = input.value.trim().toUpperCase();
   var btn = document.getElementById('promo-btn');
- 
+
   if (!code) { showPromoError('Enter your access code'); return; }
- 
+
   btn.disabled = true;
   btn.textContent = 'Checking...';
- 
+
   try {
     // Check existing session first
     var existing = getSession();
@@ -829,47 +829,47 @@ async function verifyPromo() {
       btn.disabled=false; btn.textContent='Verify ▶';
       return;
     }
- 
+
     // Query Supabase
     var rows = await sbGet('promo_codes', 'code=eq.' + encodeURIComponent(code) + '&select=*');
- 
+
     if (!rows || rows.length === 0) {
       showPromoError('Invalid code. Request access at leadeagle.vercel.app');
       btn.disabled=false; btn.textContent='Verify ▶';
       return;
     }
- 
+
     var promo = rows[0];
     if (promo.uses_left <= 0) {
       showPromoError('This code has been fully used');
       btn.disabled=false; btn.textContent='Verify ▶';
       return;
     }
- 
+
     // Valid — save session with server uses_left
     saveSession(code, promo.uses_left);
     unlockApp(promo.uses_left);
     btn.disabled=false; btn.textContent='Verify ▶';
- 
+
   } catch(e) {
     showPromoError('Connection error. Try again.');
     btn.disabled=false; btn.textContent='Verify ▶';
   }
 }
- 
+
 function showPromoError(msg) {
   var el = document.getElementById('promo-error');
   el.textContent = '// ' + msg;
   el.classList.add('show');
   setTimeout(function(){ el.classList.remove('show'); }, 4000);
 }
- 
+
 function unlockApp(uses) {
   document.getElementById('promo-screen').style.display = 'none';
   updateUsesDisplay(uses);
   renderHistory(null);
 }
- 
+
 function updateUsesDisplay(uses) {
   var label = document.getElementById('uses-label');
   var badge = document.getElementById('topbar-uses');
@@ -879,7 +879,7 @@ function updateUsesDisplay(uses) {
     badge.className = 'uses-badge' + (uses <= 1 ? ' low' : '') + (uses <= 0 ? ' empty' : '');
   }
 }
- 
+
 function logout() {
   localStorage.removeItem(SESSION_KEY);
   document.getElementById('promo-screen').style.display = 'flex';
@@ -887,12 +887,12 @@ function logout() {
   document.getElementById('results').classList.remove('active');
   document.getElementById('empty-state').style.display = 'flex';
 }
- 
+
 function checkSession() {
   var s = getSession();
   if (s && s.uses > 0) { unlockApp(s.uses); }
 }
- 
+
 /* ── HISTORY ── */
 function getHistory() {
   try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) { return []; }
@@ -941,7 +941,7 @@ function deleteHistory(id) {
   localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
   renderHistory(null);
 }
- 
+
 /* ── CSV EXPORT ── */
 function exportCSV() {
   if (!currentData) return;
@@ -982,21 +982,21 @@ function exportCSV() {
   a.href = url; a.download = 'leadeagle-' + Date.now() + '.csv';
   a.click(); URL.revokeObjectURL(url);
 }
- 
+
 function showError(msg) {
   var el = document.getElementById('error-bar');
   el.textContent = '// ERROR: ' + msg;
   el.classList.add('active');
   setTimeout(function(){ el.classList.remove('active'); }, 6000);
 }
- 
+
 function setLoading(active) {
   document.getElementById('empty-state').style.display = active ? 'none' : 'flex';
   document.getElementById('loading-state').classList.toggle('active', active);
   document.getElementById('results').classList.remove('active');
   document.getElementById('launch-btn').disabled = active;
 }
- 
+
 function animateSteps() {
   var steps = ['ls-1','ls-2','ls-3','ls-4','ls-5','ls-6'];
   var i = 0;
@@ -1008,7 +1008,7 @@ function animateSteps() {
   }, 900);
   return iv;
 }
- 
+
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(function(t,i){
     t.classList.toggle('active', ['icp','pain','msg','obj'][i] === name);
@@ -1016,7 +1016,7 @@ function switchTab(name) {
   document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
   document.getElementById('tab-' + name).classList.add('active');
 }
- 
+
 function copyAll() {
   if (!currentData) return;
   navigator.clipboard.writeText(JSON.stringify(currentData, null, 2)).then(function(){
@@ -1025,7 +1025,7 @@ function copyAll() {
     setTimeout(function(){ btn.textContent = 'Copy all'; }, 1500);
   });
 }
- 
+
 function copyMsg(btn, id) {
   var el = document.getElementById(id);
   if (!el) return;
@@ -1034,13 +1034,13 @@ function copyMsg(btn, id) {
     setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
   });
 }
- 
+
 function resetApp() {
   document.getElementById('results').classList.remove('active');
   document.getElementById('empty-state').style.display = 'flex';
   currentData = null; currentInput = null;
 }
- 
+
 function renderResults(data) {
   currentData = data;
   var icpHtml = '';
@@ -1064,7 +1064,7 @@ function renderResults(data) {
     });
   }
   document.getElementById('tab-icp').innerHTML = icpHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No ICP data.</div></div></div>';
- 
+
   var painHtml = '';
   if (data.pain_angles && data.pain_angles.length) {
     data.pain_angles.forEach(function(a, i) {
@@ -1076,7 +1076,7 @@ function renderResults(data) {
     });
   }
   document.getElementById('tab-pain').innerHTML = painHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No pain angles.</div></div></div>';
- 
+
   var msgHtml = '';
   var msgs = data.messages || {};
   [
@@ -1091,7 +1091,7 @@ function renderResults(data) {
     }
   });
   document.getElementById('tab-msg').innerHTML = msgHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No messages.</div></div></div>';
- 
+
   var objHtml = '';
   if (data.objections && data.objections.length) {
     data.objections.forEach(function(o) {
@@ -1099,44 +1099,41 @@ function renderResults(data) {
     });
   }
   document.getElementById('tab-obj').innerHTML = objHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No objections.</div></div></div>';
- 
+
   document.getElementById('loading-state').classList.remove('active');
   document.getElementById('results').classList.add('active');
   switchTab('icp');
 }
- 
+
 function escHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
- 
+
 async function launch() {
   var s = getSession();
   if (!s || s.uses <= 0) { showError('No uses remaining.'); return; }
- 
+
   var product = document.getElementById('f-product').value.trim();
   var market  = document.getElementById('f-market').value.trim();
   var clients = document.getElementById('f-clients').value.trim();
   var goal    = document.getElementById('f-goal').value;
   var geo     = document.getElementById('f-geo').value;
   var notes   = document.getElementById('f-notes').value.trim();
- 
+
   if (!product) { showError('Product description is required'); return; }
   if (!market)  { showError('Target market is required'); return; }
- 
+
   currentInput = { product: product, market: market, clients: clients, goal: goal, geo: geo, notes: notes };
   setLoading(true);
   var stepIv = animateSteps();
- 
+
   var prompt = 'You are LeadEagle — an outbound strategy AI. Generate a complete outbound campaign strategy.\n\nPRODUCT INTEL:\n- Product: ' + product + '\n- Market: ' + market + '\n- Best clients: ' + (clients||'Not specified') + '\n- Goal: ' + goal + '\n- Geo: ' + geo + '\n- Notes: ' + (notes||'None') + '\n\nReturn ONLY valid JSON, no markdown:\n{"icp":{"description":"...","company_size":"...","industry":"...","trigger_events":"...","exclude":"..."},"roles":[{"title":"...","type":"Decision Maker","pain":"...","kpi":"...","buys":"..."}],"pain_angles":[{"title":"...","pain":"...","angle":"...","cta":"..."}],"messages":{"linkedin_dm":"...","cold_email":"Subject: ...\\n\\nbody...","followup_1":"...","followup_2":"..."},"objections":[{"q":"...","a":"..."}]}\n\nGenerate 2 roles, 4 angles, 4 objections. Be specific to this product.';
- 
+
   try {
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
+    var res = await fetch('/api/claude', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
@@ -1144,36 +1141,36 @@ async function launch() {
         messages: [{ role: 'user', content: prompt }]
       })
     });
- 
+
     clearInterval(stepIv);
     ['ls-1','ls-2','ls-3','ls-4','ls-5','ls-6'].forEach(function(s){
       document.getElementById(s).className = 'loading-step done';
     });
- 
+
     if (!res.ok) {
       var errData = await res.json().catch(function(){ return {}; });
       throw new Error(errData.error && errData.error.message ? errData.error.message : 'API error ' + res.status);
     }
- 
+
     var result = await res.json();
     var text = result.content && result.content[0] && result.content[0].text;
     if (!text) throw new Error('Empty response');
- 
+
     var clean = text.replace(/```json|```/g,'').trim();
     var data = JSON.parse(clean);
- 
+
     // Deduct use in Supabase
     s.uses--;
     saveSession(s.code, s.uses);
     updateUsesDisplay(s.uses);
- 
+
     // Update Supabase
     sbUpdate('promo_codes', 'code=eq.' + encodeURIComponent(s.code), { uses_left: s.uses }).catch(function(){});
     sbInsert('promo_usage', { code: s.code, product_desc: product.substring(0,200) }).catch(function(){});
- 
+
     saveToHistory(currentInput, data);
     setTimeout(function(){ renderResults(data); setLoading(false); }, 500);
- 
+
   } catch(e) {
     clearInterval(stepIv);
     setLoading(false);
@@ -1181,16 +1178,15 @@ async function launch() {
     showError(e.message || 'Something went wrong');
   }
 }
- 
+
 document.addEventListener('keydown', function(e){
   if (e.key === 'Enter' && document.getElementById('promo-screen').style.display !== 'none') {
     verifyPromo();
   }
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') launch();
 });
- 
+
 checkSession();
 </script>
 </body>
 </html>
- 
