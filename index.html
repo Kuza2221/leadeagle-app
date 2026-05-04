@@ -1147,9 +1147,10 @@ async function launch() {
 
   var prompt = 'You are LeadEagle — an outbound strategy AI. Generate a COMPLETE outbound campaign package.\n\nPRODUCT INTEL:\n- Product: ' + product + '\n- Market: ' + market + '\n- Best clients: ' + (clients||'Not specified') + '\n- Goal: ' + goal + '\n- Geo: ' + geo + '\n- Notes: ' + (notes||'None') + '\n\nReturn ONLY valid JSON, no markdown, no backticks:\n{"icp":{"description":"2-sentence specific ICP","company_size":"e.g. 20-100 employees","industry":"specific industries","trigger_events":"buying signals","exclude":"who to exclude"},"roles":[{"title":"Job Title","type":"Decision Maker","pain":"specific pain in their words","kpi":"their KPIs","buys":"outcome they buy"}],"pain_angles":[{"title":"angle name","pain":"pain targeted","angle":"how product solves it","cta":"one-line CTA"}],"messages":{"linkedin_connect":"Short 300-char connection request, no pitch","linkedin_dm":"DM after connecting, 3-4 sentences, reference trigger","subject_lines":"Option 1: [subject]\\nOption 2: [subject]\\nOption 3: [subject]","cold_email":"Subject: [subject]\\n\\n[5-7 sentence email body]","followup_1":"Day 4 follow-up, new angle, 3 sentences","followup_2":"Day 10 follow-up, create urgency, 3 sentences","followup_3":"Day 21 final breakup email, 2 sentences"},"call_script":{"opening":"First 15 seconds script to grab attention","discovery":["Question 1?","Question 2?","Question 3?","Question 4?","Question 5?"],"pitch":"30-second value pitch for the call","close":"How to close for next step on the call"},"objections":[{"q":"objection","a":"response"}]}\n\nGenerate: 2 roles, 4 pain angles, 4 objections. All content must be SPECIFIC to this product — no generic templates.';
 
+  try {
   var controller = new AbortController();
-    var timeout = setTimeout(function(){ controller.abort(); }, 30000);
-    var res = await fetch('/api/claude', {
+  var timeout = setTimeout(function(){ controller.abort(); }, 30000);
+  var res = await fetch('/api/claude', {
       signal: controller.signal,
       method: 'POST',
       headers: {
