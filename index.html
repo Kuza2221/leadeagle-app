@@ -1035,7 +1035,7 @@ function renderResults(data) {
   ].forEach(function(m) {
     if (msgs[m.key]) {
       var mid = 'msg-' + m.key;
-      msgHtml += '<div class="msg-block"><div class="msg-head"><span class="msg-label">' + m.label + '</span><button class="copy-btn" onclick="copyMsg(this,'' + mid + '')">Copy</button></div><div class="msg-body" id="' + mid + '">' + escHtml(msgs[m.key]) + '</div></div>';
+      msgHtml += '<div class="msg-block"><div class="msg-head"><span class="msg-label">' + m.label + '</span><button class="copy-btn" onclick="copyMsg(this,\'' + mid + '\')">Copy</button></div><div class="msg-body" id="' + mid + '">' + escHtml(msgs[m.key]) + '</div></div>';
     }
   });
   document.getElementById('tab-msg').innerHTML = msgHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No messages.</div></div></div>';
@@ -1137,4 +1137,3 @@ checkSession();
 </script>
 </body>
 </html>
- 
