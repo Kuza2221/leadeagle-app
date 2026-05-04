@@ -80,7 +80,7 @@ body::before {
 .launch-btn:hover:not(:disabled) { background: var(--green2); }
 .launch-btn:disabled { background: var(--green3); color: var(--dim); cursor: not-allowed; }
 .right-panel { display: flex; flex-direction: column; overflow-y: auto; }
-
+ 
 /* EMPTY STATE */
 .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 40px; text-align: center; }
 .empty-radar { width: 280px; height: 280px; position: relative; margin-bottom: 32px; flex-shrink: 0; }
@@ -99,11 +99,11 @@ body::before {
 @keyframes centlock{from{box-shadow:0 0 15px #cc1100}to{box-shadow:0 0 40px #cc1100,0 0 80px rgba(204,17,0,.3)}}
 .empty-title { font-family: var(--head); font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text); margin-bottom: 8px; }
 .empty-sub { font-family: var(--body); font-size: 14px; color: var(--muted); max-width: 340px; line-height: 1.65; }
-
+ 
 /* LOADING STATE */
 .loading-state { display: none; flex: 1; flex-direction: column; align-items: center; justify-content: center; padding: 40px 40px; text-align: center; }
 .loading-state.active { display: flex; }
-
+ 
 /* RADAR TARGETS */
 .rl-target { position:absolute; width:9px; height:9px; border-radius:50%; background:var(--green); top:50%; left:50%; opacity:0; box-shadow:0 0 8px var(--green); transition:opacity .5s; }
 .rl-target.active{opacity:1}
@@ -113,7 +113,7 @@ body::before {
 .rl-t2{transform:translate(calc(-50% - 80px),calc(-50% + 28px))}
 .rl-t3{transform:translate(calc(-50% + 88px),calc(-50% + 46px))}
 .rl-t4{transform:translate(calc(-50% - 40px),calc(-50% + 84px))}
-
+ 
 /* TUMBLERS */
 .rl-tumblers{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:18px}
 .rl-tumbler{display:flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid var(--border);background:var(--bg2);transition:all .4s}
@@ -122,15 +122,15 @@ body::before {
 .rl-tumbler.active .rl-t-dot{background:var(--green);box-shadow:0 0 6px var(--green)}
 .rl-t-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--dim);transition:color .4s}
 .rl-tumbler.active .rl-t-label{color:var(--green)}
-
+ 
 /* LAUNCH BTN */
 .rl-launch-btn{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:14px 32px;background:#cc1100;color:#fff;border:none;cursor:pointer;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);animation:launchpulse 1s infinite alternate;margin-bottom:18px;box-shadow:0 0 20px rgba(204,17,0,.4)}
 .rl-launch-btn:hover{background:#ff2400}
 @keyframes launchpulse{from{opacity:.9;box-shadow:0 0 10px rgba(204,17,0,.3)}to{opacity:1;box-shadow:0 0 30px rgba(204,17,0,.7)}}
-
+ 
 /* FACTS */
 .rl-facts{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.06em;text-align:center;max-width:320px;line-height:1.6;min-height:32px;transition:opacity .5s}
-
+ 
 /* RESULTS */
 .results { display: none; padding: 24px; }
 .results.active { display: block; }
@@ -193,7 +193,7 @@ body::before {
 .promo-error.show { display: block; }
 .promo-footer { border-top: 1px solid var(--border); padding: 12px 24px; text-align: center; }
 .promo-footer-text { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: .06em; }
-
+ 
 @media(max-width:768px){
   .app{grid-template-columns:1fr}
   .left-panel{border-right:none;border-bottom:1px solid var(--border)}
@@ -201,7 +201,7 @@ body::before {
 </style>
 </head>
 <body>
-
+ 
 <div class="promo-screen" id="promo-screen">
   <div class="promo-box">
     <div class="promo-top">
@@ -221,7 +221,7 @@ body::before {
     </div>
   </div>
 </div>
-
+ 
 <div class="topbar">
   <a href="#" class="logo">Lead<span>Eagle</span></a>
   <div class="topbar-right">
@@ -229,7 +229,7 @@ body::before {
     <div class="uses-badge" id="topbar-uses">— USES LEFT</div>
   </div>
 </div>
-
+ 
 <div class="app">
   <div class="left-panel">
     <div class="panel-header">
@@ -290,9 +290,9 @@ body::before {
       <div id="history-list"><div class="history-empty">No saved campaigns yet.</div></div>
     </div>
   </div>
-
+ 
   <div class="right-panel" id="right-panel">
-
+ 
     <!-- EMPTY STATE -->
     <div class="empty-state" id="empty-state">
       <div class="empty-radar">
@@ -307,7 +307,7 @@ body::before {
       <div class="empty-title">Awaiting target data</div>
       <div class="empty-sub">Fill in your product details on the left and hit Analyze. LeadEagle will generate your full outbound strategy — ICP, roles, pains, messaging angles, and ready-to-send sequences.</div>
     </div>
-
+ 
     <!-- LOADING STATE -->
     <div class="loading-state" id="loading-state">
       <div class="empty-radar" style="margin-bottom:28px">
@@ -332,7 +332,7 @@ body::before {
       <button class="rl-launch-btn" id="rl-launch-btn" onclick="showResults()" style="display:none">■ TARGET LOCKED · VIEW STRATEGY</button>
       <div class="rl-facts" id="rl-facts"></div>
     </div>
-
+ 
     <!-- RESULTS -->
     <div class="results" id="results">
       <div class="result-topbar">
@@ -356,10 +356,10 @@ body::before {
       <div class="tab-content" id="tab-call"></div>
       <div class="tab-content" id="tab-obj"></div>
     </div>
-
+ 
   </div>
 </div>
-
+ 
 <script>
 var SUPABASE_URL = 'https://ahdwnfbrvzxbmfgxnywt.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoZHduZmJydnp4Ym1mZ3hueXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDY3NzcsImV4cCI6MjA5MzQ4Mjc3N30.HxM67sLe9Ul_GkBvFIYYJKpBA_iSUxiiaHjMyGFoG9U';
@@ -369,7 +369,7 @@ var currentInput = null;
 var HISTORY_KEY = 'le_history';
 var SESSION_KEY = 'le_session';
 var _pendingResults = null;
-
+ 
 var RL_FACTS = [
   '71% of cold emails are ignored due to poor targeting',
   'Teams with clear ICP get 3x more meetings on average',
@@ -380,7 +380,7 @@ var RL_FACTS = [
   'Apollo gives you the gun. LeadEagle gives you the aim.',
   'Founders spend avg 3h on campaign prep — we cut it to 20 min'
 ];
-
+ 
 async function sbGet(table, filter) {
   var res = await fetch(SUPABASE_URL+'/rest/v1/'+table+'?'+filter, {headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
   return await res.json();
@@ -391,10 +391,10 @@ async function sbUpdate(table, filter, data) {
 async function sbInsert(table, data) {
   await fetch(SUPABASE_URL+'/rest/v1/'+table, {method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(data)});
 }
-
+ 
 function getSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY)||'null'); } catch(e) { return null; } }
 function saveSession(code, uses) { localStorage.setItem(SESSION_KEY, JSON.stringify({code:code,uses:uses})); }
-
+ 
 async function verifyPromo() {
   var input = document.getElementById('promo-input');
   var code = input.value.trim().toUpperCase();
@@ -416,7 +416,7 @@ async function verifyPromo() {
     btn.disabled=false; btn.textContent='Verify ▶';
   } catch(e) { showPromoError('Connection error. Try again.'); btn.disabled=false; btn.textContent='Verify ▶'; }
 }
-
+ 
 function showPromoError(msg) {
   var el = document.getElementById('promo-error');
   el.textContent = '// '+msg; el.classList.add('show');
@@ -438,7 +438,7 @@ function logout() {
   document.getElementById('promo-input').value = '';
 }
 function checkSession() { var s=getSession(); if (s && s.uses>0) unlockApp(s.uses); }
-
+ 
 function getHistory() { try { return JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]'); } catch(e) { return []; } }
 function saveToHistory(input, data) {
   var h=getHistory(); var id=Date.now();
@@ -474,7 +474,7 @@ function deleteHistory(id) {
   var h=getHistory().filter(function(c){ return c.id!==id; });
   localStorage.setItem(HISTORY_KEY,JSON.stringify(h)); renderHistory(null);
 }
-
+ 
 function exportCSV() {
   if (!currentData) return;
   var rows=[['Type','Field','Content']]; var d=currentData;
@@ -488,7 +488,7 @@ function exportCSV() {
   var url=URL.createObjectURL(blob); var a=document.createElement('a');
   a.href=url; a.download='leadeagle-'+Date.now()+'.csv'; a.click(); URL.revokeObjectURL(url);
 }
-
+ 
 function startFactsTicker() {
   var el=document.getElementById('rl-facts'); if(!el) return;
   var i=Math.floor(Math.random()*RL_FACTS.length);
@@ -516,7 +516,7 @@ function animateSteps() {
   [3000,6000,9000,12000].forEach(function(t,idx){ setTimeout(function(){ activateTumbler(idx+1); },t); });
   return {factIv:factIv};
 }
-
+ 
 function showError(msg) {
   var el=document.getElementById('error-bar');
   el.textContent='// ERROR: '+msg; el.classList.add('active');
@@ -550,7 +550,7 @@ function resetApp() {
   currentData=null; currentInput=null;
 }
 function escHtml(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
+ 
 function renderResults(data) {
   currentData=data;
   var icpHtml='';
@@ -566,33 +566,33 @@ function renderResults(data) {
   }
   if(data.roles&&data.roles.length){ data.roles.forEach(function(r,i){ icpHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">'+(r.title||'Role '+(i+1))+'</span><span class="r-block-tag">'+(r.type||'')+'</span></div><div class="r-block-body">'; if(r.pain) icpHtml+='<div class="r-row"><div class="r-key">Main pain</div><div class="r-val">'+r.pain+'</div></div>'; if(r.kpi) icpHtml+='<div class="r-row"><div class="r-key">KPIs</div><div class="r-val">'+r.kpi+'</div></div>'; if(r.buys) icpHtml+='<div class="r-row"><div class="r-key">Buys</div><div class="r-val">'+r.buys+'</div></div>'; icpHtml+='</div></div>'; }); }
   document.getElementById('tab-icp').innerHTML=icpHtml||'<div class="r-block"><div class="r-block-body"><div class="r-text">No ICP data.</div></div></div>';
-
+ 
   var painHtml='';
   if(data.pain_angles&&data.pain_angles.length){ data.pain_angles.forEach(function(a,i){ painHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">Angle '+String(i+1).padStart(2,'0')+' · '+(a.title||'')+'</span></div><div class="r-block-body">'; if(a.pain) painHtml+='<div class="r-row"><div class="r-key">Pain</div><div class="r-val">'+a.pain+'</div></div>'; if(a.angle) painHtml+='<div class="r-row"><div class="r-key">Angle</div><div class="r-val">'+a.angle+'</div></div>'; if(a.cta) painHtml+='<div class="r-row"><div class="r-key">CTA</div><div class="r-val" style="color:var(--green);font-family:var(--mono);font-size:12px">"'+a.cta+'"</div></div>'; painHtml+='</div></div>'; }); }
   document.getElementById('tab-pain').innerHTML=painHtml||'<div class="r-block"><div class="r-block-body"><div class="r-text">No pain angles.</div></div></div>';
-
+ 
   var msgHtml=''; var msgs=data.messages||{};
   [{'key':'linkedin_connect','label':'LinkedIn Connection Request'},{'key':'linkedin_dm','label':'LinkedIn DM'},{'key':'subject_lines','label':'Subject Lines (3 variants)'},{'key':'cold_email','label':'Cold Email'},{'key':'followup_1','label':'Follow-up #1 · Day 4'},{'key':'followup_2','label':'Follow-up #2 · Day 10'},{'key':'followup_3','label':'Follow-up #3 · Day 21'}].forEach(function(m){
     if(msgs[m.key]){ var mid='msg-'+m.key; msgHtml+='<div class="msg-block"><div class="msg-head"><span class="msg-label">'+m.label+'</span><button class="copy-btn" onclick="copyMsg(this,\''+mid+'\')">Copy</button></div><div class="msg-body" id="'+mid+'">'+escHtml(msgs[m.key])+'</div></div>'; }
   });
   document.getElementById('tab-msg').innerHTML=msgHtml||'<div class="r-block"><div class="r-block-body"><div class="r-text">No messages.</div></div></div>';
-
+ 
   var callHtml=''; var cs=data.call_script||{};
   if(cs.opening) callHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">Opening · First 15 seconds</span></div><div class="r-block-body"><div class="r-text" id="cs-opening">'+escHtml(cs.opening)+'</div><button class="copy-btn" style="margin-top:8px" onclick="copyMsg(this,\'cs-opening\')">Copy</button></div></div>';
   if(cs.discovery&&cs.discovery.length){ callHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">Discovery Questions</span></div><div class="r-block-body">'; cs.discovery.forEach(function(q,i){ callHtml+='<div class="r-row"><div class="r-key">Q'+(i+1)+'</div><div class="r-val">'+q+'</div></div>'; }); callHtml+='</div></div>'; }
   if(cs.pitch) callHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">30-Second Pitch</span></div><div class="r-block-body"><div class="r-text" id="cs-pitch">'+escHtml(cs.pitch)+'</div><button class="copy-btn" style="margin-top:8px" onclick="copyMsg(this,\'cs-pitch\')">Copy</button></div></div>';
   if(cs.close) callHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">Closing</span></div><div class="r-block-body"><div class="r-text">'+cs.close+'</div></div></div>';
   document.getElementById('tab-call').innerHTML=callHtml||'<div class="r-block"><div class="r-block-body"><div class="r-text">No call script.</div></div></div>';
-
+ 
   var objHtml='';
   if(data.objections&&data.objections.length){ data.objections.forEach(function(o){ objHtml+='<div class="r-block"><div class="r-block-body"><div class="r-row"><div class="r-key" style="color:var(--muted)">Objection</div><div class="r-val" style="font-style:italic">"'+o.q+'"</div></div><div class="r-row"><div class="r-key">Response</div><div class="r-val">'+o.a+'</div></div></div></div>'; }); }
   document.getElementById('tab-obj').innerHTML=objHtml||'<div class="r-block"><div class="r-block-body"><div class="r-text">No objections.</div></div></div>';
-
+ 
   document.getElementById('loading-state').classList.remove('active');
   document.getElementById('results').classList.add('active');
   switchTab('icp');
 }
-
+ 
 async function launch() {
   var s=getSession();
   if(!s||s.uses<=0) { showError('No uses remaining.'); return; }
@@ -637,14 +637,15 @@ async function launch() {
     showError(e.message||'Something went wrong');
   }
 }
-
+ 
 document.addEventListener('keydown',function(e){
   if(e.key==='Enter'&&document.getElementById('promo-screen').style.display!=='none') verifyPromo();
   if((e.ctrlKey||e.metaKey)&&e.key==='Enter') launch();
 });
-
+ 
 checkSession();
 renderHistory(null);
 </script>
 </body>
 </html>
+ 
