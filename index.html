@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadEagle — Outbound Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0a0a0f;
+  --bg2:      #0d0d14;
+  --surface:  #12121a;
+  --surface2: #16161f;
+  --border:   #1c2a1c;
+  --border2:  #243424;
+  --green:    #4ade80;
+  --green2:   #22c55e;
+  --green3:   #166534;
+  --gdim:     rgba(74,222,128,.1);
+  --gdim2:    rgba(74,222,128,.06);
+  --red:      #e84a2f;
+  --text:     #dde8dd;
+  --muted:    #7a8f7a;
+  --dim:      #3a4e3a;
+  --mono:     'Share Tech Mono', monospace;
+  --head:     'Barlow Condensed', sans-serif;
+  --body:     'Barlow', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.05) 3px,rgba(0,0,0,.05) 4px);
+  pointer-events:none;z-index:9999;
+}
+
+/* TOPBAR */
+.topbar {
+  height: 48px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-family: var(--head);
+  font-weight: 800; font-size: 18px;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text); text-decoration: none;
+}
+.logo span { color: var(--green); }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.pulse-dot {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 10px;
+  color: var(--green); letter-spacing: .08em;
+}
+.pulse-dot::before {
+  content:''; width:6px; height:6px; border-radius:50%;
+  background:var(--green); animation:blink 2s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+.api-badge {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .06em; color: var(--dim);
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 4px 10px;
+}
+
+/* LAYOUT */
+.app {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  min-height: calc(100vh - 48px);
+}
+
+/* LEFT PANEL */
+.left-panel {
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+
+.panel-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.panel-title {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.panel-title::before { content:'//'; color:var(--dim); }
+.panel-sub {
+  font-family: var(--body); font-size: 13px;
+  color: var(--muted); line-height: 1.5;
+}
+
+.form-body { padding: 18px 20px; flex: 1; }
+
+.field { margin-bottom: 16px; }
+.field-label {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 6px;
+  display: block;
+}
+.field input, .field textarea, .field select {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-family: var(--body); font-size: 14px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color .2s;
+  resize: none;
+}
+.field input::placeholder,
+.field textarea::placeholder { color: var(--dim); font-size: 13px; }
+.field input:focus,
+.field textarea:focus { border-color: var(--green3); }
+.field select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234ade80' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+.field select option { background: var(--surface2); }
+
+.divider {
+  border: none; border-top: 1px solid var(--border);
+  margin: 18px 0;
+}
+
+/* API KEY FIELD */
+.api-section {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.api-label {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 6px; display: block;
+}
+.api-input-row { display: flex; gap: 0; }
+.api-input-row input {
+  flex: 1;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-right: none;
+  color: var(--muted);
+  font-family: var(--mono); font-size: 11px;
+  padding: 9px 12px;
+  outline: none;
+  letter-spacing: .04em;
+  transition: border-color .2s;
+}
+.api-input-row input:focus { border-color: var(--green3); color: var(--text); }
+.api-input-row input::placeholder { color: var(--dim); }
+.api-save {
+  padding: 9px 14px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .08em; text-transform: uppercase;
+  background: var(--border2); color: var(--muted);
+  border: 1px solid var(--border2); cursor: pointer;
+  transition: all .15s; white-space: nowrap;
+}
+.api-save:hover { background: var(--green3); color: var(--text); }
+.api-note {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--dim); margin-top: 6px; line-height: 1.5;
+}
+
+/* LAUNCH BUTTON */
+.launch-section { padding: 16px 20px; border-top: 1px solid var(--border); }
+.launch-btn {
+  width: 100%;
+  padding: 14px;
+  font-family: var(--mono); font-size: 12px;
+  letter-spacing: .14em; text-transform: uppercase;
+  background: var(--green); color: var(--bg);
+  border: none; cursor: pointer;
+  transition: background .15s;
+  clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+  position: relative; overflow: hidden;
+}
+.launch-btn:hover:not(:disabled) { background: var(--green2); }
+.launch-btn:disabled { background: var(--green3); color: var(--dim); cursor: not-allowed; }
+.launch-btn .btn-icon { margin-right: 8px; }
+
+/* RIGHT PANEL */
+.right-panel {
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 40px; text-align: center;
+  position: relative;
+}
+.empty-radar {
+  width: 220px; height: 220px;
+  position: relative; margin-bottom: 32px;
+}
+.er-ring {
+  position:absolute; border-radius:50%;
+  border:1px solid var(--border);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+}
+.er-ring:nth-child(1){width:48px;height:48px}
+.er-ring:nth-child(2){width:96px;height:96px}
+.er-ring:nth-child(3){width:144px;height:144px}
+.er-ring:nth-child(4){width:192px;height:192px;border-color:var(--border2)}
+.er-cross{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:192px;height:192px}
+.er-cross::before,.er-cross::after{content:'';position:absolute;background:var(--border)}
+.er-cross::before{width:1px;height:100%;left:50%}
+.er-cross::after{width:100%;height:1px;top:50%}
+.er-sweep{
+  position:absolute;top:50%;left:50%;
+  width:96px;height:1px;transform-origin:left center;
+  background:linear-gradient(90deg,transparent,rgba(74,222,128,.4));
+  animation:rsweep 4s linear infinite;
+}
+@keyframes rsweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.er-center{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:10px;height:10px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 10px var(--green);
+}
+.empty-title {
+  font-family: var(--head); font-size: 22px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text); margin-bottom: 8px;
+}
+.empty-sub {
+  font-family: var(--body); font-size: 14px;
+  color: var(--muted); max-width: 340px; line-height: 1.65;
+}
+
+/* LOADING STATE */
+.loading-state {
+  display: none; flex: 1; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 40px; text-align: center;
+}
+.loading-state.active { display: flex; }
+.loading-ring {
+  width: 80px; height: 80px; position: relative; margin-bottom: 28px;
+}
+.loading-ring::before {
+  content:''; position:absolute; inset:0;
+  border-radius:50%;
+  border:2px solid var(--border2);
+  border-top-color:var(--green);
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-steps { text-align: left; max-width: 280px; }
+.loading-step {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--dim); letter-spacing: .04em;
+  padding: 6px 0; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  transition: color .3s;
+}
+.loading-step:last-child { border-bottom: none; }
+.loading-step.done { color: var(--green); }
+.loading-step.active { color: var(--text); }
+.loading-step::before { content:'○'; font-size:10px; flex-shrink:0; }
+.loading-step.done::before { content:'●'; color: var(--green); }
+.loading-step.active::before { content:'►'; color: var(--green); animation:blink .6s infinite; }
+
+/* RESULTS */
+.results {
+  display: none; padding: 24px;
+}
+.results.active { display: block; }
+
+.result-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.result-title {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--green);
+}
+.result-actions { display: flex; gap: 8px; }
+.action-btn {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 6px 14px; cursor: pointer;
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--border2); transition: all .15s;
+}
+.action-btn:hover { border-color: var(--green3); color: var(--text); }
+
+/* TABS */
+.tabs {
+  display: flex; gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.tab {
+  flex: 1; padding: 10px 8px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase;
+  background: var(--bg2); color: var(--muted);
+  border: none; cursor: pointer;
+  transition: all .15s; text-align: center;
+}
+.tab.active { background: var(--surface2); color: var(--green); }
+.tab:hover:not(.active) { color: var(--text); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* RESULT BLOCKS */
+.r-block {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  margin-bottom: 14px;
+}
+.r-block-head {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  padding: 9px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.r-block-title {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--green);
+}
+.r-block-tag {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--dim);
+}
+.r-block-body { padding: 14px; }
+.r-text {
+  font-family: var(--body); font-size: 14px;
+  color: var(--text); line-height: 1.75;
+  white-space: pre-wrap;
+}
+.r-row {
+  display: grid; grid-template-columns: 120px 1fr;
+  gap: 8px; padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.r-row:last-child { border-bottom: none; }
+.r-key {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--muted); letter-spacing: .04em;
+}
+.r-val { color: var(--text); line-height: 1.5; }
+
+/* MESSAGE BLOCK */
+.msg-block {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  margin-bottom: 12px;
+}
+.msg-head {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.msg-label {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted);
+}
+.copy-btn {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .06em; text-transform: uppercase;
+  background: transparent; color: var(--dim);
+  border: 1px solid var(--border); padding: 4px 10px;
+  cursor: pointer; transition: all .15s;
+}
+.copy-btn:hover { color: var(--green); border-color: var(--green3); }
+.msg-body {
+  padding: 14px;
+  font-family: var(--mono); font-size: 12px;
+  color: var(--text); line-height: 1.8;
+  white-space: pre-wrap; letter-spacing: .02em;
+}
+.msg-highlight { color: var(--green); }
+
+/* PAIN TAG */
+.pain-tag {
+  display: inline-block;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .06em;
+  background: var(--gdim); color: var(--green);
+  border: 1px solid var(--green3);
+  padding: 4px 10px; margin: 3px 3px 0 0;
+}
+
+/* ERROR */
+.error-bar {
+  display: none;
+  margin: 0 20px 16px;
+  padding: 12px 14px;
+  background: rgba(232,74,47,.1);
+  border: 1px solid rgba(232,74,47,.3);
+  border-left: 2px solid var(--red);
+  font-family: var(--mono); font-size: 11px;
+  color: #f87171; letter-spacing: .03em; line-height: 1.5;
+}
+.error-bar.active { display: block; }
+
+@media(max-width:768px){
+  .app{grid-template-columns:1fr}
+  .left-panel{border-right:none;border-bottom:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="#" class="logo">Lead<span>Eagle</span></a>
+  <div class="topbar-right">
+    <div class="pulse-dot" id="status-dot">READY</div>
+    <div class="api-badge" id="api-status">API: NOT SET</div>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- LEFT: INPUT PANEL -->
+  <div class="left-panel">
+    <div class="panel-header">
+      <div class="panel-title">Intel Intake</div>
+      <div class="panel-sub">Describe your product — get a full outbound strategy in 60 seconds.</div>
+    </div>
+
+    <div class="form-body">
+
+      <div class="field">
+        <label class="field-label">Product / Service *</label>
+        <textarea id="f-product" rows="4" placeholder="What do you sell? Who is it for? What problem does it solve? (2-3 sentences)"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Target Market *</label>
+        <input id="f-market" type="text" placeholder="e.g. B2B SaaS companies in the US">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Best Current Clients</label>
+        <input id="f-clients" type="text" placeholder="e.g. Series A SaaS, 20-80 employees, with SDR team">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Campaign Goal</label>
+        <select id="f-goal">
+          <option value="book meetings">Book sales meetings</option>
+          <option value="generate leads">Generate leads / waitlist</option>
+          <option value="close enterprise deals">Close enterprise deals</option>
+          <option value="sell a service">Sell a service / agency</option>
+          <option value="upsell existing clients">Upsell existing clients</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Geography</label>
+        <select id="f-geo">
+          <option value="US & Canada">US & Canada</option>
+          <option value="Europe">Europe</option>
+          <option value="Global English-speaking">Global (English)</option>
+          <option value="CIS / Russia">CIS / Russia</option>
+          <option value="APAC">APAC</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Additional Context</label>
+        <textarea id="f-notes" rows="3" placeholder="Competitors, price point, differentiators, things NOT to target..."></textarea>
+      </div>
+
+    </div>
+
+    <!-- API KEY -->
+    <div class="api-section">
+      <label class="api-label">// Anthropic API Key</label>
+      <div class="api-input-row">
+        <input type="password" id="api-key-input" placeholder="sk-ant-api03-...">
+        <button class="api-save" onclick="saveKey()">Save</button>
+      </div>
+      <p class="api-note">Key stored locally in browser only. Never sent anywhere except api.anthropic.com</p>
+    </div>
+
+    <!-- ERROR -->
+    <div class="error-bar" id="error-bar"></div>
+
+    <!-- LAUNCH -->
+    <div class="launch-section">
+      <button class="launch-btn" id="launch-btn" onclick="launch()">
+        <span class="btn-icon">▶</span> ANALYZE & GENERATE STRATEGY
+      </button>
+    </div>
+  </div>
+
+  <!-- RIGHT: OUTPUT PANEL -->
+  <div class="right-panel" id="right-panel">
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-radar">
+        <div class="er-ring"></div>
+        <div class="er-ring"></div>
+        <div class="er-ring"></div>
+        <div class="er-ring"></div>
+        <div class="er-cross"></div>
+        <div class="er-sweep"></div>
+        <div class="er-center"></div>
+      </div>
+      <div class="empty-title">Awaiting target data</div>
+      <div class="empty-sub">Fill in your product details on the left and hit Analyze. LeadEagle will generate your full outbound strategy — ICP, roles, pains, messaging angles, and ready-to-send sequences.</div>
+    </div>
+
+    <!-- LOADING STATE -->
+    <div class="loading-state" id="loading-state">
+      <div class="loading-ring"></div>
+      <div class="loading-steps">
+        <div class="loading-step" id="ls-1">Analyzing product intel</div>
+        <div class="loading-step" id="ls-2">Mapping ICP & buyer roles</div>
+        <div class="loading-step" id="ls-3">Identifying pain angles</div>
+        <div class="loading-step" id="ls-4">Building messaging strategy</div>
+        <div class="loading-step" id="ls-5">Generating outreach sequences</div>
+        <div class="loading-step" id="ls-6">Compiling campaign package</div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results" id="results">
+      <div class="result-topbar">
+        <div class="result-title" id="result-title">// STRATEGY READY · CLEARED FOR LAUNCH</div>
+        <div class="result-actions">
+          <button class="action-btn" onclick="copyAll()">Copy all</button>
+          <button class="action-btn" onclick="resetApp()">New campaign</button>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('icp')">ICP & Roles</button>
+        <button class="tab" onclick="switchTab('pain')">Pain Angles</button>
+        <button class="tab" onclick="switchTab('msg')">Messages</button>
+        <button class="tab" onclick="switchTab('obj')">Objections</button>
+      </div>
+
+      <div class="tab-content active" id="tab-icp"></div>
+      <div class="tab-content" id="tab-pain"></div>
+      <div class="tab-content" id="tab-msg"></div>
+      <div class="tab-content" id="tab-obj"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var API_KEY = localStorage.getItem('le_api_key') || '';
+var currentData = null;
+
+if (API_KEY) {
+  document.getElementById('api-key-input').value = API_KEY;
+  document.getElementById('api-status').textContent = 'API: CONNECTED';
+  document.getElementById('api-status').style.color = 'var(--green)';
+}
+
+function saveKey() {
+  var k = document.getElementById('api-key-input').value.trim();
+  if (!k) return;
+  API_KEY = k;
+  localStorage.setItem('le_api_key', k);
+  document.getElementById('api-status').textContent = 'API: CONNECTED';
+  document.getElementById('api-status').style.color = 'var(--green)';
+  document.getElementById('api-key-input').value = k.substring(0,12) + '...';
+}
+
+function showError(msg) {
+  var el = document.getElementById('error-bar');
+  el.textContent = '// ERROR: ' + msg;
+  el.classList.add('active');
+  setTimeout(function(){ el.classList.remove('active'); }, 6000);
+}
+
+function setLoading(active) {
+  document.getElementById('empty-state').style.display = active ? 'none' : 'flex';
+  document.getElementById('loading-state').classList.toggle('active', active);
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('launch-btn').disabled = active;
+}
+
+function animateSteps() {
+  var steps = ['ls-1','ls-2','ls-3','ls-4','ls-5','ls-6'];
+  var i = 0;
+  steps.forEach(function(s){ document.getElementById(s).className = 'loading-step'; });
+  var iv = setInterval(function(){
+    if (i > 0) document.getElementById(steps[i-1]).className = 'loading-step done';
+    if (i < steps.length) {
+      document.getElementById(steps[i]).className = 'loading-step active';
+      i++;
+    } else {
+      clearInterval(iv);
+    }
+  }, 900);
+  return iv;
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(function(t,i){
+    t.classList.toggle('active', ['icp','pain','msg','obj'][i] === name);
+  });
+  document.querySelectorAll('.tab-content').forEach(function(c){
+    c.classList.remove('active');
+  });
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function copyAll() {
+  if (!currentData) return;
+  var text = JSON.stringify(currentData, null, 2);
+  navigator.clipboard.writeText(text).then(function(){
+    var btn = event.target;
+    btn.textContent = 'Copied ■';
+    setTimeout(function(){ btn.textContent = 'Copy all'; }, 1500);
+  });
+}
+
+function copyMsg(btn, id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent).then(function(){
+    btn.textContent = 'Copied ■';
+    setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+  });
+}
+
+function resetApp() {
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('empty-state').style.display = 'flex';
+  currentData = null;
+}
+
+function renderResults(data) {
+  currentData = data;
+
+  // ICP TAB
+  var icpHtml = '';
+  if (data.icp) {
+    icpHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Ideal Customer Profile</span><span class="r-block-tag">PRIMARY</span></div><div class="r-block-body">';
+    var icp = data.icp;
+    if (icp.description) icpHtml += '<div class="r-row"><div class="r-key">Profile</div><div class="r-val">' + icp.description + '</div></div>';
+    if (icp.company_size) icpHtml += '<div class="r-row"><div class="r-key">Size</div><div class="r-val">' + icp.company_size + '</div></div>';
+    if (icp.industry) icpHtml += '<div class="r-row"><div class="r-key">Industry</div><div class="r-val">' + icp.industry + '</div></div>';
+    if (icp.trigger_events) icpHtml += '<div class="r-row"><div class="r-key">Triggers</div><div class="r-val">' + icp.trigger_events + '</div></div>';
+    if (icp.exclude) icpHtml += '<div class="r-row"><div class="r-key">Exclude</div><div class="r-val" style="color:var(--muted)">' + icp.exclude + '</div></div>';
+    icpHtml += '</div></div>';
+  }
+  if (data.roles && data.roles.length) {
+    data.roles.forEach(function(r, i) {
+      icpHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">' + (r.title || 'Role ' + (i+1)) + '</span><span class="r-block-tag">' + (r.type || '') + '</span></div><div class="r-block-body">';
+      if (r.pain) icpHtml += '<div class="r-row"><div class="r-key">Main pain</div><div class="r-val">' + r.pain + '</div></div>';
+      if (r.kpi) icpHtml += '<div class="r-row"><div class="r-key">KPIs</div><div class="r-val">' + r.kpi + '</div></div>';
+      if (r.buys) icpHtml += '<div class="r-row"><div class="r-key">Buys</div><div class="r-val">' + r.buys + '</div></div>';
+      icpHtml += '</div></div>';
+    });
+  }
+  document.getElementById('tab-icp').innerHTML = icpHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No ICP data generated.</div></div></div>';
+
+  // PAIN TAB
+  var painHtml = '';
+  if (data.pain_angles && data.pain_angles.length) {
+    data.pain_angles.forEach(function(a, i) {
+      painHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Angle ' + String(i+1).padStart(2,'0') + ' · ' + (a.title || '') + '</span></div><div class="r-block-body">';
+      if (a.pain) painHtml += '<div class="r-row"><div class="r-key">Pain</div><div class="r-val">' + a.pain + '</div></div>';
+      if (a.angle) painHtml += '<div class="r-row"><div class="r-key">Angle</div><div class="r-val">' + a.angle + '</div></div>';
+      if (a.cta) painHtml += '<div class="r-row"><div class="r-key">CTA</div><div class="r-val" style="color:var(--green);font-family:var(--mono);font-size:12px">"' + a.cta + '"</div></div>';
+      painHtml += '</div></div>';
+    });
+  }
+  document.getElementById('tab-pain').innerHTML = painHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No pain angles generated.</div></div></div>';
+
+  // MESSAGES TAB
+  var msgHtml = '';
+  var msgs = data.messages || {};
+  var msgList = [
+    {key:'linkedin_dm', label:'LinkedIn DM'},
+    {key:'cold_email', label:'Cold Email · Subject + Body'},
+    {key:'followup_1', label:'Follow-up #1 · Day 4'},
+    {key:'followup_2', label:'Follow-up #2 · Day 10 · Break-up'}
+  ];
+  msgList.forEach(function(m) {
+    if (msgs[m.key]) {
+      var mid = 'msg-' + m.key;
+      msgHtml += '<div class="msg-block"><div class="msg-head"><span class="msg-label">' + m.label + '</span><button class="copy-btn" onclick="copyMsg(this,\'' + mid + '\')">Copy</button></div><div class="msg-body" id="' + mid + '">' + escHtml(msgs[m.key]) + '</div></div>';
+    }
+  });
+  document.getElementById('tab-msg').innerHTML = msgHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No messages generated.</div></div></div>';
+
+  // OBJECTIONS TAB
+  var objHtml = '';
+  if (data.objections && data.objections.length) {
+    data.objections.forEach(function(o) {
+      objHtml += '<div class="r-block"><div class="r-block-body"><div class="r-row"><div class="r-key" style="color:var(--muted)">Objection</div><div class="r-val" style="font-style:italic">"' + o.q + '"</div></div><div class="r-row"><div class="r-key">Response</div><div class="r-val">' + o.a + '</div></div></div></div>';
+    });
+  }
+  document.getElementById('tab-obj').innerHTML = objHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No objections generated.</div></div></div>';
+
+  document.getElementById('loading-state').classList.remove('active');
+  document.getElementById('results').classList.add('active');
+  switchTab('icp');
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function launch() {
+  var product = document.getElementById('f-product').value.trim();
+  var market  = document.getElementById('f-market').value.trim();
+  var clients = document.getElementById('f-clients').value.trim();
+  var goal    = document.getElementById('f-goal').value;
+  var geo     = document.getElementById('f-geo').value;
+  var notes   = document.getElementById('f-notes').value.trim();
+
+  if (!product) { showError('Product description is required'); return; }
+  if (!market)  { showError('Target market is required'); return; }
+  if (!API_KEY) { showError('Anthropic API key required — enter it below the form'); return; }
+
+  setLoading(true);
+  var stepIv = animateSteps();
+
+  var prompt = `You are LeadEagle — an outbound strategy AI. Based on the product intel below, generate a complete outbound campaign strategy.
+
+PRODUCT INTEL:
+- Product/Service: ${product}
+- Target Market: ${market}
+- Best Current Clients: ${clients || 'Not specified'}
+- Campaign Goal: ${goal}
+- Geography: ${geo}
+- Additional Notes: ${notes || 'None'}
+
+Return ONLY valid JSON (no markdown, no backticks) in exactly this structure:
+{
+  "icp": {
+    "description": "2-sentence ICP description",
+    "company_size": "e.g. 20-100 employees",
+    "industry": "specific industries",
+    "trigger_events": "signals that mean they need this now",
+    "exclude": "who to exclude"
+  },
+  "roles": [
+    {
+      "title": "Job Title",
+      "type": "Decision Maker / Champion / Influencer",
+      "pain": "Their specific pain in their own words",
+      "kpi": "KPIs they're measured on",
+      "buys": "What they're really buying (outcome, not feature)"
+    }
+  ],
+  "pain_angles": [
+    {
+      "title": "Short angle name",
+      "pain": "The pain this angle targets",
+      "angle": "How your product addresses it",
+      "cta": "One-line CTA for this angle"
+    }
+  ],
+  "messages": {
+    "linkedin_dm": "Full LinkedIn DM text (3-5 sentences, conversational, reference a specific trigger)",
+    "cold_email": "Subject: [subject line]\\n\\n[Full email body, 5-8 sentences]",
+    "followup_1": "Full follow-up email #1 (Day 4, 3-4 sentences, new angle)",
+    "followup_2": "Full follow-up email #2 (Day 10, break-up tone, 2-3 sentences)"
+  },
+  "objections": [
+    {"q": "Objection text", "a": "Response text"},
+    {"q": "Objection text", "a": "Response text"},
+    {"q": "Objection text", "a": "Response text"},
+    {"q": "Objection text", "a": "Response text"}
+  ]
+}
+
+Generate 2 buyer roles, 4 pain angles, 4 objections. Make all copy specific to this product — no generic templates. Use language prospects actually use.`;
+
+  try {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    clearInterval(stepIv);
+    ['ls-1','ls-2','ls-3','ls-4','ls-5','ls-6'].forEach(function(s){
+      document.getElementById(s).className = 'loading-step done';
+    });
+
+    if (!res.ok) {
+      var err = await res.json().catch(function(){ return {}; });
+      throw new Error(err.error && err.error.message ? err.error.message : 'API error ' + res.status);
+    }
+
+    var result = await res.json();
+    var text = result.content && result.content[0] && result.content[0].text;
+    if (!text) throw new Error('Empty response from API');
+
+    var clean = text.replace(/```json|```/g,'').trim();
+    var data = JSON.parse(clean);
+
+    setTimeout(function(){ renderResults(data); setLoading(false); }, 500);
+
+  } catch(e) {
+    clearInterval(stepIv);
+    setLoading(false);
+    document.getElementById('empty-state').style.display = 'flex';
+    showError(e.message || 'Something went wrong');
+  }
+}
+
+document.addEventListener('keydown', function(e){
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') launch();
+});
+</script>
+</body>
+</html>
