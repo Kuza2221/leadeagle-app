@@ -42,7 +42,7 @@ body::before {
   background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.05) 3px,rgba(0,0,0,.05) 4px);
   pointer-events:none;z-index:9999;
 }
-
+ 
 /* TOPBAR */
 .topbar {
   height: 48px;
@@ -70,21 +70,21 @@ body::before {
   background:var(--green); animation:blink 2s infinite;
 }
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-
+ 
 .api-badge {
   font-family: var(--mono); font-size: 10px;
   letter-spacing: .06em; color: var(--dim);
   background: var(--surface); border: 1px solid var(--border);
   padding: 4px 10px;
 }
-
+ 
 /* LAYOUT */
 .app {
   display: grid;
   grid-template-columns: 380px 1fr;
   min-height: calc(100vh - 48px);
 }
-
+ 
 /* LEFT PANEL */
 .left-panel {
   background: var(--bg2);
@@ -92,7 +92,7 @@ body::before {
   display: flex; flex-direction: column;
   overflow-y: auto;
 }
-
+ 
 .panel-header {
   padding: 18px 20px 14px;
   border-bottom: 1px solid var(--border);
@@ -108,9 +108,9 @@ body::before {
   font-family: var(--body); font-size: 13px;
   color: var(--muted); line-height: 1.5;
 }
-
+ 
 .form-body { padding: 18px 20px; flex: 1; }
-
+ 
 .field { margin-bottom: 16px; }
 .field-label {
   font-family: var(--mono); font-size: 10px;
@@ -142,12 +142,12 @@ body::before {
   padding-right: 32px;
 }
 .field select option { background: var(--surface2); }
-
+ 
 .divider {
   border: none; border-top: 1px solid var(--border);
   margin: 18px 0;
 }
-
+ 
 /* API KEY FIELD */
 .api-section {
   padding: 14px 20px;
@@ -187,7 +187,7 @@ body::before {
   font-family: var(--mono); font-size: 10px;
   color: var(--dim); margin-top: 6px; line-height: 1.5;
 }
-
+ 
 /* LAUNCH BUTTON */
 .launch-section { padding: 16px 20px; border-top: 1px solid var(--border); }
 .launch-btn {
@@ -204,13 +204,13 @@ body::before {
 .launch-btn:hover:not(:disabled) { background: var(--green2); }
 .launch-btn:disabled { background: var(--green3); color: var(--dim); cursor: not-allowed; }
 .launch-btn .btn-icon { margin-right: 8px; }
-
+ 
 /* RIGHT PANEL */
 .right-panel {
   display: flex; flex-direction: column;
   overflow-y: auto;
 }
-
+ 
 /* EMPTY STATE */
 .empty-state {
   flex: 1; display: flex; flex-direction: column;
@@ -257,7 +257,7 @@ body::before {
   font-family: var(--body); font-size: 14px;
   color: var(--muted); max-width: 340px; line-height: 1.65;
 }
-
+ 
 /* LOADING STATE */
 .loading-state {
   display: none; flex: 1; flex-direction: column;
@@ -290,13 +290,13 @@ body::before {
 .loading-step::before { content:'○'; font-size:10px; flex-shrink:0; }
 .loading-step.done::before { content:'●'; color: var(--green); }
 .loading-step.active::before { content:'►'; color: var(--green); animation:blink .6s infinite; }
-
+ 
 /* RESULTS */
 .results {
   display: none; padding: 24px;
 }
 .results.active { display: block; }
-
+ 
 .result-topbar {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 20px; padding-bottom: 14px;
@@ -316,7 +316,7 @@ body::before {
   border: 1px solid var(--border2); transition: all .15s;
 }
 .action-btn:hover { border-color: var(--green3); color: var(--text); }
-
+ 
 /* TABS */
 .tabs {
   display: flex; gap: 1px;
@@ -336,7 +336,7 @@ body::before {
 .tab:hover:not(.active) { color: var(--text); }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
-
+ 
 /* RESULT BLOCKS */
 .r-block {
   background: var(--surface);
@@ -377,7 +377,7 @@ body::before {
   color: var(--muted); letter-spacing: .04em;
 }
 .r-val { color: var(--text); line-height: 1.5; }
-
+ 
 /* MESSAGE BLOCK */
 .msg-block {
   background: var(--bg);
@@ -410,7 +410,7 @@ body::before {
   white-space: pre-wrap; letter-spacing: .02em;
 }
 .msg-highlight { color: var(--green); }
-
+ 
 /* PAIN TAG */
 .pain-tag {
   display: inline-block;
@@ -420,7 +420,7 @@ body::before {
   border: 1px solid var(--green3);
   padding: 4px 10px; margin: 3px 3px 0 0;
 }
-
+ 
 /* ERROR */
 .error-bar {
   display: none;
@@ -433,7 +433,147 @@ body::before {
   color: #f87171; letter-spacing: .03em; line-height: 1.5;
 }
 .error-bar.active { display: block; }
-
+ 
+ 
+/* HISTORY PANEL */
+.history-section {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+}
+.history-label {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 8px; display: block;
+}
+.history-empty {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--dim); letter-spacing: .04em;
+}
+.history-list { display: flex; flex-direction: column; gap: 4px; }
+.history-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.history-item:hover { border-color: var(--border2); }
+.history-item.active { border-color: var(--green3); background: var(--gdim2); }
+.hi-left { flex: 1; min-width: 0; }
+.hi-name {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--text); letter-spacing: .04em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hi-date {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--dim); letter-spacing: .03em; margin-top: 2px;
+}
+.hi-del {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--dim); background: transparent;
+  border: none; cursor: pointer; padding: 2px 6px;
+  transition: color .15s; flex-shrink: 0;
+}
+.hi-del:hover { color: #e84a2f; }
+ 
+ 
+/* PROMO SCREEN */
+.promo-screen {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+}
+.promo-box {
+  width: 400px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  padding: 0;
+}
+.promo-top {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 24px 16px;
+  text-align: center;
+}
+.promo-logo {
+  font-family: var(--head); font-weight: 800; font-size: 26px;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text); margin-bottom: 6px;
+}
+.promo-logo span { color: var(--green); }
+.promo-tagline {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: .16em; color: var(--green);
+  text-transform: uppercase;
+}
+.promo-body { padding: 24px; }
+.promo-label {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px; display: block;
+}
+.promo-input-row { display: flex; gap: 0; margin-bottom: 10px; }
+.promo-input-row input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-right: none;
+  color: var(--text);
+  font-family: var(--mono); font-size: 13px;
+  padding: 12px 14px;
+  outline: none;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: border-color .2s;
+}
+.promo-input-row input:focus { border-color: var(--green3); }
+.promo-input-row input::placeholder { color: var(--dim); text-transform: none; letter-spacing: .04em; font-size: 12px; }
+.promo-submit {
+  padding: 12px 18px;
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: .1em; text-transform: uppercase;
+  background: var(--green); color: var(--bg);
+  border: none; cursor: pointer;
+  transition: background .15s; white-space: nowrap;
+  clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+}
+.promo-submit:hover { background: var(--green2); }
+.promo-submit:disabled { background: var(--green3); cursor: not-allowed; }
+.promo-error {
+  font-family: var(--mono); font-size: 11px;
+  color: #f87171; letter-spacing: .04em;
+  padding: 8px 10px;
+  background: rgba(232,74,47,.08);
+  border: 1px solid rgba(232,74,47,.2);
+  display: none; margin-bottom: 10px;
+}
+.promo-error.show { display: block; }
+.promo-uses {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--dim); letter-spacing: .04em;
+  text-align: center; margin-top: 6px;
+}
+.promo-footer {
+  border-top: 1px solid var(--border);
+  padding: 12px 24px;
+  text-align: center;
+}
+.promo-footer-text {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--dim); letter-spacing: .06em;
+}
+/* USES BADGE in topbar */
+.uses-badge {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .06em; color: var(--green);
+  background: var(--gdim); border: 1px solid var(--green3);
+  padding: 4px 10px;
+}
+.uses-badge.low { color: #fbbf24; border-color: #92400e; background: rgba(251,191,36,.08); }
+.uses-badge.empty { color: #f87171; border-color: rgba(232,74,47,.3); background: rgba(232,74,47,.08); }
+ 
 @media(max-width:768px){
   .app{grid-template-columns:1fr}
   .left-panel{border-right:none;border-bottom:1px solid var(--border)}
@@ -441,41 +581,62 @@ body::before {
 </style>
 </head>
 <body>
-
+ 
+<div class="promo-screen" id="promo-screen">
+  <div class="promo-box">
+    <div class="promo-top">
+      <div class="promo-logo">Lead<span>Eagle</span></div>
+      <div class="promo-tagline">Lock. Clear. Launch.</div>
+    </div>
+    <div class="promo-body">
+      <label class="promo-label">// Enter access code</label>
+      <div class="promo-error" id="promo-error"></div>
+      <div class="promo-input-row">
+        <input type="text" id="promo-input" placeholder="e.g. VX9Q-TRM7-LP2K" maxlength="20" oninput="this.value=this.value.toUpperCase()">
+        <button class="promo-submit" id="promo-btn" onclick="verifyPromo()">Verify ▶</button>
+      </div>
+      <div class="promo-uses" id="promo-uses"></div>
+    </div>
+    <div class="promo-footer">
+      <div class="promo-footer-text">Don't have a code? <a href="https://leadeagle.vercel.app" style="color:var(--green);text-decoration:none">Request access →</a></div>
+    </div>
+  </div>
+</div>
+ 
 <div class="topbar">
   <a href="#" class="logo">Lead<span>Eagle</span></a>
   <div class="topbar-right">
     <div class="pulse-dot" id="status-dot">READY</div>
-    <div class="api-badge" id="api-status">API: NOT SET</div>
+    <div class="uses-badge" id="topbar-uses">— USES LEFT</div>
   </div>
 </div>
-
+ 
 <div class="app">
-
+ 
   <!-- LEFT: INPUT PANEL -->
   <div class="left-panel">
     <div class="panel-header">
       <div class="panel-title">Intel Intake</div>
       <div class="panel-sub">Describe your product — get a full outbound strategy in 60 seconds.</div>
     </div>
-
+ 
     <div class="form-body">
-
+ 
       <div class="field">
         <label class="field-label">Product / Service *</label>
         <textarea id="f-product" rows="4" placeholder="What do you sell? Who is it for? What problem does it solve? (2-3 sentences)"></textarea>
       </div>
-
+ 
       <div class="field">
         <label class="field-label">Target Market *</label>
         <input id="f-market" type="text" placeholder="e.g. B2B SaaS companies in the US">
       </div>
-
+ 
       <div class="field">
         <label class="field-label">Best Current Clients</label>
         <input id="f-clients" type="text" placeholder="e.g. Series A SaaS, 20-80 employees, with SDR team">
       </div>
-
+ 
       <div class="field">
         <label class="field-label">Campaign Goal</label>
         <select id="f-goal">
@@ -486,7 +647,7 @@ body::before {
           <option value="upsell existing clients">Upsell existing clients</option>
         </select>
       </div>
-
+ 
       <div class="field">
         <label class="field-label">Geography</label>
         <select id="f-geo">
@@ -497,38 +658,43 @@ body::before {
           <option value="APAC">APAC</option>
         </select>
       </div>
-
+ 
       <div class="field">
         <label class="field-label">Additional Context</label>
         <textarea id="f-notes" rows="3" placeholder="Competitors, price point, differentiators, things NOT to target..."></textarea>
       </div>
-
+ 
     </div>
-
-    <!-- API KEY -->
-    <div class="api-section">
-      <label class="api-label">// Anthropic API Key</label>
-      <div class="api-input-row">
-        <input type="password" id="api-key-input" placeholder="sk-ant-api03-...">
-        <button class="api-save" onclick="saveKey()">Save</button>
+ 
+    <!-- USES COUNTER -->
+    <div class="api-section" id="uses-section">
+      <label class="api-label">// Session status</label>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em" id="uses-label">Requests remaining: —</span>
+        <button onclick="logout()" style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--dim)'">Logout</button>
       </div>
-      <p class="api-note">Key stored locally in browser only. Never sent anywhere except api.anthropic.com</p>
     </div>
-
+ 
     <!-- ERROR -->
     <div class="error-bar" id="error-bar"></div>
-
+ 
     <!-- LAUNCH -->
     <div class="launch-section">
       <button class="launch-btn" id="launch-btn" onclick="launch()">
         <span class="btn-icon">▶</span> ANALYZE & GENERATE STRATEGY
       </button>
     </div>
+ 
+    <!-- HISTORY -->
+    <div class="history-section" id="history-section">
+      <label class="history-label">// Campaign history</label>
+      <div id="history-list"><div class="history-empty">No saved campaigns yet.</div></div>
+    </div>
   </div>
-
+ 
   <!-- RIGHT: OUTPUT PANEL -->
   <div class="right-panel" id="right-panel">
-
+ 
     <!-- EMPTY STATE -->
     <div class="empty-state" id="empty-state">
       <div class="empty-radar">
@@ -543,7 +709,7 @@ body::before {
       <div class="empty-title">Awaiting target data</div>
       <div class="empty-sub">Fill in your product details on the left and hit Analyze. LeadEagle will generate your full outbound strategy — ICP, roles, pains, messaging angles, and ready-to-send sequences.</div>
     </div>
-
+ 
     <!-- LOADING STATE -->
     <div class="loading-state" id="loading-state">
       <div class="loading-ring"></div>
@@ -556,93 +722,248 @@ body::before {
         <div class="loading-step" id="ls-6">Compiling campaign package</div>
       </div>
     </div>
-
+ 
     <!-- RESULTS -->
     <div class="results" id="results">
       <div class="result-topbar">
         <div class="result-title" id="result-title">// STRATEGY READY · CLEARED FOR LAUNCH</div>
         <div class="result-actions">
+          <button class="action-btn" onclick="exportCSV()">Export CSV</button>
           <button class="action-btn" onclick="copyAll()">Copy all</button>
           <button class="action-btn" onclick="resetApp()">New campaign</button>
         </div>
       </div>
-
+ 
       <div class="tabs">
         <button class="tab active" onclick="switchTab('icp')">ICP & Roles</button>
         <button class="tab" onclick="switchTab('pain')">Pain Angles</button>
         <button class="tab" onclick="switchTab('msg')">Messages</button>
         <button class="tab" onclick="switchTab('obj')">Objections</button>
       </div>
-
+ 
       <div class="tab-content active" id="tab-icp"></div>
       <div class="tab-content" id="tab-pain"></div>
       <div class="tab-content" id="tab-msg"></div>
       <div class="tab-content" id="tab-obj"></div>
     </div>
-
+ 
   </div>
 </div>
-
+ 
 <script>
-var API_KEY = localStorage.getItem('le_api_key') || '';
+var VALID_CODES = ['VX9Q-TRM7-LP2K', 'N4ZD-K8WA-QP6X', 'H7JQ-2VXM-R9TE', 'B6LK-WZ3P-Y8ND', 'Q2MA-7XHF-K5RJ', 'T9VN-P4QC-M6ZL', 'R5XP-LN8D-W3QA', 'K8TY-Q6JM-Z2VF', 'W3HD-9RKP-X7LN', 'P6QZ-M2VT-J8AW', 'L9XC-Y5ND-Q4TR', 'Z7MF-K3QA-V6HP', 'D2WR-X8JL-N9KC', 'M5VN-T7PQ-H2XZ', 'A8KL-R4YD-W6JM'];
+var API_KEY = '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'; // Replace with your actual Anthropic API key
 var currentData = null;
-
-if (API_KEY) {
-  document.getElementById('api-key-input').value = API_KEY;
-  document.getElementById('api-status').textContent = 'API: CONNECTED';
-  document.getElementById('api-status').style.color = 'var(--green)';
+var currentInput = null;
+var HISTORY_KEY = 'le_history';
+var SESSION_KEY = 'le_session';
+var MAX_USES = 3;
+ 
+/* ── PROMO / AUTH ── */
+function getSession() {
+  try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { return null; }
 }
-
-function saveKey() {
-  var k = document.getElementById('api-key-input').value.trim();
-  if (!k) return;
-  API_KEY = k;
-  localStorage.setItem('le_api_key', k);
-  document.getElementById('api-status').textContent = 'API: CONNECTED';
-  document.getElementById('api-status').style.color = 'var(--green)';
-  document.getElementById('api-key-input').value = k.substring(0,12) + '...';
+function saveSession(code, uses) {
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ code: code, uses: uses }));
 }
-
+ 
+function verifyPromo() {
+  var input = document.getElementById('promo-input');
+  var code = input.value.trim().toUpperCase();
+  var errEl = document.getElementById('promo-error');
+  var btn = document.getElementById('promo-btn');
+ 
+  if (!code) { showPromoError('Enter your access code'); return; }
+ 
+  // Check if code was already used up
+  var existing = getSession();
+  if (existing && existing.code === code) {
+    if (existing.uses <= 0) { showPromoError('This code has no uses remaining'); return; }
+    unlockApp(existing.uses);
+    return;
+  }
+ 
+  // Verify against valid codes
+  if (!VALID_CODES.includes(code)) {
+    showPromoError('Invalid code. Check spelling or request access at leadeagle.vercel.app');
+    return;
+  }
+ 
+  // Check if already used by someone else on this browser
+  var used = JSON.parse(localStorage.getItem('le_used_codes') || '[]');
+  if (used.includes(code)) {
+    var s = getSession();
+    if (!s || s.code !== code) { showPromoError('This code is already in use'); return; }
+  }
+ 
+  // Valid — save session
+  used.push(code);
+  localStorage.setItem('le_used_codes', JSON.stringify(used));
+  saveSession(code, MAX_USES);
+  unlockApp(MAX_USES);
+}
+ 
+function showPromoError(msg) {
+  var el = document.getElementById('promo-error');
+  el.textContent = '// ' + msg;
+  el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 4000);
+}
+ 
+function unlockApp(uses) {
+  document.getElementById('promo-screen').style.display = 'none';
+  updateUsesDisplay(uses);
+  renderHistory(null);
+}
+ 
+function updateUsesDisplay(uses) {
+  var label = document.getElementById('uses-label');
+  var badge = document.getElementById('topbar-uses');
+  if (label) label.textContent = 'Requests remaining: ' + uses + ' / ' + MAX_USES;
+  if (badge) {
+    badge.textContent = uses + ' USES LEFT';
+    badge.className = 'uses-badge' + (uses <= 1 ? ' low' : '') + (uses <= 0 ? ' empty' : '');
+  }
+}
+ 
+function logout() {
+  localStorage.removeItem(SESSION_KEY);
+  document.getElementById('promo-screen').style.display = 'flex';
+  document.getElementById('promo-input').value = '';
+}
+ 
+function checkSession() {
+  var s = getSession();
+  if (s && VALID_CODES.includes(s.code) && s.uses > 0) {
+    unlockApp(s.uses);
+  }
+}
+ 
+/* ── HISTORY ── */
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) { return []; }
+}
+function saveToHistory(input, data) {
+  var h = getHistory();
+  var id = Date.now();
+  var name = (input.product || '').substring(0,40) || 'Campaign';
+  h.unshift({ id: id, name: name, date: new Date().toLocaleDateString(), input: input, data: data });
+  if (h.length > 20) h = h.slice(0, 20);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
+  renderHistory(id);
+}
+function renderHistory(activeId) {
+  var h = getHistory();
+  var el = document.getElementById('history-list');
+  if (!h.length) { el.innerHTML = '<div class="history-empty">No saved campaigns yet.</div>'; return; }
+  el.innerHTML = h.map(function(c) {
+    var active = c.id === activeId ? ' active' : '';
+    return '<div class="history-item' + active + '" onclick="loadHistory(' + c.id + ')">' +
+      '<div class="hi-left"><div class="hi-name">' + escHtml(c.name) + '</div><div class="hi-date">' + c.date + '</div></div>' +
+      '<button class="hi-del" onclick="event.stopPropagation();deleteHistory(' + c.id + ')">✕</button>' +
+    '</div>';
+  }).join('');
+}
+function loadHistory(id) {
+  var h = getHistory();
+  var c = h.find(function(x){ return x.id === id; });
+  if (!c) return;
+  currentData = c.data;
+  currentInput = c.input;
+  if (c.input) {
+    document.getElementById('f-product').value = c.input.product || '';
+    document.getElementById('f-market').value = c.input.market || '';
+    document.getElementById('f-clients').value = c.input.clients || '';
+    document.getElementById('f-goal').value = c.input.goal || 'book meetings';
+    document.getElementById('f-geo').value = c.input.geo || 'US & Canada';
+    document.getElementById('f-notes').value = c.input.notes || '';
+  }
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('loading-state').classList.remove('active');
+  renderResults(c.data);
+  renderHistory(id);
+}
+function deleteHistory(id) {
+  var h = getHistory().filter(function(c){ return c.id !== id; });
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
+  renderHistory(null);
+}
+ 
+/* ── CSV EXPORT ── */
+function exportCSV() {
+  if (!currentData) return;
+  var rows = [['Type','Field','Content']];
+  var d = currentData;
+  if (d.icp) {
+    rows.push(['ICP','Description', d.icp.description || '']);
+    rows.push(['ICP','Company size', d.icp.company_size || '']);
+    rows.push(['ICP','Industry', d.icp.industry || '']);
+    rows.push(['ICP','Trigger events', d.icp.trigger_events || '']);
+    rows.push(['ICP','Exclude', d.icp.exclude || '']);
+  }
+  if (d.roles) d.roles.forEach(function(r,i){
+    rows.push(['Role '+(i+1),'Title', r.title||'']);
+    rows.push(['Role '+(i+1),'Pain', r.pain||'']);
+    rows.push(['Role '+(i+1),'KPI', r.kpi||'']);
+    rows.push(['Role '+(i+1),'Buys', r.buys||'']);
+  });
+  if (d.pain_angles) d.pain_angles.forEach(function(a,i){
+    rows.push(['Angle '+(i+1),'Title', a.title||'']);
+    rows.push(['Angle '+(i+1),'Pain', a.pain||'']);
+    rows.push(['Angle '+(i+1),'Angle', a.angle||'']);
+    rows.push(['Angle '+(i+1),'CTA', a.cta||'']);
+  });
+  if (d.messages) Object.keys(d.messages).forEach(function(k){
+    rows.push(['Message', k.replace(/_/g,' '), d.messages[k]||'']);
+  });
+  if (d.objections) d.objections.forEach(function(o,i){
+    rows.push(['Objection '+(i+1),'Q', o.q||'']);
+    rows.push(['Objection '+(i+1),'A', o.a||'']);
+  });
+  var csv = rows.map(function(r){
+    return r.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(',');
+  }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'leadeagle-' + Date.now() + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+ 
 function showError(msg) {
   var el = document.getElementById('error-bar');
   el.textContent = '// ERROR: ' + msg;
   el.classList.add('active');
   setTimeout(function(){ el.classList.remove('active'); }, 6000);
 }
-
+ 
 function setLoading(active) {
   document.getElementById('empty-state').style.display = active ? 'none' : 'flex';
   document.getElementById('loading-state').classList.toggle('active', active);
   document.getElementById('results').classList.remove('active');
   document.getElementById('launch-btn').disabled = active;
 }
-
+ 
 function animateSteps() {
   var steps = ['ls-1','ls-2','ls-3','ls-4','ls-5','ls-6'];
   var i = 0;
   steps.forEach(function(s){ document.getElementById(s).className = 'loading-step'; });
   var iv = setInterval(function(){
     if (i > 0) document.getElementById(steps[i-1]).className = 'loading-step done';
-    if (i < steps.length) {
-      document.getElementById(steps[i]).className = 'loading-step active';
-      i++;
-    } else {
-      clearInterval(iv);
-    }
+    if (i < steps.length) { document.getElementById(steps[i]).className = 'loading-step active'; i++; }
+    else clearInterval(iv);
   }, 900);
   return iv;
 }
-
+ 
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(function(t,i){
     t.classList.toggle('active', ['icp','pain','msg','obj'][i] === name);
   });
-  document.querySelectorAll('.tab-content').forEach(function(c){
-    c.classList.remove('active');
-  });
+  document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
   document.getElementById('tab-' + name).classList.add('active');
 }
-
+ 
 function copyAll() {
   if (!currentData) return;
   var text = JSON.stringify(currentData, null, 2);
@@ -652,7 +973,7 @@ function copyAll() {
     setTimeout(function(){ btn.textContent = 'Copy all'; }, 1500);
   });
 }
-
+ 
 function copyMsg(btn, id) {
   var el = document.getElementById(id);
   if (!el) return;
@@ -661,17 +982,15 @@ function copyMsg(btn, id) {
     setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
   });
 }
-
+ 
 function resetApp() {
   document.getElementById('results').classList.remove('active');
   document.getElementById('empty-state').style.display = 'flex';
-  currentData = null;
+  currentData = null; currentInput = null;
 }
-
+ 
 function renderResults(data) {
   currentData = data;
-
-  // ICP TAB
   var icpHtml = '';
   if (data.icp) {
     icpHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Ideal Customer Profile</span><span class="r-block-tag">PRIMARY</span></div><div class="r-block-body">';
@@ -685,130 +1004,79 @@ function renderResults(data) {
   }
   if (data.roles && data.roles.length) {
     data.roles.forEach(function(r, i) {
-      icpHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">' + (r.title || 'Role ' + (i+1)) + '</span><span class="r-block-tag">' + (r.type || '') + '</span></div><div class="r-block-body">';
+      icpHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">' + (r.title||'Role '+(i+1)) + '</span><span class="r-block-tag">' + (r.type||'') + '</span></div><div class="r-block-body">';
       if (r.pain) icpHtml += '<div class="r-row"><div class="r-key">Main pain</div><div class="r-val">' + r.pain + '</div></div>';
       if (r.kpi) icpHtml += '<div class="r-row"><div class="r-key">KPIs</div><div class="r-val">' + r.kpi + '</div></div>';
       if (r.buys) icpHtml += '<div class="r-row"><div class="r-key">Buys</div><div class="r-val">' + r.buys + '</div></div>';
       icpHtml += '</div></div>';
     });
   }
-  document.getElementById('tab-icp').innerHTML = icpHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No ICP data generated.</div></div></div>';
-
-  // PAIN TAB
+  document.getElementById('tab-icp').innerHTML = icpHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No ICP data.</div></div></div>';
+ 
   var painHtml = '';
   if (data.pain_angles && data.pain_angles.length) {
     data.pain_angles.forEach(function(a, i) {
-      painHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Angle ' + String(i+1).padStart(2,'0') + ' · ' + (a.title || '') + '</span></div><div class="r-block-body">';
+      painHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Angle ' + String(i+1).padStart(2,'0') + ' · ' + (a.title||'') + '</span></div><div class="r-block-body">';
       if (a.pain) painHtml += '<div class="r-row"><div class="r-key">Pain</div><div class="r-val">' + a.pain + '</div></div>';
       if (a.angle) painHtml += '<div class="r-row"><div class="r-key">Angle</div><div class="r-val">' + a.angle + '</div></div>';
       if (a.cta) painHtml += '<div class="r-row"><div class="r-key">CTA</div><div class="r-val" style="color:var(--green);font-family:var(--mono);font-size:12px">"' + a.cta + '"</div></div>';
       painHtml += '</div></div>';
     });
   }
-  document.getElementById('tab-pain').innerHTML = painHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No pain angles generated.</div></div></div>';
-
-  // MESSAGES TAB
+  document.getElementById('tab-pain').innerHTML = painHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No pain angles.</div></div></div>';
+ 
   var msgHtml = '';
   var msgs = data.messages || {};
-  var msgList = [
-    {key:'linkedin_dm', label:'LinkedIn DM'},
-    {key:'cold_email', label:'Cold Email · Subject + Body'},
-    {key:'followup_1', label:'Follow-up #1 · Day 4'},
-    {key:'followup_2', label:'Follow-up #2 · Day 10 · Break-up'}
-  ];
-  msgList.forEach(function(m) {
+  [
+    {key:'linkedin_dm',label:'LinkedIn DM'},
+    {key:'cold_email',label:'Cold Email'},
+    {key:'followup_1',label:'Follow-up #1 · Day 4'},
+    {key:'followup_2',label:'Follow-up #2 · Day 10'}
+  ].forEach(function(m) {
     if (msgs[m.key]) {
       var mid = 'msg-' + m.key;
-      msgHtml += '<div class="msg-block"><div class="msg-head"><span class="msg-label">' + m.label + '</span><button class="copy-btn" onclick="copyMsg(this,\'' + mid + '\')">Copy</button></div><div class="msg-body" id="' + mid + '">' + escHtml(msgs[m.key]) + '</div></div>';
+      msgHtml += '<div class="msg-block"><div class="msg-head"><span class="msg-label">' + m.label + '</span><button class="copy-btn" onclick="copyMsg(this,'' + mid + '')">Copy</button></div><div class="msg-body" id="' + mid + '">' + escHtml(msgs[m.key]) + '</div></div>';
     }
   });
-  document.getElementById('tab-msg').innerHTML = msgHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No messages generated.</div></div></div>';
-
-  // OBJECTIONS TAB
+  document.getElementById('tab-msg').innerHTML = msgHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No messages.</div></div></div>';
+ 
   var objHtml = '';
   if (data.objections && data.objections.length) {
     data.objections.forEach(function(o) {
       objHtml += '<div class="r-block"><div class="r-block-body"><div class="r-row"><div class="r-key" style="color:var(--muted)">Objection</div><div class="r-val" style="font-style:italic">"' + o.q + '"</div></div><div class="r-row"><div class="r-key">Response</div><div class="r-val">' + o.a + '</div></div></div></div>';
     });
   }
-  document.getElementById('tab-obj').innerHTML = objHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No objections generated.</div></div></div>';
-
+  document.getElementById('tab-obj').innerHTML = objHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No objections.</div></div></div>';
+ 
   document.getElementById('loading-state').classList.remove('active');
   document.getElementById('results').classList.add('active');
   switchTab('icp');
 }
-
+ 
 function escHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
-
+ 
 async function launch() {
+  var s = getSession();
+  if (!s || s.uses <= 0) { showError('No uses remaining. Contact support.'); return; }
+ 
   var product = document.getElementById('f-product').value.trim();
   var market  = document.getElementById('f-market').value.trim();
   var clients = document.getElementById('f-clients').value.trim();
   var goal    = document.getElementById('f-goal').value;
   var geo     = document.getElementById('f-geo').value;
   var notes   = document.getElementById('f-notes').value.trim();
-
+ 
   if (!product) { showError('Product description is required'); return; }
   if (!market)  { showError('Target market is required'); return; }
-  if (!API_KEY) { showError('Anthropic API key required — enter it below the form'); return; }
-
+ 
+  currentInput = { product: product, market: market, clients: clients, goal: goal, geo: geo, notes: notes };
   setLoading(true);
   var stepIv = animateSteps();
-
-  var prompt = `You are LeadEagle — an outbound strategy AI. Based on the product intel below, generate a complete outbound campaign strategy.
-
-PRODUCT INTEL:
-- Product/Service: ${product}
-- Target Market: ${market}
-- Best Current Clients: ${clients || 'Not specified'}
-- Campaign Goal: ${goal}
-- Geography: ${geo}
-- Additional Notes: ${notes || 'None'}
-
-Return ONLY valid JSON (no markdown, no backticks) in exactly this structure:
-{
-  "icp": {
-    "description": "2-sentence ICP description",
-    "company_size": "e.g. 20-100 employees",
-    "industry": "specific industries",
-    "trigger_events": "signals that mean they need this now",
-    "exclude": "who to exclude"
-  },
-  "roles": [
-    {
-      "title": "Job Title",
-      "type": "Decision Maker / Champion / Influencer",
-      "pain": "Their specific pain in their own words",
-      "kpi": "KPIs they're measured on",
-      "buys": "What they're really buying (outcome, not feature)"
-    }
-  ],
-  "pain_angles": [
-    {
-      "title": "Short angle name",
-      "pain": "The pain this angle targets",
-      "angle": "How your product addresses it",
-      "cta": "One-line CTA for this angle"
-    }
-  ],
-  "messages": {
-    "linkedin_dm": "Full LinkedIn DM text (3-5 sentences, conversational, reference a specific trigger)",
-    "cold_email": "Subject: [subject line]\\n\\n[Full email body, 5-8 sentences]",
-    "followup_1": "Full follow-up email #1 (Day 4, 3-4 sentences, new angle)",
-    "followup_2": "Full follow-up email #2 (Day 10, break-up tone, 2-3 sentences)"
-  },
-  "objections": [
-    {"q": "Objection text", "a": "Response text"},
-    {"q": "Objection text", "a": "Response text"},
-    {"q": "Objection text", "a": "Response text"},
-    {"q": "Objection text", "a": "Response text"}
-  ]
-}
-
-Generate 2 buyer roles, 4 pain angles, 4 objections. Make all copy specific to this product — no generic templates. Use language prospects actually use.`;
-
+ 
+  var prompt = 'You are LeadEagle — an outbound strategy AI. Based on the product intel below, generate a complete outbound campaign strategy.\n\nPRODUCT INTEL:\n- Product/Service: ' + product + '\n- Target Market: ' + market + '\n- Best Current Clients: ' + (clients||'Not specified') + '\n- Campaign Goal: ' + goal + '\n- Geography: ' + geo + '\n- Additional Notes: ' + (notes||'None') + '\n\nReturn ONLY valid JSON (no markdown, no backticks) in exactly this structure:\n{\n  \"icp\": {\n    \"description\": \"2-sentence ICP description\",\n    \"company_size\": \"e.g. 20-100 employees\",\n    \"industry\": \"specific industries\",\n    \"trigger_events\": \"signals that mean they need this now\",\n    \"exclude\": \"who to exclude\"\n  },\n  \"roles\": [\n    {\n      \"title\": \"Job Title\",\n      \"type\": \"Decision Maker / Champion / Influencer\",\n      \"pain\": \"Their specific pain in their own words\",\n      \"kpi\": \"KPIs they are measured on\",\n      \"buys\": \"What they are really buying\"\n    }\n  ],\n  \"pain_angles\": [\n    {\n      \"title\": \"Short angle name\",\n      \"pain\": \"The pain this angle targets\",\n      \"angle\": \"How your product addresses it\",\n      \"cta\": \"One-line CTA\"\n    }\n  ],\n  \"messages\": {\n    \"linkedin_dm\": \"Full LinkedIn DM\",\n    \"cold_email\": \"Subject: [subject]\\n\\n[body]\",\n    \"followup_1\": \"Follow-up #1\",\n    \"followup_2\": \"Follow-up #2 break-up\"\n  },\n  \"objections\": [\n    {\"q\": \"Objection\", \"a\": \"Response\"}\n  ]\n}\n\nGenerate 2 buyer roles, 4 pain angles, 4 objections. Make all copy specific to this product.';
+ 
   try {
     var res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -824,26 +1092,32 @@ Generate 2 buyer roles, 4 pain angles, 4 objections. Make all copy specific to t
         messages: [{ role: 'user', content: prompt }]
       })
     });
-
+ 
     clearInterval(stepIv);
     ['ls-1','ls-2','ls-3','ls-4','ls-5','ls-6'].forEach(function(s){
       document.getElementById(s).className = 'loading-step done';
     });
-
+ 
     if (!res.ok) {
-      var err = await res.json().catch(function(){ return {}; });
-      throw new Error(err.error && err.error.message ? err.error.message : 'API error ' + res.status);
+      var errData = await res.json().catch(function(){ return {}; });
+      throw new Error(errData.error && errData.error.message ? errData.error.message : 'API error ' + res.status);
     }
-
+ 
     var result = await res.json();
     var text = result.content && result.content[0] && result.content[0].text;
-    if (!text) throw new Error('Empty response from API');
-
+    if (!text) throw new Error('Empty response');
+ 
     var clean = text.replace(/```json|```/g,'').trim();
     var data = JSON.parse(clean);
-
+ 
+    // Deduct one use
+    s.uses--;
+    saveSession(s.code, s.uses);
+    updateUsesDisplay(s.uses);
+ 
+    saveToHistory(currentInput, data);
     setTimeout(function(){ renderResults(data); setLoading(false); }, 500);
-
+ 
   } catch(e) {
     clearInterval(stepIv);
     setLoading(false);
@@ -851,10 +1125,16 @@ Generate 2 buyer roles, 4 pain angles, 4 objections. Make all copy specific to t
     showError(e.message || 'Something went wrong');
   }
 }
-
+ 
 document.addEventListener('keydown', function(e){
+  if (e.key === 'Enter' && document.getElementById('promo-screen').style.display !== 'none') {
+    verifyPromo();
+  }
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') launch();
 });
+ 
+checkSession();
 </script>
 </body>
 </html>
+ 
