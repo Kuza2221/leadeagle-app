@@ -218,38 +218,20 @@ body::before {
   padding: 60px 40px; text-align: center;
   position: relative;
 }
-.radar-svg { width: 240px; height: 240px; margin-bottom: 28px; }
-.empty-radar {
-  width: 220px; height: 220px;
-  position: relative; margin-bottom: 32px;
-  isolation: isolate;
-}
-.er-ring {
-  position:absolute; border-radius:50%;
-  border:1px solid var(--border);
-  top:50%;left:50%;transform:translate(-50%,-50%);
-}
-.er-ring:nth-child(1){width:44px;height:44px}
-.er-ring:nth-child(2){width:88px;height:88px}
-.er-ring:nth-child(3){width:132px;height:132px}
-.er-ring:nth-child(4){width:176px;height:176px;border-color:var(--border2)}
-.er-cross{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px}
-.er-cross::before,.er-cross::after{content:'';position:absolute;background:var(--border)}
-.er-cross::before{width:1px;height:100%;left:calc(50% - 0.5px)}
-.er-cross::after{width:100%;height:1px;top:calc(50% - 0.5px)}
-.er-sweep{
-  position:absolute;top:50%;left:50%;
-  width:88px;height:1px;transform-origin:left center;
-  background:linear-gradient(90deg,transparent,rgba(74,222,128,.5));
-  animation:rsweep 4s linear infinite;
-}
-@keyframes rsweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.er-center{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:10px;height:10px;border-radius:50%;
-  background:var(--green);box-shadow:0 0 10px var(--green);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+to{transform:rotate(360deg)}}
+
 .empty-title {
   font-family: var(--head); font-size: 22px; font-weight: 700;
   text-transform: uppercase; letter-spacing: .06em;
@@ -710,6 +692,75 @@ body::before {
   transition:opacity .5s;
 }
 
+
+/* NEW RADAR */
+.radar-new {
+  width: 240px;
+  height: 240px;
+  position: relative;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+.rn-ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(74,222,128,0.18);
+}
+.rn-r1 { width: 48px;  height: 48px; }
+.rn-r2 { width: 96px;  height: 96px; }
+.rn-r3 { width: 150px; height: 150px; }
+.rn-r4 { width: 210px; height: 210px; border-color: rgba(74,222,128,0.25); }
+.rn-line {
+  position: absolute;
+  background: rgba(74,222,128,0.18);
+}
+.rn-v {
+  width: 1px;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.rn-h {
+  width: 100%;
+  height: 1px;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.rn-sweep {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 105px;
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(90deg, transparent, rgba(74,222,128,0.7));
+  animation: rn-spin 3s linear infinite;
+  border-radius: 0 1px 1px 0;
+  clip-path: none;
+  overflow: visible;
+}
+@keyframes rn-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.rn-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 12px #4ade80;
+  animation: rn-pulse 2s infinite;
+}
+@keyframes rn-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 12px #4ade80; }
+  50%       { opacity: 0.5; box-shadow: 0 0 6px #4ade80; }
+}
+
 @media(max-width:768px){
   .app{grid-template-columns:1fr}
   .left-panel{border-right:none;border-bottom:1px solid var(--border)}
@@ -796,57 +847,23 @@ body::before {
       </div>
 
       <div class="field">
-        <label class="field-label">Additional Context</label>
-        <textarea id="f-notes" rows="3" placeholder="Competitors, price point, differentiators, things NOT to target..."></textarea>
-      </div>
-
-    </div>
-
-    <!-- USES COUNTER -->
-    <div class="api-section" id="uses-section">
-      <label class="api-label">// Session status</label>
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <span style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em" id="uses-label">Requests remaining: —</span>
-        <button onclick="logout()" style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--dim)'">Logout</button>
-      </div>
-    </div>
-
-    <!-- ERROR -->
-    <div class="error-bar" id="error-bar"></div>
-
-    <!-- LAUNCH -->
-    <div class="launch-section">
-      <button class="launch-btn" id="launch-btn" onclick="launch()">
-        <span class="btn-icon">▶</span> ANALYZE & GENERATE STRATEGY
-      </button>
-    </div>
-
-    <!-- HISTORY -->
-    <div class="history-section" id="history-section">
-      <label class="history-label">// Campaign history</label>
-      <div id="history-list"><div class="history-empty">No saved campaigns yet.</div></div>
-    </div>
-  </div>
-
-  <!-- RIGHT: OUTPUT PANEL -->
-  <div class="right-panel" id="right-panel">
-
-    <!-- EMPTY STATE -->
+        <label class="field-label">A    <!-- EMPTY STATE -->
     <div class="empty-state" id="empty-state">
-      <svg class="radar-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <clipPath id="radar-clip">
-            <circle cx="150" cy="150" r="148"/>
-          </clipPath>
-          <linearGradient id="sweep-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:rgba(74,222,128,0);stop-opacity:0"/>
-            <stop offset="100%" style="stop-color:rgba(74,222,128,0.6);stop-opacity:1"/>
-          </linearGradient>
-        </defs>
-        <!-- Rings -->
-        <circle cx="150" cy="150" r="30" fill="none" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
-        <circle cx="150" cy="150" r="65" fill="none" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
-        <circle cx="150" cy="150" r="100" fill="none" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
+      <div class="radar-new">
+        <div class="rn-ring rn-r1"></div>
+        <div class="rn-ring rn-r2"></div>
+        <div class="rn-ring rn-r3"></div>
+        <div class="rn-ring rn-r4"></div>
+        <div class="rn-line rn-v"></div>
+        <div class="rn-line rn-h"></div>
+        <div class="rn-sweep"></div>
+        <div class="rn-center"></div>
+      </div>
+      <div class="empty-title">Awaiting target data</div>
+      <div class="empty-sub">Fill in your product details on the left and hit Analyze. LeadEagle will generate your full outbound strategy — ICP, roles, pains, messaging angles, and ready-to-send sequences.</div>
+    </div>
+
+    <!-- LOADING0" fill="none" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
         <circle cx="150" cy="150" r="135" fill="none" stroke="rgba(74,222,128,0.2)" stroke-width="1"/>
         <!-- Cross -->
         <line x1="150" y1="2" x2="150" y2="298" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
