@@ -751,15 +751,58 @@ body::before {
 </div>
  
 <script>
-var VALID_CODES = ['VX9Q-TRM7-LP2K', 'N4ZD-K8WA-QP6X', 'H7JQ-2VXM-R9TE', 'B6LK-WZ3P-Y8ND', 'Q2MA-7XHF-K5RJ', 'T9VN-P4QC-M6ZL', 'R5XP-LN8D-W3QA', 'K8TY-Q6JM-Z2VF', 'W3HD-9RKP-X7LN', 'P6QZ-M2VT-J8AW', 'L9XC-Y5ND-Q4TR', 'Z7MF-K3QA-V6HP', 'D2WR-X8JL-N9KC', 'M5VN-T7PQ-H2XZ', 'A8KL-R4YD-W6JM'];
-var API_KEY = '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'; // Replace with your actual Anthropic API key
+var SUPABASE_URL = 'https://ahdwnfbrvzxbmfgxnywt.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoZHduZmJydnp4Ym1mZ3hueXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDY3NzcsImV4cCI6MjA5MzQ4Mjc3N30.HxM67sLe9Ul_GkBvFIYYJKpBA_iSUxiiaHjMyGFoG9U';
+var API_KEY = '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';
 var currentData = null;
 var currentInput = null;
 var HISTORY_KEY = 'le_history';
 var SESSION_KEY = 'le_session';
-var MAX_USES = 3;
  
-/* ── PROMO / AUTH ── */
+/* ── SUPABASE HELPERS ── */
+async function sbGet(table, filter) {
+  var url = SUPABASE_URL + '/rest/v1/' + table + '?' + filter;
+  var res = await fetch(url, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json'
+    }
+  });
+  return await res.json();
+}
+ 
+async function sbUpdate(table, filter, data) {
+  var url = SUPABASE_URL + '/rest/v1/' + table + '?' + filter;
+  var res = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(data)
+  });
+  return await res.json();
+}
+ 
+async function sbInsert(table, data) {
+  var url = SUPABASE_URL + '/rest/v1/' + table;
+  var res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(data)
+  });
+  return await res.json();
+}
+ 
+/* ── PROMO AUTH ── */
 function getSession() {
   try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { return null; }
 }
@@ -767,40 +810,51 @@ function saveSession(code, uses) {
   localStorage.setItem(SESSION_KEY, JSON.stringify({ code: code, uses: uses }));
 }
  
-function verifyPromo() {
+async function verifyPromo() {
   var input = document.getElementById('promo-input');
   var code = input.value.trim().toUpperCase();
-  var errEl = document.getElementById('promo-error');
   var btn = document.getElementById('promo-btn');
  
   if (!code) { showPromoError('Enter your access code'); return; }
  
-  // Check if code was already used up
-  var existing = getSession();
-  if (existing && existing.code === code) {
-    if (existing.uses <= 0) { showPromoError('This code has no uses remaining'); return; }
-    unlockApp(existing.uses);
-    return;
-  }
+  btn.disabled = true;
+  btn.textContent = 'Checking...';
  
-  // Verify against valid codes
-  if (!VALID_CODES.includes(code)) {
-    showPromoError('Invalid code. Check spelling or request access at leadeagle.vercel.app');
-    return;
-  }
+  try {
+    // Check existing session first
+    var existing = getSession();
+    if (existing && existing.code === code) {
+      if (existing.uses <= 0) { showPromoError('No uses remaining on this code'); btn.disabled=false; btn.textContent='Verify ▶'; return; }
+      unlockApp(existing.uses);
+      btn.disabled=false; btn.textContent='Verify ▶';
+      return;
+    }
  
-  // Check if already used by someone else on this browser
-  var used = JSON.parse(localStorage.getItem('le_used_codes') || '[]');
-  if (used.includes(code)) {
-    var s = getSession();
-    if (!s || s.code !== code) { showPromoError('This code is already in use'); return; }
-  }
+    // Query Supabase
+    var rows = await sbGet('promo_codes', 'code=eq.' + encodeURIComponent(code) + '&select=*');
  
-  // Valid — save session
-  used.push(code);
-  localStorage.setItem('le_used_codes', JSON.stringify(used));
-  saveSession(code, MAX_USES);
-  unlockApp(MAX_USES);
+    if (!rows || rows.length === 0) {
+      showPromoError('Invalid code. Request access at leadeagle.vercel.app');
+      btn.disabled=false; btn.textContent='Verify ▶';
+      return;
+    }
+ 
+    var promo = rows[0];
+    if (promo.uses_left <= 0) {
+      showPromoError('This code has been fully used');
+      btn.disabled=false; btn.textContent='Verify ▶';
+      return;
+    }
+ 
+    // Valid — save session with server uses_left
+    saveSession(code, promo.uses_left);
+    unlockApp(promo.uses_left);
+    btn.disabled=false; btn.textContent='Verify ▶';
+ 
+  } catch(e) {
+    showPromoError('Connection error. Try again.');
+    btn.disabled=false; btn.textContent='Verify ▶';
+  }
 }
  
 function showPromoError(msg) {
@@ -819,7 +873,7 @@ function unlockApp(uses) {
 function updateUsesDisplay(uses) {
   var label = document.getElementById('uses-label');
   var badge = document.getElementById('topbar-uses');
-  if (label) label.textContent = 'Requests remaining: ' + uses + ' / ' + MAX_USES;
+  if (label) label.textContent = 'Requests remaining: ' + uses;
   if (badge) {
     badge.textContent = uses + ' USES LEFT';
     badge.className = 'uses-badge' + (uses <= 1 ? ' low' : '') + (uses <= 0 ? ' empty' : '');
@@ -830,13 +884,13 @@ function logout() {
   localStorage.removeItem(SESSION_KEY);
   document.getElementById('promo-screen').style.display = 'flex';
   document.getElementById('promo-input').value = '';
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('empty-state').style.display = 'flex';
 }
  
 function checkSession() {
   var s = getSession();
-  if (s && VALID_CODES.includes(s.code) && s.uses > 0) {
-    unlockApp(s.uses);
-  }
+  if (s && s.uses > 0) { unlockApp(s.uses); }
 }
  
 /* ── HISTORY ── */
@@ -868,8 +922,7 @@ function loadHistory(id) {
   var h = getHistory();
   var c = h.find(function(x){ return x.id === id; });
   if (!c) return;
-  currentData = c.data;
-  currentInput = c.input;
+  currentData = c.data; currentInput = c.input;
   if (c.input) {
     document.getElementById('f-product').value = c.input.product || '';
     document.getElementById('f-market').value = c.input.market || '';
@@ -895,11 +948,11 @@ function exportCSV() {
   var rows = [['Type','Field','Content']];
   var d = currentData;
   if (d.icp) {
-    rows.push(['ICP','Description', d.icp.description || '']);
-    rows.push(['ICP','Company size', d.icp.company_size || '']);
-    rows.push(['ICP','Industry', d.icp.industry || '']);
-    rows.push(['ICP','Trigger events', d.icp.trigger_events || '']);
-    rows.push(['ICP','Exclude', d.icp.exclude || '']);
+    rows.push(['ICP','Description', d.icp.description||'']);
+    rows.push(['ICP','Company size', d.icp.company_size||'']);
+    rows.push(['ICP','Industry', d.icp.industry||'']);
+    rows.push(['ICP','Triggers', d.icp.trigger_events||'']);
+    rows.push(['ICP','Exclude', d.icp.exclude||'']);
   }
   if (d.roles) d.roles.forEach(function(r,i){
     rows.push(['Role '+(i+1),'Title', r.title||'']);
@@ -966,8 +1019,7 @@ function switchTab(name) {
  
 function copyAll() {
   if (!currentData) return;
-  var text = JSON.stringify(currentData, null, 2);
-  navigator.clipboard.writeText(text).then(function(){
+  navigator.clipboard.writeText(JSON.stringify(currentData, null, 2)).then(function(){
     var btn = event.target;
     btn.textContent = 'Copied ■';
     setTimeout(function(){ btn.textContent = 'Copy all'; }, 1500);
@@ -1059,7 +1111,7 @@ function escHtml(str) {
  
 async function launch() {
   var s = getSession();
-  if (!s || s.uses <= 0) { showError('No uses remaining. Contact support.'); return; }
+  if (!s || s.uses <= 0) { showError('No uses remaining.'); return; }
  
   var product = document.getElementById('f-product').value.trim();
   var market  = document.getElementById('f-market').value.trim();
@@ -1075,7 +1127,7 @@ async function launch() {
   setLoading(true);
   var stepIv = animateSteps();
  
-  var prompt = 'You are LeadEagle — an outbound strategy AI. Based on the product intel below, generate a complete outbound campaign strategy.\n\nPRODUCT INTEL:\n- Product/Service: ' + product + '\n- Target Market: ' + market + '\n- Best Current Clients: ' + (clients||'Not specified') + '\n- Campaign Goal: ' + goal + '\n- Geography: ' + geo + '\n- Additional Notes: ' + (notes||'None') + '\n\nReturn ONLY valid JSON (no markdown, no backticks) in exactly this structure:\n{\n  \"icp\": {\n    \"description\": \"2-sentence ICP description\",\n    \"company_size\": \"e.g. 20-100 employees\",\n    \"industry\": \"specific industries\",\n    \"trigger_events\": \"signals that mean they need this now\",\n    \"exclude\": \"who to exclude\"\n  },\n  \"roles\": [\n    {\n      \"title\": \"Job Title\",\n      \"type\": \"Decision Maker / Champion / Influencer\",\n      \"pain\": \"Their specific pain in their own words\",\n      \"kpi\": \"KPIs they are measured on\",\n      \"buys\": \"What they are really buying\"\n    }\n  ],\n  \"pain_angles\": [\n    {\n      \"title\": \"Short angle name\",\n      \"pain\": \"The pain this angle targets\",\n      \"angle\": \"How your product addresses it\",\n      \"cta\": \"One-line CTA\"\n    }\n  ],\n  \"messages\": {\n    \"linkedin_dm\": \"Full LinkedIn DM\",\n    \"cold_email\": \"Subject: [subject]\\n\\n[body]\",\n    \"followup_1\": \"Follow-up #1\",\n    \"followup_2\": \"Follow-up #2 break-up\"\n  },\n  \"objections\": [\n    {\"q\": \"Objection\", \"a\": \"Response\"}\n  ]\n}\n\nGenerate 2 buyer roles, 4 pain angles, 4 objections. Make all copy specific to this product.';
+  var prompt = 'You are LeadEagle — an outbound strategy AI. Generate a complete outbound campaign strategy.\n\nPRODUCT INTEL:\n- Product: ' + product + '\n- Market: ' + market + '\n- Best clients: ' + (clients||'Not specified') + '\n- Goal: ' + goal + '\n- Geo: ' + geo + '\n- Notes: ' + (notes||'None') + '\n\nReturn ONLY valid JSON, no markdown:\n{"icp":{"description":"...","company_size":"...","industry":"...","trigger_events":"...","exclude":"..."},"roles":[{"title":"...","type":"Decision Maker","pain":"...","kpi":"...","buys":"..."}],"pain_angles":[{"title":"...","pain":"...","angle":"...","cta":"..."}],"messages":{"linkedin_dm":"...","cold_email":"Subject: ...\\n\\nbody...","followup_1":"...","followup_2":"..."},"objections":[{"q":"...","a":"..."}]}\n\nGenerate 2 roles, 4 angles, 4 objections. Be specific to this product.';
  
   try {
     var res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -1110,10 +1162,14 @@ async function launch() {
     var clean = text.replace(/```json|```/g,'').trim();
     var data = JSON.parse(clean);
  
-    // Deduct one use
+    // Deduct use in Supabase
     s.uses--;
     saveSession(s.code, s.uses);
     updateUsesDisplay(s.uses);
+ 
+    // Update Supabase
+    sbUpdate('promo_codes', 'code=eq.' + encodeURIComponent(s.code), { uses_left: s.uses }).catch(function(){});
+    sbInsert('promo_usage', { code: s.code, product_desc: product.substring(0,200) }).catch(function(){});
  
     saveToHistory(currentInput, data);
     setTimeout(function(){ renderResults(data); setLoading(false); }, 500);
