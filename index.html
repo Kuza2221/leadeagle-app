@@ -574,6 +574,138 @@ body::before {
 .uses-badge.low { color: #fbbf24; border-color: #92400e; background: rgba(251,191,36,.08); }
 .uses-badge.empty { color: #f87171; border-color: rgba(232,74,47,.3); background: rgba(232,74,47,.08); }
 
+
+/* RADAR LOADER */
+.radar-loader {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px 20px; width: 100%;
+}
+.rl-wrap {
+  position: relative;
+  width: 280px; height: 280px;
+  margin-bottom: 28px;
+}
+.rl-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid var(--border);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}
+.rl-ring:nth-child(1){width:56px;height:56px}
+.rl-ring:nth-child(2){width:112px;height:112px}
+.rl-ring:nth-child(3){width:168px;height:168px}
+.rl-ring:nth-child(4){width:224px;height:224px;border-color:var(--border2)}
+.rl-cross {
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:224px;height:224px;
+}
+.rl-cross::before,.rl-cross::after{
+  content:'';position:absolute;background:var(--border);
+}
+.rl-cross::before{width:1px;height:100%;left:50%}
+.rl-cross::after{width:100%;height:1px;top:50%}
+.rl-sweep {
+  position:absolute;top:50%;left:50%;
+  width:112px;height:1px;
+  transform-origin:left center;
+  background:linear-gradient(90deg,transparent,rgba(74,222,128,.8));
+  animation:rlsweep 2.5s linear infinite;
+}
+@keyframes rlsweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.rl-target {
+  position:absolute;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--green);
+  top:50%;left:50%;
+  opacity:0;
+  transform:translate(-50%,-50%);
+  transition:opacity .4s;
+  box-shadow:0 0 10px var(--green);
+}
+.rl-target.active{opacity:1}
+.rl-target::after{
+  content:'';position:absolute;inset:-5px;
+  border-radius:50%;border:1px solid var(--green);
+  animation:rlping 1.5s infinite;opacity:.5;
+}
+@keyframes rlping{from{transform:scale(1);opacity:.5}to{transform:scale(2.5);opacity:0}}
+.rl-t1{transform:translate(calc(-50% + 50px),calc(-50% - 65px))}
+.rl-t2{transform:translate(calc(-50% - 75px),calc(-50% + 20px))}
+.rl-t3{transform:translate(calc(-50% + 80px),calc(-50% + 40px))}
+.rl-t4{transform:translate(calc(-50% - 30px),calc(-50% + 75px))}
+.rl-center {
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:12px;height:12px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 12px var(--green);
+  transition:box-shadow .4s;
+}
+.rl-center.locked {
+  box-shadow:0 0 30px var(--green),0 0 60px rgba(74,222,128,.4);
+  animation:centerpulse .8s infinite alternate;
+}
+@keyframes centerpulse{from{box-shadow:0 0 20px var(--green)}to{box-shadow:0 0 40px var(--green),0 0 80px rgba(74,222,128,.3)}}
+
+/* TUMBLERS */
+.rl-tumblers {
+  display:flex;gap:12px;flex-wrap:wrap;
+  justify-content:center;margin-bottom:20px;
+}
+.rl-tumbler {
+  display:flex;align-items:center;gap:6px;
+  padding:5px 12px;
+  border:1px solid var(--border);
+  background:var(--bg2);
+  transition:all .4s;
+}
+.rl-tumbler.active {
+  border-color:var(--green3);
+  background:var(--gdim);
+}
+.rl-t-dot {
+  width:6px;height:6px;border-radius:50%;
+  background:var(--dim);
+  transition:background .4s;
+}
+.rl-tumbler.active .rl-t-dot {
+  background:var(--green);
+  box-shadow:0 0 6px var(--green);
+}
+.rl-t-label {
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:.1em;color:var(--dim);
+  transition:color .4s;
+}
+.rl-tumbler.active .rl-t-label{color:var(--green)}
+
+/* LAUNCH BUTTON */
+.rl-launch-btn {
+  font-family:var(--mono);font-size:12px;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:14px 32px;
+  background:var(--green);color:var(--bg);
+  border:none;cursor:pointer;
+  clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+  transition:background .2s;
+  animation:launchpulse 1s infinite alternate;
+  margin-bottom:20px;
+}
+.rl-launch-btn:hover{background:var(--green2)}
+@keyframes launchpulse{from{opacity:.85}to{opacity:1}}
+
+/* FACTS TICKER */
+.rl-facts {
+  font-family:var(--mono);font-size:11px;
+  color:var(--dim);letter-spacing:.06em;
+  text-align:center;max-width:320px;
+  line-height:1.6;
+  min-height:36px;
+  transition:opacity .5s;
+}
+
 @media(max-width:768px){
   .app{grid-template-columns:1fr}
   .left-panel{border-right:none;border-bottom:1px solid var(--border)}
@@ -712,14 +844,42 @@ body::before {
 
     <!-- LOADING STATE -->
     <div class="loading-state" id="loading-state">
-      <div class="loading-ring"></div>
-      <div class="loading-steps">
-        <div class="loading-step" id="ls-1">Analyzing product intel</div>
-        <div class="loading-step" id="ls-2">Mapping ICP & buyer roles</div>
-        <div class="loading-step" id="ls-3">Identifying pain angles</div>
-        <div class="loading-step" id="ls-4">Building messaging strategy</div>
-        <div class="loading-step" id="ls-5">Generating outreach sequences</div>
-        <div class="loading-step" id="ls-6">Compiling campaign package</div>
+      <div class="radar-loader">
+        <div class="rl-wrap">
+          <div class="rl-ring"></div>
+          <div class="rl-ring"></div>
+          <div class="rl-ring"></div>
+          <div class="rl-ring"></div>
+          <div class="rl-cross"></div>
+          <div class="rl-sweep" id="rl-sweep"></div>
+          <div class="rl-target rl-t1" id="rlt-1"></div>
+          <div class="rl-target rl-t2" id="rlt-2"></div>
+          <div class="rl-target rl-t3" id="rlt-3"></div>
+          <div class="rl-target rl-t4" id="rlt-4"></div>
+          <div class="rl-center" id="rl-center"></div>
+        </div>
+        <div class="rl-tumblers">
+          <div class="rl-tumbler" id="tumb-1">
+            <div class="rl-t-dot"></div>
+            <div class="rl-t-label">ICP_FOUND</div>
+          </div>
+          <div class="rl-tumbler" id="tumb-2">
+            <div class="rl-t-dot"></div>
+            <div class="rl-t-label">ROLES_MAPPED</div>
+          </div>
+          <div class="rl-tumbler" id="tumb-3">
+            <div class="rl-t-dot"></div>
+            <div class="rl-t-label">PAIN_IDENTIFIED</div>
+          </div>
+          <div class="rl-tumbler" id="tumb-4">
+            <div class="rl-t-dot"></div>
+            <div class="rl-t-label">MESSAGES_READY</div>
+          </div>
+        </div>
+        <button class="rl-launch-btn" id="rl-launch-btn" onclick="showResults()" style="display:none">
+          ■ TARGET LOCKED · VIEW STRATEGY
+        </button>
+        <div class="rl-facts" id="rl-facts"></div>
       </div>
     </div>
 
@@ -993,22 +1153,97 @@ function showError(msg) {
 }
 
 function setLoading(active) {
-  document.getElementById('empty-state').style.display = active ? 'none' : 'flex';
+  document.getElementById('empty-state').style.display = 'none';
   document.getElementById('loading-state').classList.toggle('active', active);
-  document.getElementById('results').classList.remove('active');
+  if (!active) {
+    document.getElementById('empty-state').style.display = 'none';
+  }
   document.getElementById('launch-btn').disabled = active;
+}
+
+var _pendingResults = null;
+
+var RL_FACTS = [
+  '71% of cold emails are ignored due to poor targeting',
+  'Teams with clear ICP get 3× more meetings on average',
+  'Most outbound fails before the first email is sent',
+  'The average decision-maker receives 15 cold emails per week',
+  'Role-specific messaging gets 2× higher reply rates',
+  'LeadEagle maps your ICP in seconds — not hours',
+  'Apollo gives you the gun. LeadEagle gives you the aim.',
+  'Founders spend avg. 3h on campaign prep — we cut it to 20 min',
+  'Writing to the average of everyone means resonating with no one',
+  'Your SDRs are good. They just need better intel.'
+];
+
+function startFactsTicker() {
+  var el = document.getElementById('rl-facts');
+  var i = Math.floor(Math.random() * RL_FACTS.length);
+  el.textContent = '// ' + RL_FACTS[i];
+  return setInterval(function(){
+    el.style.opacity = '0';
+    setTimeout(function(){
+      i = (i + 1) % RL_FACTS.length;
+      el.textContent = '// ' + RL_FACTS[i];
+      el.style.opacity = '1';
+    }, 500);
+  }, 3500);
+}
+
+function activateTumbler(n) {
+  var t = document.getElementById('tumb-' + n);
+  var r = document.getElementById('rlt-' + n);
+  if (t) t.classList.add('active');
+  if (r) r.classList.add('active');
+}
+
+function showResults() {
+  document.getElementById('loading-state').classList.remove('active');
+  if (_pendingResults) {
+    renderResults(_pendingResults);
+    _pendingResults = null;
+  }
+  setLoading(false);
 }
 
 function animateSteps() {
   var steps = ['ls-1','ls-2','ls-3','ls-4','ls-5','ls-6'];
   var i = 0;
-  steps.forEach(function(s){ document.getElementById(s).className = 'loading-step'; });
+  steps.forEach(function(s){
+    var el = document.getElementById(s);
+    if (el) el.className = 'loading-step';
+  });
+
+  // Reset tumblers
+  [1,2,3,4].forEach(function(n){
+    var t = document.getElementById('tumb-' + n);
+    var r = document.getElementById('rlt-' + n);
+    if (t) t.classList.remove('active');
+    if (r) r.classList.remove('active');
+  });
+  var btn = document.getElementById('rl-launch-btn');
+  var center = document.getElementById('rl-center');
+  if (btn) btn.style.display = 'none';
+  if (center) center.classList.remove('locked');
+
+  var factIv = startFactsTicker();
+
+  var tumblerTimes = [1200, 2400, 3600, 4800];
+  tumblerTimes.forEach(function(t, idx){
+    setTimeout(function(){ activateTumbler(idx + 1); }, t);
+  });
+
   var iv = setInterval(function(){
-    if (i > 0) document.getElementById(steps[i-1]).className = 'loading-step done';
-    if (i < steps.length) { document.getElementById(steps[i]).className = 'loading-step active'; i++; }
-    else clearInterval(iv);
+    if (i < steps.length) {
+      var el = document.getElementById(steps[i]);
+      if (el) el.className = 'loading-step active';
+      i++;
+    } else {
+      clearInterval(iv);
+    }
   }, 900);
-  return iv;
+
+  return { iv: iv, factIv: factIv };
 }
 
 function switchTab(name) {
@@ -1143,7 +1378,7 @@ async function launch() {
 
   currentInput = { product: product, market: market, clients: clients, goal: goal, geo: geo, notes: notes };
   setLoading(true);
-  var stepIv = animateSteps();
+  var stepObj = animateSteps(); var stepIv = stepObj.iv; var factIv = stepObj.factIv;
 
   var prompt = 'You are LeadEagle — an outbound strategy AI. Generate a COMPLETE outbound campaign package.\n\nPRODUCT INTEL:\n- Product: ' + product + '\n- Market: ' + market + '\n- Best clients: ' + (clients||'Not specified') + '\n- Goal: ' + goal + '\n- Geo: ' + geo + '\n- Notes: ' + (notes||'None') + '\n\nReturn ONLY valid JSON, no markdown, no backticks:\n{"icp":{"description":"2-sentence specific ICP","company_size":"e.g. 20-100 employees","industry":"specific industries","trigger_events":"buying signals","exclude":"who to exclude"},"roles":[{"title":"Job Title","type":"Decision Maker","pain":"specific pain in their words","kpi":"their KPIs","buys":"outcome they buy"}],"pain_angles":[{"title":"angle name","pain":"pain targeted","angle":"how product solves it","cta":"one-line CTA"}],"messages":{"linkedin_connect":"Short 300-char connection request, no pitch","linkedin_dm":"DM after connecting, 3-4 sentences, reference trigger","subject_lines":"Option 1: [subject]\\nOption 2: [subject]\\nOption 3: [subject]","cold_email":"Subject: [subject]\\n\\n[5-7 sentence email body]","followup_1":"Day 4 follow-up, new angle, 3 sentences","followup_2":"Day 10 follow-up, create urgency, 3 sentences","followup_3":"Day 21 final breakup email, 2 sentences"},"call_script":{"opening":"First 15 seconds script to grab attention","discovery":["Question 1?","Question 2?","Question 3?","Question 4?","Question 5?"],"pitch":"30-second value pitch for the call","close":"How to close for next step on the call"},"objections":[{"q":"objection","a":"response"}]}\n\nGenerate: 2 roles, 4 pain angles, 4 objections. All content must be SPECIFIC to this product — no generic templates.';
 
@@ -1163,10 +1398,7 @@ async function launch() {
       })
     });
 
-    clearInterval(stepIv);
-    ['ls-1','ls-2','ls-3','ls-4','ls-5','ls-6'].forEach(function(s){
-      document.getElementById(s).className = 'loading-step done';
-    });
+    clearInterval(stepIv); clearInterval(factIv);
 
     if (!res.ok) {
       var errData = await res.json().catch(function(){ return {}; });
@@ -1191,12 +1423,20 @@ async function launch() {
     sbInsert('promo_usage', { code: s.code, product_desc: product.substring(0,200) }).catch(function(){});
 
     saveToHistory(currentInput, data);
-    setTimeout(function(){ renderResults(data); setLoading(false); }, 500);
+    _pendingResults = data;
+    // Light up center + show launch button
+    var center = document.getElementById('rl-center');
+    var btn = document.getElementById('rl-launch-btn');
+    if (center) center.classList.add('locked');
+    if (btn) btn.style.display = 'block';
+    document.getElementById('launch-btn').disabled = false;
 
   } catch(e) {
     clearInterval(stepIv);
-    setLoading(false);
+    if (typeof factIv !== 'undefined') clearInterval(factIv);
+    document.getElementById('loading-state').classList.remove('active');
     document.getElementById('empty-state').style.display = 'flex';
+    document.getElementById('launch-btn').disabled = false;
     showError(e.message || 'Something went wrong');
   }
 }
