@@ -217,20 +217,38 @@ body::before {
   align-items: center; justify-content: center;
   padding: 60px 40px; text-align: center;
   position: relative;
-  min-height: calc(100vh - 48px);
 }
-
-
-
-
-
-
-
-
-
-
-
-
+.empty-radar {
+  width: 280px; height: 280px;
+  position: relative; margin-bottom: 32px;
+  flex-shrink: 0;
+}
+.er-ring {
+  position:absolute; border-radius:50%;
+  border:1px solid var(--border);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+}
+.er-ring:nth-child(1){width:48px;height:48px}
+.er-ring:nth-child(2){width:96px;height:96px}
+.er-ring:nth-child(3){width:144px;height:144px}
+.er-ring:nth-child(4){width:192px;height:192px;border-color:var(--border2)}
+.er-cross{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:192px;height:192px}
+.er-cross::before,.er-cross::after{content:'';position:absolute;background:var(--border)}
+.er-cross::before{width:1px;height:100%;left:50%}
+.er-cross::after{width:100%;height:1px;top:50%}
+.er-sweep{
+  position:absolute;top:50%;left:50%;
+  width:96px;height:1px;transform-origin:left center;
+  background:linear-gradient(90deg,transparent,rgba(74,222,128,.4));
+  animation:rsweep 4s linear infinite;
+}
+@keyframes rsweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.er-center{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:10px;height:10px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 10px var(--green);
+}
 .empty-title {
   font-family: var(--head); font-size: 22px; font-weight: 700;
   text-transform: uppercase; letter-spacing: .06em;
@@ -245,8 +263,7 @@ body::before {
 .loading-state {
   display: none; flex: 1; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 40px 40px; text-align: center;
-  min-height: calc(100vh - 48px);
+  padding: 60px 40px; text-align: center;
 }
 .loading-state.active { display: flex; }
 .loading-ring {
@@ -558,364 +575,6 @@ body::before {
 .uses-badge.low { color: #fbbf24; border-color: #92400e; background: rgba(251,191,36,.08); }
 .uses-badge.empty { color: #f87171; border-color: rgba(232,74,47,.3); background: rgba(232,74,47,.08); }
 
-
-/* RADAR LOADER */
-.radar-loader {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 40px 20px; width: 100%;
-}
-.rl-wrap {
-  position: relative;
-  width: 320px; height: 320px;
-  margin-bottom: 28px;
-  overflow: hidden;
-  border-radius: 50%;
-}
-.rl-ring {
-  position: absolute; border-radius: 50%;
-  border: 1px solid var(--border);
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-}
-.rl-ring:nth-child(1){width:56px;height:56px}
-.rl-ring:nth-child(2){width:112px;height:112px}
-.rl-ring:nth-child(3){width:168px;height:168px}
-.rl-ring:nth-child(4){width:224px;height:224px;border-color:var(--border2)}
-.rl-cross {
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:224px;height:224px;
-}
-.rl-cross::before,.rl-cross::after{
-  content:'';position:absolute;background:var(--border);
-}
-.rl-cross::before{width:1px;height:100%;left:50%}
-.rl-cross::after{width:100%;height:1px;top:50%}
-.rl-sweep {
-  position:absolute;top:50%;left:50%;
-  width:112px;height:1px;
-  transform-origin:left center;
-  background:linear-gradient(90deg,transparent,rgba(74,222,128,.8));
-  animation:rlsweep 2.5s linear infinite;
-}
-@keyframes rlsweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.rl-target {
-  position:absolute;
-  width:10px;height:10px;border-radius:50%;
-  background:var(--green);
-  top:50%;left:50%;
-  opacity:0;
-  transform:translate(-50%,-50%);
-  transition:opacity .4s;
-  box-shadow:0 0 10px var(--green);
-}
-.rl-target.active{opacity:1}
-.rl-target::after{
-  content:'';position:absolute;inset:-5px;
-  border-radius:50%;border:1px solid var(--green);
-  animation:rlping 1.5s infinite;opacity:.5;
-}
-@keyframes rlping{from{transform:scale(1);opacity:.5}to{transform:scale(2.5);opacity:0}}
-.rl-t1{transform:translate(calc(-50% + 50px),calc(-50% - 65px))}
-.rl-t2{transform:translate(calc(-50% - 75px),calc(-50% + 20px))}
-.rl-t3{transform:translate(calc(-50% + 80px),calc(-50% + 40px))}
-.rl-t4{transform:translate(calc(-50% - 30px),calc(-50% + 75px))}
-.rl-center {
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:12px;height:12px;border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 12px var(--green);
-  transition:box-shadow .4s;
-}
-.rl-center.locked {
-  box-shadow:0 0 30px var(--green),0 0 60px rgba(74,222,128,.4);
-  animation:centerpulse .8s infinite alternate;
-}
-@keyframes centerpulse{from{box-shadow:0 0 20px var(--green)}to{box-shadow:0 0 40px var(--green),0 0 80px rgba(74,222,128,.3)}}
-
-/* TUMBLERS */
-.rl-tumblers {
-  display:flex;gap:12px;flex-wrap:wrap;
-  justify-content:center;margin-bottom:20px;
-}
-.rl-tumbler {
-  display:flex;align-items:center;gap:6px;
-  padding:5px 12px;
-  border:1px solid var(--border);
-  background:var(--bg2);
-  transition:all .4s;
-}
-.rl-tumbler.active {
-  border-color:var(--green3);
-  background:var(--gdim);
-}
-.rl-t-dot {
-  width:6px;height:6px;border-radius:50%;
-  background:var(--dim);
-  transition:background .4s;
-}
-.rl-tumbler.active .rl-t-dot {
-  background:var(--green);
-  box-shadow:0 0 6px var(--green);
-}
-.rl-t-label {
-  font-family:var(--mono);font-size:10px;
-  letter-spacing:.1em;color:var(--dim);
-  transition:color .4s;
-}
-.rl-tumbler.active .rl-t-label{color:var(--green)}
-
-/* LAUNCH BUTTON */
-.rl-launch-btn {
-  font-family:var(--mono);font-size:12px;
-  letter-spacing:.14em;text-transform:uppercase;
-  padding:14px 32px;
-  background:#cc1100;color:#fff;
-  border:none;cursor:pointer;
-  clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
-  transition:background .2s;
-  animation:launchpulse 1s infinite alternate;
-  margin-bottom:20px;
-  box-shadow:0 0 20px rgba(204,17,0,.5);
-}
-.rl-launch-btn:hover{background:#ff2400}
-@keyframes launchpulse{from{opacity:.9;box-shadow:0 0 10px rgba(204,17,0,.4)}to{opacity:1;box-shadow:0 0 30px rgba(204,17,0,.8)}}
-
-/* FACTS TICKER */
-.rl-facts {
-  font-family:var(--mono);font-size:11px;
-  color:var(--dim);letter-spacing:.06em;
-  text-align:center;max-width:320px;
-  line-height:1.6;
-  min-height:36px;
-  transition:opacity .5s;
-}
-
-
-/* NEW RADAR */
-.radar-new {
-  width: 320px;
-  height: 320px;
-  position: relative;
-  margin-bottom: 32px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  overflow: hidden;
-}
-/* Lines go outside via pseudo on wrapper */
-.radar-new::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 1px; height: 100%;
-  background: rgba(74,222,128,0.18);
-  z-index: 1;
-  pointer-events: none;
-}
-.radar-new::after {
-  content: '';
-  position: absolute;
-  left: 0; top: 50%;
-  transform: translateY(-50%);
-  width: 100%; height: 1px;
-  background: rgba(74,222,128,0.18);
-  z-index: 1;
-  pointer-events: none;
-}
-.rn-ring {
-  position: absolute;
-  border-radius: 50%;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid rgba(74,222,128,0.18);
-}
-.rn-r1 { width: 64px;  height: 64px; }
-.rn-r2 { width: 128px; height: 128px; }
-.rn-r3 { width: 200px; height: 200px; }
-.rn-r4 { width: 280px; height: 280px; border-color: rgba(74,222,128,0.25); }
-.rn-line { display: none; }
-.rn-v { display: none; }
-.rn-h { display: none; }
-.rn-sweep {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 140px;
-  height: 2px;
-  transform-origin: left center;
-  background: linear-gradient(90deg, transparent, rgba(74,222,128,0.8));
-  animation: rn-spin 3s linear infinite;
-}
-@keyframes rn-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-.rn-center {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 12px #4ade80;
-  animation: rn-pulse 2s infinite;
-}
-@keyframes rn-pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 12px #4ade80; }
-  50%       { opacity: 0.5; box-shadow: 0 0 6px #4ade80; }
-}
-
-
-/* RADAR PANEL MAIN */
-.radar-panel-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 32px;
-  position: relative;
-  min-height: calc(100vh - 48px);
-}
-.rpm-status {
-  position: absolute;
-  top: 20px; right: 20px;
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: 10px;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--muted);
-}
-.rpm-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--dim);
-  transition: background .4s, box-shadow .4s;
-}
-.rpm-dot.scanning {
-  background: var(--green);
-  box-shadow: 0 0 8px var(--green);
-  animation: blink 1s infinite;
-}
-.rpm-dot.locked {
-  background: #cc1100;
-  box-shadow: 0 0 12px #cc1100;
-}
-
-/* RADAR */
-.rpm-radar {
-  width: 340px; height: 340px;
-  position: relative;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 28px;
-  flex-shrink: 0;
-}
-.rpm-radar .rn-ring {
-  position: absolute;
-  border-radius: 50%;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  border: 1px solid rgba(74,222,128,0.18);
-}
-.rpm-radar .rn-r1 { width: 68px;  height: 68px; }
-.rpm-radar .rn-r2 { width: 136px; height: 136px; }
-.rpm-radar .rn-r3 { width: 210px; height: 210px; }
-.rpm-radar .rn-r4 { width: 300px; height: 300px; border-color: rgba(74,222,128,0.25); }
-.rpm-radar::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 1px; height: 100%;
-  background: rgba(74,222,128,0.15);
-  z-index: 1;
-}
-.rpm-radar::after {
-  content: '';
-  position: absolute;
-  left: 0; top: 50%;
-  transform: translateY(-50%);
-  width: 100%; height: 1px;
-  background: rgba(74,222,128,0.15);
-  z-index: 1;
-}
-.rn-sweep {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 150px; height: 2px;
-  transform-origin: left center;
-  background: linear-gradient(90deg, transparent, rgba(74,222,128,0.8));
-  animation: rn-spin 3s linear infinite;
-  z-index: 2;
-}
-@keyframes rn-spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-.rn-center {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 14px var(--green);
-  z-index: 3;
-  transition: box-shadow .5s;
-}
-.rn-center.locked {
-  background: #cc1100;
-  box-shadow: 0 0 30px #cc1100, 0 0 60px rgba(204,17,0,.4);
-  animation: centerpulse .8s infinite alternate;
-}
-@keyframes centerpulse {
-  from { box-shadow: 0 0 20px #cc1100; }
-  to   { box-shadow: 0 0 50px #cc1100, 0 0 100px rgba(204,17,0,.3); }
-}
-/* radar targets */
-.rpm-radar .rl-target {
-  position: absolute;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--green);
-  top: 50%; left: 50%;
-  opacity: 0;
-  box-shadow: 0 0 10px var(--green);
-  transition: opacity .5s;
-  z-index: 2;
-}
-.rpm-radar .rl-target.active { opacity: 1; }
-.rpm-radar .rl-target::after {
-  content:''; position:absolute; inset:-5px;
-  border-radius:50%; border:1px solid var(--green);
-  animation: rlping 1.5s infinite; opacity:.5;
-}
-@keyframes rlping{from{transform:scale(1);opacity:.5}to{transform:scale(2.5);opacity:0}}
-.rpm-radar .rl-t1{transform:translate(calc(-50% + 60px),calc(-50% - 80px))}
-.rpm-radar .rl-t2{transform:translate(calc(-50% - 90px),calc(-50% + 30px))}
-.rpm-radar .rl-t3{transform:translate(calc(-50% + 100px),calc(-50% + 55px))}
-.rpm-radar .rl-t4{transform:translate(calc(-50% - 50px),calc(-50% + 95px))}
-
-/* tumblers row */
-.rpm-tumblers {
-  display: flex; gap: 10px; flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-/* idle text */
-.rpm-idle {
-  text-align: center; margin-top: 8px;
-}
-
-/* facts */
-.rl-facts {
-  font-family: var(--mono); font-size: 11px;
-  color: var(--dim); letter-spacing: .06em;
-  text-align: center; max-width: 340px;
-  line-height: 1.6; min-height: 36px;
-  margin-top: 8px;
-  transition: opacity .5s;
-}
-
 @media(max-width:768px){
   .app{grid-template-columns:1fr}
   .left-panel{border-right:none;border-bottom:1px solid var(--border)}
@@ -1002,85 +661,79 @@ body::before {
       </div>
 
       <div class="field">
-        <label class="field-label">A    <!-- EMPTY STATE -->
-    <div class="empty-state" id="empty-state">
-      <div class="radar-new">
-        <div class="rn-ring rn-r1"></div>
-        <div class="rn-ring rn-r2"></div>
-        <div class="rn-ring rn-r3"></div>
-        <div class="rn-ring rn-r4"></div>
-        <div class="rn-line rn-v"></div>
-        <div class="rn-line rn-h"></div>
-        <div class="rn-sweep"></div>
-        <div class="rn-center"></div>
+        <label class="field-label">Additional Context</label>
+        <textarea id="f-notes" rows="3" placeholder="Competitors, price point, differentiators, things NOT to target..."></textarea>
       </div>
-      <div class="empty-title">Awaiting target data</div>
-      <div class="empty-sub">Fill in your product details on the left and hit Analyze. LeadEagle will generate your full outbound strategy — ICP, roles, pains, messaging angles, and ready-to-send sequences.</div>
+
     </div>
 
-    <!-- LOADING0" fill="none" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
-        <circle cx="150" cy="150" r="135" fill="none" stroke="rgba(74,222,128,0.2)" stroke-width="1"/>
-        <!-- Cross -->
-        <line x1="150" y1="2" x2="150" y2="298" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
-        <line x1="2" y1="150" x2="298" y2="150" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
-        <!-- Sweep -->
-        <g clip-path="url(#radar-clip)">
-          <line x1="150" y1="150" x2="285" y2="150" stroke="url(#sweep-grad)" stroke-width="1.5">
-            <animateTransform attributeName="transform" type="rotate" from="0 150 150" to="360 150 150" dur="4s" repeatCount="indefinite"/>
-          </line>
-        </g>
-        <!-- Center dot -->
-        <circle cx="150" cy="150" r="5" fill="#4ade80">
-          <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="150" cy="150" r="5" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.4">
-          <animate attributeName="r" values="5;14;5" dur="2s" repeatCount="indefinite"/>
-          <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/>
-        </circle>
-      </svg>
+    <!-- USES COUNTER -->
+    <div class="api-section" id="uses-section">
+      <label class="api-label">// Session status</label>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em" id="uses-label">Requests remaining: —</span>
+        <button onclick="logout()" style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--dim)'">Logout</button>
+      </div>
+    </div>
+
+    <!-- ERROR -->
+    <div class="error-bar" id="error-bar"></div>
+
+    <!-- LAUNCH -->
+    <div class="launch-section">
+      <button class="launch-btn" id="launch-btn" onclick="launch()">
+        <span class="btn-icon">▶</span> ANALYZE & GENERATE STRATEGY
+      </button>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="history-section" id="history-section">
+      <label class="history-label">// Campaign history</label>
+      <div id="history-list"><div class="history-empty">No saved campaigns yet.</div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: OUTPUT PANEL -->
+  <div class="right-panel" id="right-panel">
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-radar">
+        <div class="er-ring"></div>
+        <div class="er-ring"></div>
+        <div class="er-ring"></div>
+        <div class="er-ring"></div>
+        <div class="er-cross"></div>
+        <div class="er-sweep"></div>
+        <div class="er-center"></div>
+      </div>
       <div class="empty-title">Awaiting target data</div>
       <div class="empty-sub">Fill in your product details on the left and hit Analyze. LeadEagle will generate your full outbound strategy — ICP, roles, pains, messaging angles, and ready-to-send sequences.</div>
     </div>
 
     <!-- LOADING STATE -->
     <div class="loading-state" id="loading-state">
-      <div class="radar-loader">
-        <div class="rl-wrap">
-          <div class="rl-ring"></div>
-          <div class="rl-ring"></div>
-          <div class="rl-ring"></div>
-          <div class="rl-ring"></div>
-          <div class="rl-cross"></div>
-          <div class="rl-sweep" id="rl-sweep"></div>
-          <div class="rl-target rl-t1" id="rlt-1"></div>
-          <div class="rl-target rl-t2" id="rlt-2"></div>
-          <div class="rl-target rl-t3" id="rlt-3"></div>
-          <div class="rl-target rl-t4" id="rlt-4"></div>
-          <div class="rl-center" id="rl-center"></div>
-        </div>
-        <div class="rl-tumblers">
-          <div class="rl-tumbler" id="tumb-1">
-            <div class="rl-t-dot"></div>
-            <div class="rl-t-label">ICP_FOUND</div>
-          </div>
-          <div class="rl-tumbler" id="tumb-2">
-            <div class="rl-t-dot"></div>
-            <div class="rl-t-label">ROLES_MAPPED</div>
-          </div>
-          <div class="rl-tumbler" id="tumb-3">
-            <div class="rl-t-dot"></div>
-            <div class="rl-t-label">PAIN_IDENTIFIED</div>
-          </div>
-          <div class="rl-tumbler" id="tumb-4">
-            <div class="rl-t-dot"></div>
-            <div class="rl-t-label">MESSAGES_READY</div>
-          </div>
-        </div>
-        <button class="rl-launch-btn" id="rl-launch-btn" onclick="showResults()" style="display:none">
-          ■ TARGET LOCKED · VIEW STRATEGY
-        </button>
-        <div class="rl-facts" id="rl-facts"></div>
+      <div class="empty-radar" style="margin-bottom:28px">
+        <div class="er-ring"></div>
+        <div class="er-ring"></div>
+        <div class="er-ring"></div>
+        <div class="er-ring"></div>
+        <div class="er-cross"></div>
+        <div class="radar-sweep"></div>
+        <div class="rl-target rl-t1" id="rlt-1"></div>
+        <div class="rl-target rl-t2" id="rlt-2"></div>
+        <div class="rl-target rl-t3" id="rlt-3"></div>
+        <div class="rl-target rl-t4" id="rlt-4"></div>
+        <div class="er-center" id="rl-center"></div>
       </div>
+      <div class="rl-tumblers">
+        <div class="rl-tumbler" id="tumb-1"><div class="rl-t-dot"></div><div class="rl-t-label">ICP_FOUND</div></div>
+        <div class="rl-tumbler" id="tumb-2"><div class="rl-t-dot"></div><div class="rl-t-label">ROLES_MAPPED</div></div>
+        <div class="rl-tumbler" id="tumb-3"><div class="rl-t-dot"></div><div class="rl-t-label">PAIN_IDENTIFIED</div></div>
+        <div class="rl-tumbler" id="tumb-4"><div class="rl-t-dot"></div><div class="rl-t-label">MESSAGES_READY</div></div>
+      </div>
+      <button class="rl-launch-btn" id="rl-launch-btn" onclick="showResults()" style="display:none">■ TARGET LOCKED · VIEW STRATEGY</button>
+      <div class="rl-facts" id="rl-facts"></div>
     </div>
 
     <!-- RESULTS -->
@@ -1098,14 +751,12 @@ body::before {
         <button class="tab active" onclick="switchTab('icp')">ICP & Roles</button>
         <button class="tab" onclick="switchTab('pain')">Pain Angles</button>
         <button class="tab" onclick="switchTab('msg')">Messages</button>
-        <button class="tab" onclick="switchTab('call')">Call Script</button>
         <button class="tab" onclick="switchTab('obj')">Objections</button>
       </div>
 
       <div class="tab-content active" id="tab-icp"></div>
       <div class="tab-content" id="tab-pain"></div>
       <div class="tab-content" id="tab-msg"></div>
-      <div class="tab-content" id="tab-call"></div>
       <div class="tab-content" id="tab-obj"></div>
     </div>
 
@@ -1115,574 +766,298 @@ body::before {
 <script>
 var SUPABASE_URL = 'https://ahdwnfbrvzxbmfgxnywt.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoZHduZmJydnp4Ym1mZ3hueXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDY3NzcsImV4cCI6MjA5MzQ4Mjc3N30.HxM67sLe9Ul_GkBvFIYYJKpBA_iSUxiiaHjMyGFoG9U';
-// API key is stored securely on the server
+var API_KEY = 'PASTE_YOUR_API_KEY_HERE';
 var currentData = null;
 var currentInput = null;
 var HISTORY_KEY = 'le_history';
 var SESSION_KEY = 'le_session';
+var _pendingResults = null;
 
-/* ── SUPABASE HELPERS ── */
+var RL_FACTS = [
+  '71% of cold emails are ignored due to poor targeting',
+  'Teams with clear ICP get 3x more meetings on average',
+  'Most outbound fails before the first email is sent',
+  'The avg decision-maker receives 15 cold emails per week',
+  'Role-specific messaging gets 2x higher reply rates',
+  'LeadEagle maps your ICP in seconds — not hours',
+  'Apollo gives you the gun. LeadEagle gives you the aim.',
+  'Founders spend avg 3h on campaign prep — we cut it to 20 min'
+];
+
+/* ── SUPABASE ── */
 async function sbGet(table, filter) {
-  var url = SUPABASE_URL + '/rest/v1/' + table + '?' + filter;
-  var res = await fetch(url, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY,
-      'Content-Type': 'application/json'
-    }
-  });
+  var res = await fetch(SUPABASE_URL+'/rest/v1/'+table+'?'+filter, {headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
   return await res.json();
 }
-
 async function sbUpdate(table, filter, data) {
-  var url = SUPABASE_URL + '/rest/v1/' + table + '?' + filter;
-  var res = await fetch(url, {
-    method: 'PATCH',
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=representation'
-    },
-    body: JSON.stringify(data)
-  });
-  return await res.json();
+  await fetch(SUPABASE_URL+'/rest/v1/'+table+'?'+filter, {method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(data)});
 }
-
 async function sbInsert(table, data) {
-  var url = SUPABASE_URL + '/rest/v1/' + table;
-  var res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=representation'
-    },
-    body: JSON.stringify(data)
-  });
-  return await res.json();
+  await fetch(SUPABASE_URL+'/rest/v1/'+table, {method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(data)});
 }
 
-/* ── PROMO AUTH ── */
-function getSession() {
-  try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { return null; }
-}
-function saveSession(code, uses) {
-  localStorage.setItem(SESSION_KEY, JSON.stringify({ code: code, uses: uses }));
-}
+/* ── AUTH ── */
+function getSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY)||'null'); } catch(e) { return null; } }
+function saveSession(code, uses) { localStorage.setItem(SESSION_KEY, JSON.stringify({code:code,uses:uses})); }
 
 async function verifyPromo() {
   var input = document.getElementById('promo-input');
   var code = input.value.trim().toUpperCase();
   var btn = document.getElementById('promo-btn');
-
   if (!code) { showPromoError('Enter your access code'); return; }
-
-  btn.disabled = true;
-  btn.textContent = 'Checking...';
-
+  btn.disabled = true; btn.textContent = 'Checking...';
   try {
-    // Check existing session first
     var existing = getSession();
     if (existing && existing.code === code) {
-      if (existing.uses <= 0) { showPromoError('No uses remaining on this code'); btn.disabled=false; btn.textContent='Verify ▶'; return; }
-      unlockApp(existing.uses);
-      btn.disabled=false; btn.textContent='Verify ▶';
-      return;
+      if (existing.uses <= 0) { showPromoError('No uses remaining'); btn.disabled=false; btn.textContent='Verify ▶'; return; }
+      unlockApp(existing.uses); btn.disabled=false; btn.textContent='Verify ▶'; return;
     }
-
-    // Query Supabase
-    var rows = await sbGet('promo_codes', 'code=eq.' + encodeURIComponent(code) + '&select=*');
-
-    if (!rows || rows.length === 0) {
-      showPromoError('Invalid code. Request access at leadeagle.vercel.app');
-      btn.disabled=false; btn.textContent='Verify ▶';
-      return;
-    }
-
+    var rows = await sbGet('promo_codes', 'code=eq.'+encodeURIComponent(code)+'&select=*');
+    if (!rows || rows.length === 0) { showPromoError('Invalid code. Request access at leadeagle.vercel.app'); btn.disabled=false; btn.textContent='Verify ▶'; return; }
     var promo = rows[0];
-    if (promo.uses_left <= 0) {
-      showPromoError('This code has been fully used');
-      btn.disabled=false; btn.textContent='Verify ▶';
-      return;
-    }
-
-    // Valid — save session with server uses_left
+    if (promo.uses_left <= 0) { showPromoError('This code has been fully used'); btn.disabled=false; btn.textContent='Verify ▶'; return; }
     saveSession(code, promo.uses_left);
     unlockApp(promo.uses_left);
     btn.disabled=false; btn.textContent='Verify ▶';
-
-  } catch(e) {
-    showPromoError('Connection error. Try again.');
-    btn.disabled=false; btn.textContent='Verify ▶';
-  }
+  } catch(e) { showPromoError('Connection error. Try again.'); btn.disabled=false; btn.textContent='Verify ▶'; }
 }
 
 function showPromoError(msg) {
   var el = document.getElementById('promo-error');
-  el.textContent = '// ' + msg;
-  el.classList.add('show');
+  el.textContent = '// '+msg; el.classList.add('show');
   setTimeout(function(){ el.classList.remove('show'); }, 4000);
 }
-
 function unlockApp(uses) {
   document.getElementById('promo-screen').style.display = 'none';
-  updateUsesDisplay(uses);
-  renderHistory(null);
+  updateUsesDisplay(uses); renderHistory(null);
 }
-
 function updateUsesDisplay(uses) {
   var label = document.getElementById('uses-label');
   var badge = document.getElementById('topbar-uses');
-  if (label) label.textContent = 'Requests remaining: ' + uses;
-  if (badge) {
-    badge.textContent = uses + ' USES LEFT';
-    badge.className = 'uses-badge' + (uses <= 1 ? ' low' : '') + (uses <= 0 ? ' empty' : '');
-  }
+  if (label) label.textContent = 'Requests remaining: '+uses;
+  if (badge) { badge.textContent = uses+' USES LEFT'; badge.className = 'uses-badge'+(uses<=1?' low':'')+(uses<=0?' empty':''); }
 }
-
 function logout() {
   localStorage.removeItem(SESSION_KEY);
   document.getElementById('promo-screen').style.display = 'flex';
   document.getElementById('promo-input').value = '';
-  document.getElementById('results').classList.remove('active');
-  document.getElementById('empty-state').style.display = 'flex';
 }
-
-function checkSession() {
-  var s = getSession();
-  if (s && s.uses > 0) { unlockApp(s.uses); }
-}
+function checkSession() { var s=getSession(); if (s && s.uses>0) unlockApp(s.uses); }
 
 /* ── HISTORY ── */
-function getHistory() {
-  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) { return []; }
-}
+function getHistory() { try { return JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]'); } catch(e) { return []; } }
 function saveToHistory(input, data) {
-  var h = getHistory();
-  var id = Date.now();
-  var name = (input.product || '').substring(0,40) || 'Campaign';
-  h.unshift({ id: id, name: name, date: new Date().toLocaleDateString(), input: input, data: data });
-  if (h.length > 20) h = h.slice(0, 20);
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
-  renderHistory(id);
+  var h=getHistory(); var id=Date.now();
+  var name=(input.product||'').substring(0,40)||'Campaign';
+  h.unshift({id:id,name:name,date:new Date().toLocaleDateString(),input:input,data:data});
+  if (h.length>20) h=h.slice(0,20);
+  localStorage.setItem(HISTORY_KEY,JSON.stringify(h)); renderHistory(id);
 }
 function renderHistory(activeId) {
-  var h = getHistory();
-  var el = document.getElementById('history-list');
-  if (!h.length) { el.innerHTML = '<div class="history-empty">No saved campaigns yet.</div>'; return; }
-  el.innerHTML = h.map(function(c) {
-    var active = c.id === activeId ? ' active' : '';
-    return '<div class="history-item' + active + '" onclick="loadHistory(' + c.id + ')">' +
-      '<div class="hi-left"><div class="hi-name">' + escHtml(c.name) + '</div><div class="hi-date">' + c.date + '</div></div>' +
-      '<button class="hi-del" onclick="event.stopPropagation();deleteHistory(' + c.id + ')">✕</button>' +
-    '</div>';
+  var h=getHistory(); var el=document.getElementById('history-list');
+  if (!h.length) { el.innerHTML='<div class="history-empty">No saved campaigns yet.</div>'; return; }
+  el.innerHTML=h.map(function(c) {
+    var active=c.id===activeId?' active':'';
+    return '<div class="history-item'+active+'" onclick="loadHistory('+c.id+')">'+'<div class="hi-left"><div class="hi-name">'+escHtml(c.name)+'</div><div class="hi-date">'+c.date+'</div></div>'+'<button class="hi-del" onclick="event.stopPropagation();deleteHistory('+c.id+')">✕</button>'+'</div>';
   }).join('');
 }
 function loadHistory(id) {
-  var h = getHistory();
-  var c = h.find(function(x){ return x.id === id; });
+  var h=getHistory(); var c=h.find(function(x){ return x.id===id; });
   if (!c) return;
-  currentData = c.data; currentInput = c.input;
+  currentData=c.data; currentInput=c.input;
   if (c.input) {
-    document.getElementById('f-product').value = c.input.product || '';
-    document.getElementById('f-market').value = c.input.market || '';
-    document.getElementById('f-clients').value = c.input.clients || '';
-    document.getElementById('f-goal').value = c.input.goal || 'book meetings';
-    document.getElementById('f-geo').value = c.input.geo || 'US & Canada';
-    document.getElementById('f-notes').value = c.input.notes || '';
+    document.getElementById('f-product').value=c.input.product||'';
+    document.getElementById('f-market').value=c.input.market||'';
+    document.getElementById('f-clients').value=c.input.clients||'';
+    document.getElementById('f-goal').value=c.input.goal||'book meetings';
+    document.getElementById('f-geo').value=c.input.geo||'US & Canada';
+    document.getElementById('f-notes').value=c.input.notes||'';
   }
-  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('empty-state').style.display='none';
   document.getElementById('loading-state').classList.remove('active');
-  renderResults(c.data);
-  renderHistory(id);
+  renderResults(c.data); renderHistory(id);
 }
 function deleteHistory(id) {
-  var h = getHistory().filter(function(c){ return c.id !== id; });
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
-  renderHistory(null);
+  var h=getHistory().filter(function(c){ return c.id!==id; });
+  localStorage.setItem(HISTORY_KEY,JSON.stringify(h)); renderHistory(null);
 }
 
-/* ── CSV EXPORT ── */
+/* ── CSV ── */
 function exportCSV() {
   if (!currentData) return;
-  var rows = [['Type','Field','Content']];
-  var d = currentData;
-  if (d.icp) {
-    rows.push(['ICP','Description', d.icp.description||'']);
-    rows.push(['ICP','Company size', d.icp.company_size||'']);
-    rows.push(['ICP','Industry', d.icp.industry||'']);
-    rows.push(['ICP','Triggers', d.icp.trigger_events||'']);
-    rows.push(['ICP','Exclude', d.icp.exclude||'']);
-  }
-  if (d.roles) d.roles.forEach(function(r,i){
-    rows.push(['Role '+(i+1),'Title', r.title||'']);
-    rows.push(['Role '+(i+1),'Pain', r.pain||'']);
-    rows.push(['Role '+(i+1),'KPI', r.kpi||'']);
-    rows.push(['Role '+(i+1),'Buys', r.buys||'']);
-  });
-  if (d.pain_angles) d.pain_angles.forEach(function(a,i){
-    rows.push(['Angle '+(i+1),'Title', a.title||'']);
-    rows.push(['Angle '+(i+1),'Pain', a.pain||'']);
-    rows.push(['Angle '+(i+1),'Angle', a.angle||'']);
-    rows.push(['Angle '+(i+1),'CTA', a.cta||'']);
-  });
-  if (d.messages) Object.keys(d.messages).forEach(function(k){
-    rows.push(['Message', k.replace(/_/g,' '), d.messages[k]||'']);
-  });
-  if (d.objections) d.objections.forEach(function(o,i){
-    rows.push(['Objection '+(i+1),'Q', o.q||'']);
-    rows.push(['Objection '+(i+1),'A', o.a||'']);
-  });
-  var csv = rows.map(function(r){
-    return r.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(',');
-  }).join('\n');
-  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url; a.download = 'leadeagle-' + Date.now() + '.csv';
-  a.click(); URL.revokeObjectURL(url);
+  var rows=[['Type','Field','Content']]; var d=currentData;
+  if (d.icp) { rows.push(['ICP','Description',d.icp.description||'']); rows.push(['ICP','Size',d.icp.company_size||'']); rows.push(['ICP','Industry',d.icp.industry||'']); rows.push(['ICP','Triggers',d.icp.trigger_events||'']); rows.push(['ICP','Exclude',d.icp.exclude||'']); }
+  if (d.roles) d.roles.forEach(function(r,i){ rows.push(['Role '+(i+1),'Title',r.title||'']); rows.push(['Role '+(i+1),'Pain',r.pain||'']); rows.push(['Role '+(i+1),'KPI',r.kpi||'']); });
+  if (d.pain_angles) d.pain_angles.forEach(function(a,i){ rows.push(['Angle '+(i+1),'Title',a.title||'']); rows.push(['Angle '+(i+1),'CTA',a.cta||'']); });
+  if (d.messages) Object.keys(d.messages).forEach(function(k){ rows.push(['Message',k.replace(/_/g,' '),d.messages[k]||'']); });
+  if (d.objections) d.objections.forEach(function(o,i){ rows.push(['Obj '+(i+1),'Q',o.q||'']); rows.push(['Obj '+(i+1),'A',o.a||'']); });
+  var csv=rows.map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob); var a=document.createElement('a');
+  a.href=url; a.download='leadeagle-'+Date.now()+'.csv'; a.click(); URL.revokeObjectURL(url);
 }
 
-function showError(msg) {
-  var el = document.getElementById('error-bar');
-  el.textContent = '// ERROR: ' + msg;
-  el.classList.add('active');
-  setTimeout(function(){ el.classList.remove('active'); }, 6000);
-}
-
-function setLoading(active) {
-  var dot = document.getElementById('rpm-dot');
-  var txt = document.getElementById('rpm-status-text');
-  var idle = document.getElementById('rpm-idle');
-  var facts = document.getElementById('rl-facts');
-  if (active) {
-    if (dot) { dot.className = 'rpm-dot scanning'; }
-    if (txt) txt.textContent = 'SCANNING...';
-    if (idle) idle.style.display = 'none';
-    if (facts) facts.style.display = 'block';
-  } else {
-    if (dot) { dot.className = 'rpm-dot'; }
-    if (txt) txt.textContent = 'AWAITING INPUT';
-    if (idle) idle.style.display = 'block';
-    if (facts) facts.style.display = 'none';
-  }
-  document.getElementById('launch-btn').disabled = active;
-}
-
-var _pendingResults = null;
-
-var RL_FACTS = [
-  '71% of cold emails are ignored due to poor targeting',
-  'Teams with clear ICP get 3× more meetings on average',
-  'Most outbound fails before the first email is sent',
-  'The average decision-maker receives 15 cold emails per week',
-  'Role-specific messaging gets 2× higher reply rates',
-  'LeadEagle maps your ICP in seconds — not hours',
-  'Apollo gives you the gun. LeadEagle gives you the aim.',
-  'Founders spend avg. 3h on campaign prep — we cut it to 20 min',
-  'Writing to the average of everyone means resonating with no one',
-  'Your SDRs are good. They just need better intel.'
-];
-
+/* ── RADAR LOADER ── */
 function startFactsTicker() {
-  var el = document.getElementById('rl-facts');
-  var i = Math.floor(Math.random() * RL_FACTS.length);
-  el.textContent = '// ' + RL_FACTS[i];
+  var el=document.getElementById('rl-facts'); if(!el) return;
+  var i=Math.floor(Math.random()*RL_FACTS.length);
+  el.textContent='// '+RL_FACTS[i];
   return setInterval(function(){
-    el.style.opacity = '0';
-    setTimeout(function(){
-      i = (i + 1) % RL_FACTS.length;
-      el.textContent = '// ' + RL_FACTS[i];
-      el.style.opacity = '1';
-    }, 500);
-  }, 3500);
+    el.style.opacity='0';
+    setTimeout(function(){ i=(i+1)%RL_FACTS.length; el.textContent='// '+RL_FACTS[i]; el.style.opacity='1'; },500);
+  },3500);
 }
-
 function activateTumbler(n) {
-  var t = document.getElementById('tumb-' + n);
-  var r = document.getElementById('rlt-' + n);
-  if (t) t.classList.add('active');
-  if (r) r.classList.add('active');
+  var t=document.getElementById('tumb-'+n); var r=document.getElementById('rlt-'+n);
+  if(t) t.classList.add('active'); if(r) r.classList.add('active');
 }
-
 function showResults() {
-  var radarPanel = document.getElementById('radar-panel-main');
-  if (radarPanel) radarPanel.style.display = 'none';
-  if (_pendingResults) {
-    renderResults(_pendingResults);
-    _pendingResults = null;
-  }
+  document.getElementById('loading-state').classList.remove('active');
+  document.getElementById('empty-state').style.display='none';
+  if (_pendingResults) { renderResults(_pendingResults); _pendingResults=null; }
   setLoading(false);
 }
-
 function animateSteps() {
-  var steps = ['ls-1','ls-2','ls-3','ls-4','ls-5','ls-6'];
-  var i = 0;
-  steps.forEach(function(s){
-    var el = document.getElementById(s);
-    if (el) el.className = 'loading-step';
-  });
-
-  // Reset tumblers
-  [1,2,3,4].forEach(function(n){
-    var t = document.getElementById('tumb-' + n);
-    var r = document.getElementById('rlt-' + n);
-    if (t) t.classList.remove('active');
-    if (r) r.classList.remove('active');
-  });
-  var btn = document.getElementById('rl-launch-btn');
-  var center = document.getElementById('rl-center');
-  if (btn) btn.style.display = 'none';
-  if (center) center.classList.remove('locked');
-
-  var factIv = startFactsTicker();
-
-  var tumblerTimes = [3000, 6000, 9000, 12000];
-  tumblerTimes.forEach(function(t, idx){
-    setTimeout(function(){ activateTumbler(idx + 1); }, t);
-  });
-
-  var iv = setInterval(function(){
-    if (i < steps.length) {
-      var el = document.getElementById(steps[i]);
-      if (el) el.className = 'loading-step active';
-      i++;
-    } else {
-      clearInterval(iv);
-    }
-  }, 900);
-
-  return { iv: iv, factIv: factIv };
+  [1,2,3,4].forEach(function(n){ var t=document.getElementById('tumb-'+n); var r=document.getElementById('rlt-'+n); if(t) t.classList.remove('active'); if(r) r.classList.remove('active'); });
+  var btn=document.getElementById('rl-launch-btn'); var center=document.getElementById('rl-center');
+  if(btn) btn.style.display='none'; if(center) center.classList.remove('locked');
+  var factIv=startFactsTicker();
+  [3000,6000,9000,12000].forEach(function(t,idx){ setTimeout(function(){ activateTumbler(idx+1); },t); });
+  return {iv:null,factIv:factIv};
 }
 
+/* ── UTILS ── */
+function showError(msg) {
+  var el=document.getElementById('error-bar');
+  el.textContent='// ERROR: '+msg; el.classList.add('active');
+  setTimeout(function(){ el.classList.remove('active'); },6000);
+}
+function setLoading(active) {
+  document.getElementById('empty-state').style.display=active?'none':'flex';
+  document.getElementById('loading-state').classList.toggle('active',active);
+  if(!active) document.getElementById('results').classList.remove('active');
+  document.getElementById('launch-btn').disabled=active;
+}
 function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(function(t,i){
-    t.classList.toggle('active', ['icp','pain','msg','call','obj'][i] === name);
-  });
+  document.querySelectorAll('.tab').forEach(function(t,i){ t.classList.toggle('active',['icp','pain','msg','call','obj'][i]===name); });
   document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
-  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
 }
-
 function copyAll() {
-  if (!currentData) return;
-  navigator.clipboard.writeText(JSON.stringify(currentData, null, 2)).then(function(){
-    var btn = event.target;
-    btn.textContent = 'Copied ■';
-    setTimeout(function(){ btn.textContent = 'Copy all'; }, 1500);
-  });
+  if(!currentData) return;
+  navigator.clipboard.writeText(JSON.stringify(currentData,null,2)).then(function(){ var btn=event.target; btn.textContent='Copied ■'; setTimeout(function(){ btn.textContent='Copy all'; },1500); });
 }
-
-function copyMsg(btn, id) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  navigator.clipboard.writeText(el.textContent).then(function(){
-    btn.textContent = 'Copied ■';
-    setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
-  });
+function copyMsg(btn,id) {
+  var el=document.getElementById(id); if(!el) return;
+  navigator.clipboard.writeText(el.textContent).then(function(){ btn.textContent='Copied ■'; setTimeout(function(){ btn.textContent='Copy'; },1500); });
 }
-
 function resetApp() {
   document.getElementById('results').classList.remove('active');
-  var radarPanel = document.getElementById('radar-panel-main');
-  if (radarPanel) radarPanel.style.display = 'flex';
-  var btn = document.getElementById('rl-launch-btn');
-  if (btn) btn.style.display = 'none';
-  var center = document.getElementById('rn-center-dot');
-  if (center) center.classList.remove('locked');
-  var dot = document.getElementById('rpm-dot');
-  if (dot) dot.className = 'rpm-dot';
-  var txt = document.getElementById('rpm-status-text');
-  if (txt) txt.textContent = 'AWAITING INPUT';
-  var idle = document.getElementById('rpm-idle');
-  if (idle) idle.style.display = 'block';
-  [1,2,3,4].forEach(function(n){
-    var t = document.getElementById('tumb-'+n);
-    var r = document.getElementById('rlt-'+n);
-    if(t) t.classList.remove('active');
-    if(r) r.classList.remove('active');
-  });
-  currentData = null; currentInput = null;
+  document.getElementById('empty-state').style.display='flex';
+  var btn=document.getElementById('rl-launch-btn'); if(btn) btn.style.display='none';
+  var center=document.getElementById('rl-center'); if(center) center.classList.remove('locked');
+  [1,2,3,4].forEach(function(n){ var t=document.getElementById('tumb-'+n); var r=document.getElementById('rlt-'+n); if(t) t.classList.remove('active'); if(r) r.classList.remove('active'); });
+  currentData=null; currentInput=null;
 }
+function escHtml(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+/* ── RENDER ── */
 function renderResults(data) {
-  currentData = data;
-  var icpHtml = '';
-  if (data.icp) {
-    icpHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Ideal Customer Profile</span><span class="r-block-tag">PRIMARY</span></div><div class="r-block-body">';
-    var icp = data.icp;
-    if (icp.description) icpHtml += '<div class="r-row"><div class="r-key">Profile</div><div class="r-val">' + icp.description + '</div></div>';
-    if (icp.company_size) icpHtml += '<div class="r-row"><div class="r-key">Size</div><div class="r-val">' + icp.company_size + '</div></div>';
-    if (icp.industry) icpHtml += '<div class="r-row"><div class="r-key">Industry</div><div class="r-val">' + icp.industry + '</div></div>';
-    if (icp.trigger_events) icpHtml += '<div class="r-row"><div class="r-key">Triggers</div><div class="r-val">' + icp.trigger_events + '</div></div>';
-    if (icp.exclude) icpHtml += '<div class="r-row"><div class="r-key">Exclude</div><div class="r-val" style="color:var(--muted)">' + icp.exclude + '</div></div>';
-    icpHtml += '</div></div>';
+  currentData=data;
+  var icpHtml='';
+  if(data.icp){
+    icpHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">Ideal Customer Profile</span><span class="r-block-tag">PRIMARY</span></div><div class="r-block-body">';
+    var icp=data.icp;
+    if(icp.description) icpHtml+='<div class="r-row"><div class="r-key">Profile</div><div class="r-val">'+icp.description+'</div></div>';
+    if(icp.company_size) icpHtml+='<div class="r-row"><div class="r-key">Size</div><div class="r-val">'+icp.company_size+'</div></div>';
+    if(icp.industry) icpHtml+='<div class="r-row"><div class="r-key">Industry</div><div class="r-val">'+icp.industry+'</div></div>';
+    if(icp.trigger_events) icpHtml+='<div class="r-row"><div class="r-key">Triggers</div><div class="r-val">'+icp.trigger_events+'</div></div>';
+    if(icp.exclude) icpHtml+='<div class="r-row"><div class="r-key">Exclude</div><div class="r-val" style="color:var(--muted)">'+icp.exclude+'</div></div>';
+    icpHtml+='</div></div>';
   }
-  if (data.roles && data.roles.length) {
-    data.roles.forEach(function(r, i) {
-      icpHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">' + (r.title||'Role '+(i+1)) + '</span><span class="r-block-tag">' + (r.type||'') + '</span></div><div class="r-block-body">';
-      if (r.pain) icpHtml += '<div class="r-row"><div class="r-key">Main pain</div><div class="r-val">' + r.pain + '</div></div>';
-      if (r.kpi) icpHtml += '<div class="r-row"><div class="r-key">KPIs</div><div class="r-val">' + r.kpi + '</div></div>';
-      if (r.buys) icpHtml += '<div class="r-row"><div class="r-key">Buys</div><div class="r-val">' + r.buys + '</div></div>';
-      icpHtml += '</div></div>';
-    });
-  }
-  document.getElementById('tab-icp').innerHTML = icpHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No ICP data.</div></div></div>';
+  if(data.roles&&data.roles.length){ data.roles.forEach(function(r,i){ icpHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">'+(r.title||'Role '+(i+1))+'</span><span class="r-block-tag">'+(r.type||'')+'</span></div><div class="r-block-body">'; if(r.pain) icpHtml+='<div class="r-row"><div class="r-key">Main pain</div><div class="r-val">'+r.pain+'</div></div>'; if(r.kpi) icpHtml+='<div class="r-row"><div class="r-key">KPIs</div><div class="r-val">'+r.kpi+'</div></div>'; if(r.buys) icpHtml+='<div class="r-row"><div class="r-key">Buys</div><div class="r-val">'+r.buys+'</div></div>'; icpHtml+='</div></div>'; }); }
+  document.getElementById('tab-icp').innerHTML=icpHtml||'<div class="r-block"><div class="r-block-body"><div class="r-text">No ICP data.</div></div></div>';
 
-  var painHtml = '';
-  if (data.pain_angles && data.pain_angles.length) {
-    data.pain_angles.forEach(function(a, i) {
-      painHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Angle ' + String(i+1).padStart(2,'0') + ' · ' + (a.title||'') + '</span></div><div class="r-block-body">';
-      if (a.pain) painHtml += '<div class="r-row"><div class="r-key">Pain</div><div class="r-val">' + a.pain + '</div></div>';
-      if (a.angle) painHtml += '<div class="r-row"><div class="r-key">Angle</div><div class="r-val">' + a.angle + '</div></div>';
-      if (a.cta) painHtml += '<div class="r-row"><div class="r-key">CTA</div><div class="r-val" style="color:var(--green);font-family:var(--mono);font-size:12px">"' + a.cta + '"</div></div>';
-      painHtml += '</div></div>';
-    });
-  }
-  document.getElementById('tab-pain').innerHTML = painHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No pain angles.</div></div></div>';
+  var painHtml='';
+  if(data.pain_angles&&data.pain_angles.length){ data.pain_angles.forEach(function(a,i){ painHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">Angle '+String(i+1).padStart(2,'0')+' · '+(a.title||'')+'</span></div><div class="r-block-body">'; if(a.pain) painHtml+='<div class="r-row"><div class="r-key">Pain</div><div class="r-val">'+a.pain+'</div></div>'; if(a.angle) painHtml+='<div class="r-row"><div class="r-key">Angle</div><div class="r-val">'+a.angle+'</div></div>'; if(a.cta) painHtml+='<div class="r-row"><div class="r-key">CTA</div><div class="r-val" style="color:var(--green);font-family:var(--mono);font-size:12px">"'+a.cta+'"</div></div>'; painHtml+='</div></div>'; }); }
+  document.getElementById('tab-pain').innerHTML=painHtml||'<div class="r-block"><div class="r-block-body"><div class="r-text">No pain angles.</div></div></div>';
 
-  var msgHtml = '';
-  var msgs = data.messages || {};
-  [
-    {key:'linkedin_connect',label:'LinkedIn Connection Request'},
-    {key:'linkedin_dm',label:'LinkedIn DM (after connect)'},
-    {key:'subject_lines',label:'Email Subject Lines (3 variants)'},
-    {key:'cold_email',label:'Cold Email'},
-    {key:'followup_1',label:'Follow-up #1 · Day 4'},
-    {key:'followup_2',label:'Follow-up #2 · Day 10'},
-    {key:'followup_3',label:'Follow-up #3 · Day 21 · Final'}
-  ].forEach(function(m) {
-    if (msgs[m.key]) {
-      var mid = 'msg-' + m.key;
-      msgHtml += '<div class="msg-block"><div class="msg-head"><span class="msg-label">' + m.label + '</span><button class="copy-btn" onclick="copyMsg(this,\'' + mid + '\')">Copy</button></div><div class="msg-body" id="' + mid + '">' + escHtml(msgs[m.key]) + '</div></div>';
-    }
+  var msgHtml=''; var msgs=data.messages||{};
+  [{'key':'linkedin_connect','label':'LinkedIn Connection Request'},{'key':'linkedin_dm','label':'LinkedIn DM'},{'key':'subject_lines','label':'Subject Lines (3 variants)'},{'key':'cold_email','label':'Cold Email'},{'key':'followup_1','label':'Follow-up #1 · Day 4'},{'key':'followup_2','label':'Follow-up #2 · Day 10'},{'key':'followup_3','label':'Follow-up #3 · Day 21'}].forEach(function(m){
+    if(msgs[m.key]){ var mid='msg-'+m.key; msgHtml+='<div class="msg-block"><div class="msg-head"><span class="msg-label">'+m.label+'</span><button class="copy-btn" onclick="copyMsg(this,\''+mid+'\')">Copy</button></div><div class="msg-body" id="'+mid+'">'+escHtml(msgs[m.key])+'</div></div>'; }
   });
-  document.getElementById('tab-msg').innerHTML = msgHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No messages.</div></div></div>';
+  document.getElementById('tab-msg').innerHTML=msgHtml||'<div class="r-block"><div class="r-block-body"><div class="r-text">No messages.</div></div></div>';
 
-  // Call Script tab
-  var callHtml = '';
-  var cs = data.call_script || {};
-  if (cs.opening) callHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Opening · First 15 seconds</span></div><div class="r-block-body"><div class="msg-body" style="padding:0;background:transparent;border:none" id="cs-opening">' + escHtml(cs.opening) + '</div><button class="copy-btn" style="margin-top:8px" onclick="copyMsg(this,\'cs-opening\')">Copy</button></div></div>';
-  if (cs.discovery && cs.discovery.length) {
-    callHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Discovery Questions</span></div><div class="r-block-body">';
-    cs.discovery.forEach(function(q,i){ callHtml += '<div class="r-row"><div class="r-key">Q' + (i+1) + '</div><div class="r-val">' + q + '</div></div>'; });
-    callHtml += '</div></div>';
-  }
-  if (cs.pitch) callHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">30-Second Pitch</span></div><div class="r-block-body"><div class="msg-body" style="padding:0;background:transparent;border:none" id="cs-pitch">' + escHtml(cs.pitch) + '</div><button class="copy-btn" style="margin-top:8px" onclick="copyMsg(this,\'cs-pitch\')">Copy</button></div></div>';
-  if (cs.close) callHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Closing · Next Step</span></div><div class="r-block-body"><div class="r-text">' + cs.close + '</div></div></div>';
-  document.getElementById('tab-call').innerHTML = callHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No call script.</div></div></div>';
+  var callHtml=''; var cs=data.call_script||{};
+  if(cs.opening) callHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">Opening · First 15 seconds</span></div><div class="r-block-body"><div class="r-text" id="cs-opening">'+escHtml(cs.opening)+'</div><button class="copy-btn" style="margin-top:8px" onclick="copyMsg(this,\'cs-opening\')">Copy</button></div></div>';
+  if(cs.discovery&&cs.discovery.length){ callHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">Discovery Questions</span></div><div class="r-block-body">'; cs.discovery.forEach(function(q,i){ callHtml+='<div class="r-row"><div class="r-key">Q'+(i+1)+'</div><div class="r-val">'+q+'</div></div>'; }); callHtml+='</div></div>'; }
+  if(cs.pitch) callHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">30-Second Pitch</span></div><div class="r-block-body"><div class="r-text" id="cs-pitch">'+escHtml(cs.pitch)+'</div><button class="copy-btn" style="margin-top:8px" onclick="copyMsg(this,\'cs-pitch\')">Copy</button></div></div>';
+  if(cs.close) callHtml+='<div class="r-block"><div class="r-block-head"><span class="r-block-title">Closing</span></div><div class="r-block-body"><div class="r-text">'+cs.close+'</div></div></div>';
+  document.getElementById('tab-call').innerHTML=callHtml||'<div class="r-block"><div class="r-block-body"><div class="r-text">No call script.</div></div></div>';
 
-  var objHtml = '';
-  if (data.objections && data.objections.length) {
-    data.objections.forEach(function(o) {
-      objHtml += '<div class="r-block"><div class="r-block-body"><div class="r-row"><div class="r-key" style="color:var(--muted)">Objection</div><div class="r-val" style="font-style:italic">"' + o.q + '"</div></div><div class="r-row"><div class="r-key">Response</div><div class="r-val">' + o.a + '</div></div></div></div>';
-    });
-  }
-  document.getElementById('tab-obj').innerHTML = objHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No objections.</div></div></div>';
+  var objHtml='';
+  if(data.objections&&data.objections.length){ data.objections.forEach(function(o){ objHtml+='<div class="r-block"><div class="r-block-body"><div class="r-row"><div class="r-key" style="color:var(--muted)">Objection</div><div class="r-val" style="font-style:italic">"'+o.q+'"</div></div><div class="r-row"><div class="r-key">Response</div><div class="r-val">'+o.a+'</div></div></div></div>'; }); }
+  document.getElementById('tab-obj').innerHTML=objHtml||'<div class="r-block"><div class="r-block-body"><div class="r-text">No objections.</div></div></div>';
 
   document.getElementById('loading-state').classList.remove('active');
   document.getElementById('results').classList.add('active');
   switchTab('icp');
 }
 
-function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
+/* ── LAUNCH ── */
 async function launch() {
-  var s = getSession();
-  if (!s || s.uses <= 0) { showError('No uses remaining.'); return; }
-
-  var product = document.getElementById('f-product').value.trim();
-  var market  = document.getElementById('f-market').value.trim();
-  var clients = document.getElementById('f-clients').value.trim();
-  var goal    = document.getElementById('f-goal').value;
-  var geo     = document.getElementById('f-geo').value;
-  var notes   = document.getElementById('f-notes').value.trim();
-
-  if (!product) { showError('Product description is required'); return; }
-  if (!market)  { showError('Target market is required'); return; }
-
-  currentInput = { product: product, market: market, clients: clients, goal: goal, geo: geo, notes: notes };
+  var s=getSession();
+  if(!s||s.uses<=0) { showError('No uses remaining.'); return; }
+  var product=document.getElementById('f-product').value.trim();
+  var market=document.getElementById('f-market').value.trim();
+  var clients=document.getElementById('f-clients').value.trim();
+  var goal=document.getElementById('f-goal').value;
+  var geo=document.getElementById('f-geo').value;
+  var notes=document.getElementById('f-notes').value.trim();
+  if(!product) { showError('Product description is required'); return; }
+  if(!market) { showError('Target market is required'); return; }
+  currentInput={product:product,market:market,clients:clients,goal:goal,geo:geo,notes:notes};
   setLoading(true);
-  var stepObj = animateSteps(); var stepIv = stepObj.iv; var factIv = stepObj.factIv;
-
-  var prompt = 'You are LeadEagle — an outbound strategy AI. Generate a COMPLETE outbound campaign package.\n\nPRODUCT INTEL:\n- Product: ' + product + '\n- Market: ' + market + '\n- Best clients: ' + (clients||'Not specified') + '\n- Goal: ' + goal + '\n- Geo: ' + geo + '\n- Notes: ' + (notes||'None') + '\n\nReturn ONLY valid JSON, no markdown, no backticks:\n{"icp":{"description":"2-sentence specific ICP","company_size":"e.g. 20-100 employees","industry":"specific industries","trigger_events":"buying signals","exclude":"who to exclude"},"roles":[{"title":"Job Title","type":"Decision Maker","pain":"specific pain in their words","kpi":"their KPIs","buys":"outcome they buy"}],"pain_angles":[{"title":"angle name","pain":"pain targeted","angle":"how product solves it","cta":"one-line CTA"}],"messages":{"linkedin_connect":"Short 300-char connection request, no pitch","linkedin_dm":"DM after connecting, 3-4 sentences, reference trigger","subject_lines":"Option 1: [subject]\\nOption 2: [subject]\\nOption 3: [subject]","cold_email":"Subject: [subject]\\n\\n[5-7 sentence email body]","followup_1":"Day 4 follow-up, new angle, 3 sentences","followup_2":"Day 10 follow-up, create urgency, 3 sentences","followup_3":"Day 21 final breakup email, 2 sentences"},"call_script":{"opening":"First 15 seconds script to grab attention","discovery":["Question 1?","Question 2?","Question 3?","Question 4?","Question 5?"],"pitch":"30-second value pitch for the call","close":"How to close for next step on the call"},"objections":[{"q":"objection","a":"response"}]}\n\nGenerate: 2 roles, 4 pain angles, 4 objections. All content must be SPECIFIC to this product — no generic templates.';
-
+  var stepObj=animateSteps(); var factIv=stepObj.factIv;
+  var prompt='You are LeadEagle — an outbound strategy AI. Generate a COMPLETE campaign package.\n\nPRODUCT:\n- Product: '+product+'\n- Market: '+market+'\n- Best clients: '+(clients||'Not specified')+'\n- Goal: '+goal+'\n- Geo: '+geo+'\n- Notes: '+(notes||'None')+'\n\nReturn ONLY valid JSON:\n{"icp":{"description":"2-sentence ICP","company_size":"e.g. 20-100","industry":"industries","trigger_events":"buying signals","exclude":"who to exclude"},"roles":[{"title":"Title","type":"Decision Maker","pain":"their pain","kpi":"their KPIs","buys":"what they buy"}],"pain_angles":[{"title":"name","pain":"pain","angle":"solution","cta":"CTA"}],"messages":{"linkedin_connect":"Short connect request","linkedin_dm":"DM after connect","subject_lines":"Option 1:\nOption 2:\nOption 3:","cold_email":"Subject: ...\\n\\nbody...","followup_1":"Day 4","followup_2":"Day 10","followup_3":"Day 21 breakup"},"call_script":{"opening":"15sec opener","discovery":["Q1?","Q2?","Q3?","Q4?","Q5?"],"pitch":"30sec pitch","close":"next step close"},"objections":[{"q":"objection","a":"response"}]}\n\nGenerate 2 roles, 4 angles, 4 objections. Be SPECIFIC.';
   try {
-  var controller = new AbortController();
-  var timeout = setTimeout(function(){ controller.abort(); }, 30000);
-  var res = await fetch('/api/claude', {
-      signal: controller.signal,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 4000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    clearInterval(stepIv); clearInterval(factIv);
-
-    if (!res.ok) {
-      var errData = await res.json().catch(function(){ return {}; });
-      throw new Error(errData.error && errData.error.message ? errData.error.message : 'API error ' + res.status);
-    }
-
+    var controller=new AbortController();
+    var timeout=setTimeout(function(){ controller.abort(); },55000);
+    var res=await fetch('/api/claude', {signal:controller.signal,method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:4000,messages:[{role:'user',content:prompt}]})});
     clearTimeout(timeout);
-    var result = await res.json();
-    var text = result.content && result.content[0] && result.content[0].text;
-    if (!text) throw new Error('Empty response');
-
-    var clean = text.replace(/```json|```/g,'').trim();
-    var data = JSON.parse(clean);
-
-    // Deduct use in Supabase
-    s.uses--;
-    saveSession(s.code, s.uses);
-    updateUsesDisplay(s.uses);
-
-    // Update Supabase
-    sbUpdate('promo_codes', 'code=eq.' + encodeURIComponent(s.code), { uses_left: s.uses }).catch(function(){});
-    sbInsert('promo_usage', { code: s.code, product_desc: product.substring(0,200) }).catch(function(){});
-
-    saveToHistory(currentInput, data);
-    _pendingResults = data;
-    // Lock state
-    var center = document.getElementById('rn-center-dot');
-    var btn = document.getElementById('rl-launch-btn');
-    var dot = document.getElementById('rpm-dot');
-    var txt = document.getElementById('rpm-status-text');
-    var facts = document.getElementById('rl-facts');
-    if (center) center.classList.add('locked');
-    if (btn) btn.style.display = 'block';
-    if (dot) { dot.className = 'rpm-dot locked'; }
-    if (txt) txt.textContent = 'TARGET LOCKED';
-    if (facts) facts.style.display = 'none';
-    document.getElementById('launch-btn').disabled = false;
-
+    clearInterval(factIv);
+    if(!res.ok) { var errData=await res.json().catch(function(){ return {}; }); throw new Error(errData.error&&errData.error.message?errData.error.message:'API error '+res.status); }
+    var result=await res.json();
+    var text=result.content&&result.content[0]&&result.content[0].text;
+    if(!text) throw new Error('Empty response');
+    var clean=text.replace(/```json|```/g,'').trim();
+    var data=JSON.parse(clean);
+    s.uses--; saveSession(s.code,s.uses); updateUsesDisplay(s.uses);
+    sbUpdate('promo_codes','code=eq.'+encodeURIComponent(s.code),{uses_left:s.uses}).catch(function(){});
+    sbInsert('promo_usage',{code:s.code,product_desc:product.substring(0,200)}).catch(function(){});
+    saveToHistory(currentInput,data);
+    _pendingResults=data;
+    var center=document.getElementById('rl-center');
+    var btn=document.getElementById('rl-launch-btn');
+    if(center) center.classList.add('locked');
+    if(btn) btn.style.display='block';
+    document.getElementById('launch-btn').disabled=false;
   } catch(e) {
-    clearInterval(stepIv);
-    if (typeof factIv !== 'undefined') clearInterval(factIv);
-    document.getElementById('loading-state').classList.remove('active');
-    document.getElementById('empty-state').style.display = 'flex';
-    document.getElementById('launch-btn').disabled = false;
-    showError(e.message || 'Something went wrong');
+    clearInterval(factIv);
+    setLoading(false);
+    document.getElementById('empty-state').style.display='flex';
+    showError(e.message||'Something went wrong');
   }
 }
 
-document.addEventListener('keydown', function(e){
-  if (e.key === 'Enter' && document.getElementById('promo-screen').style.display !== 'none') {
-    verifyPromo();
-  }
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') launch();
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&document.getElementById('promo-screen').style.display!=='none') verifyPromo();
+  if((e.ctrlKey||e.metaKey)&&e.key==='Enter') launch();
 });
 
 checkSession();
+renderHistory(null);
+
 </script>
 </body>
 </html>
