@@ -218,6 +218,7 @@ body::before {
   padding: 60px 40px; text-align: center;
   position: relative;
 }
+.radar-svg { width: 240px; height: 240px; margin-bottom: 28px; }
 .empty-radar {
   width: 220px; height: 220px;
   position: relative; margin-bottom: 32px;
@@ -832,15 +833,39 @@ body::before {
 
     <!-- EMPTY STATE -->
     <div class="empty-state" id="empty-state">
-      <div class="empty-radar">
-        <div class="er-ring"></div>
-        <div class="er-ring"></div>
-        <div class="er-ring"></div>
-        <div class="er-ring"></div>
-        <div class="er-cross"></div>
-        <div class="er-sweep"></div>
-        <div class="er-center"></div>
-      </div>
+      <svg class="radar-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="radar-clip">
+            <circle cx="150" cy="150" r="148"/>
+          </clipPath>
+          <linearGradient id="sweep-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:rgba(74,222,128,0);stop-opacity:0"/>
+            <stop offset="100%" style="stop-color:rgba(74,222,128,0.6);stop-opacity:1"/>
+          </linearGradient>
+        </defs>
+        <!-- Rings -->
+        <circle cx="150" cy="150" r="30" fill="none" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
+        <circle cx="150" cy="150" r="65" fill="none" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
+        <circle cx="150" cy="150" r="100" fill="none" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
+        <circle cx="150" cy="150" r="135" fill="none" stroke="rgba(74,222,128,0.2)" stroke-width="1"/>
+        <!-- Cross -->
+        <line x1="150" y1="2" x2="150" y2="298" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
+        <line x1="2" y1="150" x2="298" y2="150" stroke="rgba(74,222,128,0.15)" stroke-width="1"/>
+        <!-- Sweep -->
+        <g clip-path="url(#radar-clip)">
+          <line x1="150" y1="150" x2="285" y2="150" stroke="url(#sweep-grad)" stroke-width="1.5">
+            <animateTransform attributeName="transform" type="rotate" from="0 150 150" to="360 150 150" dur="4s" repeatCount="indefinite"/>
+          </line>
+        </g>
+        <!-- Center dot -->
+        <circle cx="150" cy="150" r="5" fill="#4ade80">
+          <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="150" cy="150" r="5" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.4">
+          <animate attributeName="r" values="5;14;5" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
       <div class="empty-title">Awaiting target data</div>
       <div class="empty-sub">Fill in your product details on the left and hit Analyze. LeadEagle will generate your full outbound strategy — ICP, roles, pains, messaging angles, and ready-to-send sequences.</div>
     </div>
