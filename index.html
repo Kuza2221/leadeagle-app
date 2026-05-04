@@ -738,12 +738,14 @@ body::before {
         <button class="tab active" onclick="switchTab('icp')">ICP & Roles</button>
         <button class="tab" onclick="switchTab('pain')">Pain Angles</button>
         <button class="tab" onclick="switchTab('msg')">Messages</button>
+        <button class="tab" onclick="switchTab('call')">Call Script</button>
         <button class="tab" onclick="switchTab('obj')">Objections</button>
       </div>
 
       <div class="tab-content active" id="tab-icp"></div>
       <div class="tab-content" id="tab-pain"></div>
       <div class="tab-content" id="tab-msg"></div>
+      <div class="tab-content" id="tab-call"></div>
       <div class="tab-content" id="tab-obj"></div>
     </div>
 
@@ -1011,7 +1013,7 @@ function animateSteps() {
 
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(function(t,i){
-    t.classList.toggle('active', ['icp','pain','msg','obj'][i] === name);
+    t.classList.toggle('active', ['icp','pain','msg','call','obj'][i] === name);
   });
   document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
   document.getElementById('tab-' + name).classList.add('active');
@@ -1080,10 +1082,13 @@ function renderResults(data) {
   var msgHtml = '';
   var msgs = data.messages || {};
   [
-    {key:'linkedin_dm',label:'LinkedIn DM'},
+    {key:'linkedin_connect',label:'LinkedIn Connection Request'},
+    {key:'linkedin_dm',label:'LinkedIn DM (after connect)'},
+    {key:'subject_lines',label:'Email Subject Lines (3 variants)'},
     {key:'cold_email',label:'Cold Email'},
     {key:'followup_1',label:'Follow-up #1 · Day 4'},
-    {key:'followup_2',label:'Follow-up #2 · Day 10'}
+    {key:'followup_2',label:'Follow-up #2 · Day 10'},
+    {key:'followup_3',label:'Follow-up #3 · Day 21 · Final'}
   ].forEach(function(m) {
     if (msgs[m.key]) {
       var mid = 'msg-' + m.key;
@@ -1091,6 +1096,19 @@ function renderResults(data) {
     }
   });
   document.getElementById('tab-msg').innerHTML = msgHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No messages.</div></div></div>';
+
+  // Call Script tab
+  var callHtml = '';
+  var cs = data.call_script || {};
+  if (cs.opening) callHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Opening · First 15 seconds</span></div><div class="r-block-body"><div class="msg-body" style="padding:0;background:transparent;border:none" id="cs-opening">' + escHtml(cs.opening) + '</div><button class="copy-btn" style="margin-top:8px" onclick="copyMsg(this,\'cs-opening\')">Copy</button></div></div>';
+  if (cs.discovery && cs.discovery.length) {
+    callHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Discovery Questions</span></div><div class="r-block-body">';
+    cs.discovery.forEach(function(q,i){ callHtml += '<div class="r-row"><div class="r-key">Q' + (i+1) + '</div><div class="r-val">' + q + '</div></div>'; });
+    callHtml += '</div></div>';
+  }
+  if (cs.pitch) callHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">30-Second Pitch</span></div><div class="r-block-body"><div class="msg-body" style="padding:0;background:transparent;border:none" id="cs-pitch">' + escHtml(cs.pitch) + '</div><button class="copy-btn" style="margin-top:8px" onclick="copyMsg(this,\'cs-pitch\')">Copy</button></div></div>';
+  if (cs.close) callHtml += '<div class="r-block"><div class="r-block-head"><span class="r-block-title">Closing · Next Step</span></div><div class="r-block-body"><div class="r-text">' + cs.close + '</div></div></div>';
+  document.getElementById('tab-call').innerHTML = callHtml || '<div class="r-block"><div class="r-block-body"><div class="r-text">No call script.</div></div></div>';
 
   var objHtml = '';
   if (data.objections && data.objections.length) {
@@ -1127,16 +1145,18 @@ async function launch() {
   setLoading(true);
   var stepIv = animateSteps();
 
-  var prompt = 'You are LeadEagle — an outbound strategy AI. Generate a complete outbound campaign strategy.\n\nPRODUCT INTEL:\n- Product: ' + product + '\n- Market: ' + market + '\n- Best clients: ' + (clients||'Not specified') + '\n- Goal: ' + goal + '\n- Geo: ' + geo + '\n- Notes: ' + (notes||'None') + '\n\nReturn ONLY valid JSON, no markdown:\n{"icp":{"description":"...","company_size":"...","industry":"...","trigger_events":"...","exclude":"..."},"roles":[{"title":"...","type":"Decision Maker","pain":"...","kpi":"...","buys":"..."}],"pain_angles":[{"title":"...","pain":"...","angle":"...","cta":"..."}],"messages":{"linkedin_dm":"...","cold_email":"Subject: ...\\n\\nbody...","followup_1":"...","followup_2":"..."},"objections":[{"q":"...","a":"..."}]}\n\nGenerate 2 roles, 4 angles, 4 objections. Be specific to this product.';
+  var prompt = 'You are LeadEagle — an outbound strategy AI. Generate a COMPLETE outbound campaign package.\n\nPRODUCT INTEL:\n- Product: ' + product + '\n- Market: ' + market + '\n- Best clients: ' + (clients||'Not specified') + '\n- Goal: ' + goal + '\n- Geo: ' + geo + '\n- Notes: ' + (notes||'None') + '\n\nReturn ONLY valid JSON, no markdown, no backticks:\n{"icp":{"description":"2-sentence specific ICP","company_size":"e.g. 20-100 employees","industry":"specific industries","trigger_events":"buying signals","exclude":"who to exclude"},"roles":[{"title":"Job Title","type":"Decision Maker","pain":"specific pain in their words","kpi":"their KPIs","buys":"outcome they buy"}],"pain_angles":[{"title":"angle name","pain":"pain targeted","angle":"how product solves it","cta":"one-line CTA"}],"messages":{"linkedin_connect":"Short 300-char connection request, no pitch","linkedin_dm":"DM after connecting, 3-4 sentences, reference trigger","subject_lines":"Option 1: [subject]\\nOption 2: [subject]\\nOption 3: [subject]","cold_email":"Subject: [subject]\\n\\n[5-7 sentence email body]","followup_1":"Day 4 follow-up, new angle, 3 sentences","followup_2":"Day 10 follow-up, create urgency, 3 sentences","followup_3":"Day 21 final breakup email, 2 sentences"},"call_script":{"opening":"First 15 seconds script to grab attention","discovery":["Question 1?","Question 2?","Question 3?","Question 4?","Question 5?"],"pitch":"30-second value pitch for the call","close":"How to close for next step on the call"},"objections":[{"q":"objection","a":"response"}]}\n\nGenerate: 2 roles, 4 pain angles, 4 objections. All content must be SPECIFIC to this product — no generic templates.';
 
-  try {
+  var controller = new AbortController();
+    var timeout = setTimeout(function(){ controller.abort(); }, 30000);
     var res = await fetch('/api/claude', {
+      signal: controller.signal,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 2000,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -1152,6 +1172,7 @@ async function launch() {
       throw new Error(errData.error && errData.error.message ? errData.error.message : 'API error ' + res.status);
     }
 
+    clearTimeout(timeout);
     var result = await res.json();
     var text = result.content && result.content[0] && result.content[0].text;
     if (!text) throw new Error('Empty response');
