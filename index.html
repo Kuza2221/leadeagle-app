@@ -218,6 +218,15 @@ body::before {
 /* ─── RESPONSIVE ─────────────────────────────────────────── */
 
 /* VARIABLE HIGHLIGHT */
+.vhl {
+  color: #fbbf24;
+  background: rgba(251,191,36,.12);
+  border: 1px solid rgba(251,191,36,.25);
+  border-radius: 2px;
+  padding: 0 3px;
+  font-style: normal;
+}
+.vhl > span { color: #f59e0b; }
 .var-highlight {
   color: #fbbf24;
   background: rgba(251,191,36,.12);
@@ -437,6 +446,8 @@ body::before {
         <div class="res-title">// STRATEGY READY · CLEARED FOR LAUNCH</div>
         <div class="res-actions">
           <button class="act-btn" onclick="doExportCSV()">Export CSV</button>
+          <button class="act-btn" onclick="doExportClay()">Export Clay</button>
+          <button class="act-btn" onclick="doExportLihelper()">Export Lihelper</button>
           <button class="act-btn" onclick="doCopyAll()">Copy all</button>
           <button class="act-btn" onclick="doReset()">New campaign</button>
         </div>
@@ -444,13 +455,15 @@ body::before {
       <div class="tabs">
         <button class="tab on"  onclick="showTab('icp',this)">ICP &amp; Roles</button>
         <button class="tab"     onclick="showTab('pain',this)">Pain Angles</button>
-        <button class="tab"     onclick="showTab('msg',this)">Messages</button>
+        <button class="tab"     onclick="showTab('li',this)">LinkedIn</button>
+        <button class="tab"     onclick="showTab('email',this)">Email</button>
         <button class="tab"     onclick="showTab('call',this)">Call Script</button>
         <button class="tab"     onclick="showTab('obj',this)">Objections</button>
       </div>
       <div class="tab-pane on" id="pane-icp"></div>
       <div class="tab-pane"    id="pane-pain"></div>
-      <div class="tab-pane"    id="pane-msg"></div>
+      <div class="tab-pane"    id="pane-li"></div>
+      <div class="tab-pane"    id="pane-email"></div>
       <div class="tab-pane"    id="pane-call"></div>
       <div class="tab-pane"    id="pane-obj"></div>
     </div>
@@ -635,6 +648,52 @@ function doExportCSV() {
   a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
   a.download = 'leadeagle-'+Date.now()+'.csv'; a.click();
 }
+function doExportClay() {
+  if (!_data) return;
+  var d = _data;
+  var rows = [['First Name','Last Name','Company','Title','LinkedIn URL','Pain Point','Angle','CTA','LinkedIn Connect','Cold Email Subject','Cold Email Body']];
+  var icp = d.icp||{};
+  var roles = d.roles||[{}];
+  var angles = d.pain_angles||[{}];
+  var msgs = d.messages||{};
+  roles.forEach(function(r){
+    angles.forEach(function(a){
+      rows.push([
+        '[First Name]','[Last Name]','[Company]',r.title||'[Title]','[LinkedIn URL]',
+        a.pain||'',a.angle||'',a.cta||'',
+        msgs.linkedin_connect||'',
+        (msgs.cold_email||'').split('\n')[0].replace('Subject: ',''),
+        (msgs.cold_email||'').split('\n').slice(2).join('\n')
+      ]);
+    });
+  });
+  var csv = rows.map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  a.download = 'leadeagle-clay-'+Date.now()+'.csv'; a.click();
+}
+
+function doExportLihelper() {
+  if (!_data) return;
+  var d = _data;
+  var msgs = d.messages||{};
+  var roles = d.roles||[{}];
+  var rows = [['Profile URL','First Name','Last Name','Company','Position','Connection Note','Message 1','Message 2','Message 3']];
+  roles.forEach(function(r){
+    rows.push([
+      '[LinkedIn URL]','[First Name]','[Last Name]','[Company]',r.title||'[Title]',
+      msgs.linkedin_connect||'',
+      msgs.linkedin_dm_1||'',
+      msgs.linkedin_dm_2||'',
+      msgs.followup_1||''
+    ]);
+  });
+  var csv = rows.map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  a.download = 'leadeagle-lihelper-'+Date.now()+'.csv'; a.click();
+}
+
 function doCopyAll() {
   if (!_data) return;
   navigator.clipboard.writeText(JSON.stringify(_data,null,2)).then(function(){ var b=event.target; b.textContent='Copied ■'; setTimeout(function(){ b.textContent='Copy all'; },1500); });
@@ -654,6 +713,9 @@ function doReset() {
   _data=null; _input=null; _pending=null;
 }
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function hlv(s){
+  return esc(s).replace(/\[([^\]]+)\]/g,'<span class="vhl">[<span>$1</span>]</span>');
+}
 
 /* ── RENDER RESULTS ── */
 function renderResults(d) {
@@ -668,6 +730,7 @@ function renderResults(d) {
     if(ic.company_size)   h += '<div class="row"><div class="rk">Size</div><div class="rv">'+ic.company_size+'</div></div>';
     if(ic.industry)       h += '<div class="row"><div class="rk">Industry</div><div class="rv">'+ic.industry+'</div></div>';
     if(ic.trigger_events) h += '<div class="row"><div class="rk">Triggers</div><div class="rv">'+ic.trigger_events+'</div></div>';
+    if(ic.tech_stack)     h += '<div class="row"><div class="rk">Tech Stack</div><div class="rv" style="color:var(--muted)">'+ic.tech_stack+'</div></div>';
     if(ic.exclude)        h += '<div class="row"><div class="rk">Exclude</div><div class="rv" style="color:var(--muted)">'+ic.exclude+'</div></div>';
     h += '</div></div>';
   }
@@ -676,6 +739,7 @@ function renderResults(d) {
     if(r.pain) h += '<div class="row"><div class="rk">Main pain</div><div class="rv">'+r.pain+'</div></div>';
     if(r.kpi)  h += '<div class="row"><div class="rk">KPIs</div><div class="rv">'+r.kpi+'</div></div>';
     if(r.buys) h += '<div class="row"><div class="rk">Buys</div><div class="rv">'+r.buys+'</div></div>';
+    if(r.objections) h += '<div class="row"><div class="rk">Objects to</div><div class="rv" style="color:var(--muted)">'+r.objections+'</div></div>';
     h += '</div></div>';
   });
   document.getElementById('pane-icp').innerHTML = h || '<div class="card"><div class="card-body"><div class="rtext">No ICP data.</div></div></div>';
@@ -686,6 +750,7 @@ function renderResults(d) {
     h += '<div class="card"><div class="card-head"><span class="card-title">Angle '+String(i+1).padStart(2,'0')+' · '+(a.title||'')+'</span></div><div class="card-body">';
     if(a.pain)  h += '<div class="row"><div class="rk">Pain</div><div class="rv">'+a.pain+'</div></div>';
     if(a.angle) h += '<div class="row"><div class="rk">Angle</div><div class="rv">'+a.angle+'</div></div>';
+    if(a.proof) h += '<div class="row"><div class="rk">Proof</div><div class="rv" style="color:var(--green)">'+a.proof+'</div></div>';
     if(a.cta)   h += '<div class="row"><div class="rk">CTA</div><div class="rv" style="color:var(--green);font-family:var(--mono);font-size:12px">"'+a.cta+'"</div></div>';
     h += '</div></div>';
   });
@@ -738,6 +803,7 @@ function renderResults(d) {
   /* reset tab to ICP */
   document.querySelectorAll('.tab').forEach(function(t,i){ t.classList.toggle('on', i===0); });
   document.querySelectorAll('.tab-pane').forEach(function(p,i){ p.classList.toggle('on', i===0); });
+  /* show Quick Wins highlight if present */
 }
 
 /* ── SHOW RESULTS (from lock btn) ── */
@@ -767,17 +833,53 @@ async function launch() {
   /* tumbler + target schedule */
   [3000,6000,9000,12000].forEach(function(ms,i){ setTimeout(function(){ showTarget(i+1); },ms); });
 
-  var PROMPT = 'You are LeadEagle — an outbound strategy AI. Generate a complete outbound campaign.\n\n'
-    + 'PRODUCT:\n- Product: '+product+'\n- Market: '+market+'\n- Best clients: '+(clients||'Not specified')
-    + '\n- Goal: '+goal+'\n- Geo: '+geo+'\n- Notes: '+(notes||'None')
-    + '\n\nReturn ONLY valid JSON (no markdown, no backticks):\n'
-    + '{"icp":{"description":"2-sentence specific ICP","company_size":"e.g. 20-100 employees","industry":"specific industries","trigger_events":"buying signals that mean they need this now","exclude":"who to exclude"},'
-    + '"roles":[{"title":"Job Title","type":"Decision Maker or Champion","pain":"their specific pain in their own words","kpi":"KPIs they measure","buys":"outcome they actually buy"}],'
-    + '"pain_angles":[{"title":"angle name","pain":"pain this targets","angle":"how product solves it","cta":"one-line CTA"}],'
-    + '"messages":{"linkedin_connect":"Short 300-char connect request — no pitch","linkedin_dm":"DM after connecting, 3-4 sentences, reference a trigger","subject_lines":"Option 1: ...\\nOption 2: ...\\nOption 3: ...","cold_email":"Subject: ...\\n\\n[5-7 sentence email body]","followup_1":"Day 4 follow-up, new angle, 3 sentences","followup_2":"Day 10 follow-up, urgency, 3 sentences","followup_3":"Day 21 breakup, 2 sentences"},'
-    + '"call_script":{"opening":"Word-for-word first 15 seconds","discovery":["Q1?","Q2?","Q3?","Q4?","Q5?"],"pitch":"30-second value pitch","close":"How to close for next step"},'
-    + '"objections":[{"q":"objection","a":"response"}]}\n\n'
-    + 'Generate 2 buyer roles, 4 pain angles, 4 objections. Be SPECIFIC to this product — no generic templates.';
+  var PROMPT = 'You are LeadEagle — an elite outbound strategy AI used by top B2B sales teams. Your output must be LUXURY quality: hyper-specific, data-driven, written in the voice of an experienced SDR who books 20+ meetings/month.\n\n'
+    + 'TARGET AUDIENCE: SDRs, lead generation agencies, outbound sales teams.\n\n'
+    + 'PRODUCT INTEL:\n- Product: '+product+'\n- Target Market: '+market+'\n- Best Clients: '+(clients||'Not specified')+'\n- Goal: '+goal+'\n- Geography: '+geo+'\n- Notes: '+(notes||'None')+'\n\n'
+    + 'CRITICAL RULES:\n1. LinkedIn is the PRIMARY channel — all sequences start there\n2. Every message must reference a SPECIFIC trigger event or signal\n3. Use the prospect\'s language and industry jargon\n4. [Name], [Company], [Role], [Trigger] are placeholders — make them obvious\n5. No generic openers like "I hope this finds you well"\n6. Pain must be specific enough that the prospect thinks "how did they know?"\n\n'
+    + 'Return ONLY valid JSON (no markdown, no backticks):\n'
+    + '{"icp":{'
+    + '"description":"2-sentence razor-sharp ICP — company type, stage, specific characteristics",'
+    + '"company_size":"e.g. Series A-B, 20-150 employees",'
+    + '"industry":"3-5 specific verticals, not broad categories",'
+    + '"trigger_events":"5 specific buying signals: hiring SDRs, new funding, rebranding, entering new market, missed quota",'
+    + '"tech_stack":"tools they likely use that create pain your product solves",'
+    + '"exclude":"specific types to avoid and why"'
+    + '},'
+    + '"roles":['
+    + '{"title":"Exact Job Title","type":"Decision Maker","pain":"Their pain in their own words — use first person like they would say it","kpi":"3 specific KPIs they live or die by","buys":"The emotional outcome they are actually purchasing","objections":"2 objections this specific role will raise"}'
+    + '],'
+    + '"pain_angles":['
+    + '{"title":"Short punchy angle name","pain":"The specific situation that causes pain — be vivid","angle":"Exactly how product eliminates this pain with a specific mechanism","proof":"Specific result or metric that validates this angle","cta":"One CTA line that creates urgency without being pushy"}'
+    + '],'
+    + '"messages":{'
+    + '"linkedin_connect":"Under 300 chars. No pitch. Reference something specific about them — recent post, promotion, company news. End with a genuine reason to connect.",'
+    + '"linkedin_dm_1":"First DM after connecting. 2-3 sentences. Open with a specific observation about their situation. ONE question only. No pitch.",'
+    + '"linkedin_dm_2":"Follow-up DM day 3. New angle. Share a relevant insight or data point. Soft CTA.",'
+    + '"linkedin_voice_note":"Script for 30-second voice note. Conversational, reference the connection context.",'
+    + '"subject_lines":"5 subject line options. Mix curiosity, self-interest, specificity. Format: 1. [line] 2. [line] etc",'
+    + '"cold_email":"Subject: [specific subject]\\n\\n[Email body: 5-6 sentences. Open with specific trigger event observation. Problem-agitate-solution. Soft CTA. PS line that adds social proof]",'
+    + '"followup_1":"Day 5. New angle, new value. 3 sentences max.",'
+    + '"followup_2":"Day 12. Pattern interrupt opener. 2-3 sentences.",'
+    + '"followup_3":"Day 21. Breakup email. Permission to close the loop. 2 sentences."'
+    + '},'
+    + '"call_script":{'
+    + '"pre_call_checklist":["Research trigger: check their LinkedIn for recent activity","Identify: which pain angle most likely applies","Prepare: one relevant case study or data point","Check: mutual connections or shared context","Goal: book 20-min discovery, not sell on this call"],'
+    + '"opening":"Word-for-word first 20 seconds. Reference the trigger event. Create curiosity not pressure.",'
+    + '"pattern_interrupt":"Alternative opening if gatekeeper or voicemail",'
+    + '"discovery":["Q1 that reveals urgency?","Q2 that surfaces the pain?","Q3 about current solution?","Q4 about decision process?","Q5 that uncovers timeline?"],'
+    + '"pitch":"45-second pitch. Problem they have, why now, what we do differently, one proof point.",'
+    + '"objection_handlers":{"no_time":"...","already_have_solution":"...","send_me_info":"...","not_interested":"..."},'
+    + '"close":"Next step close. Specific day/time. Micro-commitment technique."'
+    + '},'
+    + '"objections":['
+    + '{"q":"Specific objection in their words","a":"Response using feel-felt-found or redirect technique","followup":"What to say if they push back again"}'
+    + '],'
+    + '"quick_wins":["3 things they can do THIS WEEK based on this intel to start booking meetings"]'
+    + '}\n\n'
+    + 'Generate 3 buyer roles, 5 pain angles, 5 objections. Make it so specific that a new SDR could start outreach TODAY with zero research.';
+
+
 
   try {
     var ctrl = new AbortController();
