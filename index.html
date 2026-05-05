@@ -216,6 +216,19 @@ body::before {
 .promo-foot a { color: var(--green); text-decoration: none; }
 
 /* ─── RESPONSIVE ─────────────────────────────────────────── */
+
+/* VARIABLE HIGHLIGHT */
+.var-highlight {
+  color: #fbbf24;
+  background: rgba(251,191,36,.12);
+  border: 1px solid rgba(251,191,36,.3);
+  border-radius: 2px;
+  padding: 0 3px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+
 @keyframes svgsweep1 { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 @keyframes svgsweep2 { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 @media (max-width: 768px) {
@@ -628,7 +641,13 @@ function doCopyAll() {
 }
 function copyMsg(btn, id) {
   var el = document.getElementById(id); if(!el) return;
+  // Copy plain text without HTML tags
   navigator.clipboard.writeText(el.textContent).then(function(){ btn.textContent='Copied ■'; setTimeout(function(){ btn.textContent='Copy'; },1500); });
+}
+
+function highlightVars(text) {
+  // Highlight [Variable] patterns in yellow
+  return esc(text).replace(/\[([^\]]+)\]/g, '<span class="var-highlight">[<span style="color:#fbbf24">$1</span>]</span>');
 }
 function doReset() {
   showState('empty'); resetRadar();
